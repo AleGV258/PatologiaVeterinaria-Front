@@ -1,0 +1,241 @@
+
+/* 
+    Materia: Arquitectura de TI Empresariales
+    Integrantes: 
+        - Salazar Castillo Guadalupe - 261540
+        - Jiménez Elizalde Andrés - 259678
+        - León Paulín Daniel - 260541
+        - García Vargas Michell Alejandro - 259663
+*/
+
+/* Página Login y Registro */
+body{
+    font-family: 'Jost', sans-serif;
+    overflow-y: hidden;
+}
+.grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+}
+.grid-1 {
+    grid-area: 1 / 3 / 7 / 6; 
+    min-height: 100vh;
+    /* display: flex; */
+}
+.grid-2 { grid-area: 1 / 1 / 3 / 3; }
+.grid-3 { grid-area: 1 / 6 / 3 / 8; }
+.grid-4 { grid-area: 3 / 1 / 5 / 3; }
+.grid-5 { grid-area: 3 / 6 / 5 / 8; }
+.grid-6 { grid-area: 5 / 1 / 7 / 3; }
+.grid-7 { grid-area: 5 / 6 / 7 / 8; }
+
+.form-login{
+    background-color: #DDDDDD;
+    margin: 15vh 15%;
+    box-shadow: 10px 10px 10px rgba(0.0, 0.0, 0.0, 0.2);
+    border-radius: 10px;
+    padding: 5vh 5%;
+    z-index: 5;
+    position: relative;
+}
+.form-register{
+    background-color: #DDDDDD;
+    margin: 4vh 15%;
+    box-shadow: 10px 10px 10px rgba(0.0, 0.0, 0.0, 0.2);
+    border-radius: 10px;
+    padding: 3vh 5%;
+    z-index: 5;
+    position: relative;
+}
+label, a{ 
+    display: inline-block;
+    font-weight: 500;
+    font-size: larger;
+    margin: 0 0 2vh 0;
+}
+a:hover{
+    color: #007034;
+    cursor: pointer;
+}
+a:active{
+    color: #8dbf4c;
+}
+input{
+    display: inline-block;
+    border-radius: 50px;
+    background-color: #fff;
+    color: black;
+    border: none;
+    outline: none;
+    text-align: center;
+    font-size: large;
+    padding: 2vh 10%;
+    margin: 0 0 3vh 0;
+}
+input[type="submit"]{
+    color: #fff;
+    background-color: #37a943;
+    border-radius: 10px;
+    padding: 2vh 30%;
+    margin: 0;
+}
+input[type="submit"]:hover{
+    background-color: #007034;
+    cursor: pointer;
+}
+input[type="submit"]:active{
+    background-color: #8dbf4c;
+}
+.form-titulo{
+    color: #37a943;
+    font-weight: bolder;
+    font-size: 270%;
+    margin: 0 0 3vh 0;
+}
+.form-register-input{
+    padding: 1.5vh 10%;
+    margin: 0 0 2vh 0;
+}
+.form-link{
+    color: #37a943;
+    margin: 0.5vh 0 1.5vh 0;
+}
+.triangulo-superior{
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.tri-sup-chico{
+    border-top: 150px solid #007034;
+    border-right: 150px solid transparent;
+    z-index: 2;
+}
+.tri-sup-mediano{
+    border-top: 200px solid #37a943;
+    border-right: 200px solid transparent;
+    z-index: 1;
+}
+.tri-sup-grande{
+    border-top: 250px solid #8dbf4c;
+    border-right: 250px solid transparent;
+    z-index: 0;
+    -webkit-filter: drop-shadow(5px 5px 10px rgba(0.0, 0.0, 0.0, 0.2));
+    filter: drop-shadow(5px 5px 10px rgba(0.0, 0.0, 0.0, 0.2));
+}
+.triangulo-inferior{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+.tri-inf-chico{
+    border-top: 150px solid transparent;
+    border-right: 150px solid #007034;
+    z-index: 2;
+}
+.tri-inf-mediano{
+    border-top: 200px solid transparent;
+    border-right: 200px solid #37a943;
+    z-index: 1;
+}
+.tri-inf-grande{
+    border-top: 250px solid transparent;
+    border-right: 250px solid #8dbf4c;
+    z-index: 0;
+    -webkit-filter: drop-shadow(-5px -5px 10px rgba(0.0, 0.0, 0.0, 0.2));
+    filter: drop-shadow(-5px -5px 10px rgba(0.0, 0.0, 0.0, 0.2));
+}
+
+.cuadrado-chico{
+    width: 3.9vh;
+    height: 3.9vh;
+    background-color: #8dbf4c;
+    z-index: 2;
+    -webkit-filter: drop-shadow(-5px -5px 10px rgba(0.0, 0.0, 0.0, 0.2));
+    filter: drop-shadow(-5px -5px 10px rgba(0.0, 0.0, 0.0, 0.2));
+    transform: rotate(45deg);
+}
+.cuadrado-mediano{
+    width: 11.6vh;
+    height: 11.6vh;
+    background-color: #37a943;
+    z-index: 1;
+    position: relative;
+    position: relative;
+    -webkit-filter: drop-shadow(-5px -5px 10px rgba(0.0, 0.0, 0.0, 0.2));
+    filter: drop-shadow(-5px -5px 10px rgba(0.0, 0.0, 0.0, 0.2));
+    transform: rotate(45deg);
+}
+.cuadrado-grande{
+    width: 19.5vh;
+    height: 19.5vh;
+    background-color: #007034;
+    z-index: 0;
+    position: relative;
+    -webkit-filter: drop-shadow(-5px -5px 10px rgba(0.0, 0.0, 0.0, 0.2));
+    filter: drop-shadow(-5px -5px 10px rgba(0.0, 0.0, 0.0, 0.2));
+    transform: rotate(45deg);
+}
+.cuad-1{
+    margin-top: -93vh;
+}
+.cuad-2{
+    margin-top: -15vh;
+    margin-left: 8vw;
+}
+.cuad-3{
+    margin-left: 2vw;
+}
+.cuad-4{
+    margin-top: -11vh;
+    margin-left: -1.5vw;
+}
+.cuad-5{
+    margin-top: 28vh;
+    margin-left: 30vw;
+}
+.cuad-6{
+    margin-top: -1vh;
+    margin-left: 31vw;
+}
+.cuad-7{
+    margin-top: -25vh;
+    margin-left: 33vw;
+}
+.cuad-8{
+    margin-top: 7vh;
+    margin-left: 26vw;
+}
+.cuad-9{
+    margin-top: -94vh;
+    margin-left: 31vw;
+}
+.cuad-10{
+    margin-top: -21vh;
+    margin-left: 29vw;
+}
+.cuad-11{
+    margin-top: 4vh;
+    margin-left: 35vw;
+}
+.cuad-12{
+    margin-top: -22vh;
+    margin-left: 45vw;
+}
+.cuad-13{
+    margin-top: 12vh;
+    margin-left: 33vw;
+}
+.cuad-14{
+    margin-top: 9vh;
+    margin-left: 4vw;
+}
+.cuad-15{
+    margin-left: 2vw;
+}
+.cuad-16{
+    margin-top: 2vh;
+    margin-left: 2vw;
+}
