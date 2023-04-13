@@ -14,6 +14,8 @@ body{
     overflow-y: hidden;
 }
 .grid {
+    height: 100vh;
+    width: 100vw;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows: repeat(6, 1fr);
@@ -34,7 +36,7 @@ body{
 
 .form-login{
     background-color: #DDDDDD;
-    margin: 15vh 15%;
+    margin: 14vh 15%;
     box-shadow: 10px 10px 10px rgba(0.0, 0.0, 0.0, 0.2);
     border-radius: 10px;
     padding: 5vh 5%;
@@ -238,4 +240,86 @@ input[type="submit"]:active{
 .cuad-16{
     margin-top: 2vh;
     margin-left: 2vw;
+}
+
+/* Media Queries */
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .cuadrado-chico{ display: none; }
+    .cuadrado-mediano{ display: none; }
+    .cuadrado-grande{ display: none; }
+    .tri-sup-chico{ border-top: 50px solid #007034; border-right: 50px solid transparent; }
+    .tri-sup-mediano{ border-top: 100px solid #37a943; border-right: 100px solid transparent; }
+    .tri-sup-grande{ border-top: 150px solid #8dbf4c; border-right: 150px solid transparent; }
+    .tri-inf-chico{ border-top: 50px solid transparent; border-right: 50px solid #007034; }
+    .tri-inf-mediano{ border-top: 100px solid transparent; border-right: 100px solid #37a943; }
+    .tri-inf-grande{ border-top: 150px solid transparent; border-right: 150px solid #8dbf4c; }
+    .grid-1 { grid-area: 1 / 1 / 7 / 8; }
+    .form-login{ margin: 18vh 10%; }
+    .form-register{ margin: 11.5vh 10%; }
+    label, a{ font-size: large; }
+    input{ font-size: medium; padding: 2vh 3%; }
+    input[type="submit"]{ padding: 2vh 25%; }
+    .form-titulo{ font-size: 200%; }
+}
+@media only screen and (max-width: 380px) {
+    .form-login{ margin: 17vh 10%; }
+    .form-register{ margin: 8vh 10%; }
+    label, a{ font-size: medium; }
+    input{ font-size: x-small; padding: 2vh 3%; }
+    input[type="submit"]{ padding: 2vh 25%; }
+    .form-titulo{ font-size: 150%; }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 600px) and (max-width: 1000px) {
+    .cuadrado-chico{ display: none; }
+    .cuadrado-mediano{ display: none; }
+    .cuadrado-grande{ display: none; }
+    .grid-1 { grid-area: 1 / 1 / 7 / 8; }
+    .form-login{ margin: 15vh 15%; }
+    .form-register{ margin: 5vh 15%; }
+    label, a{ font-size: xx-large; }
+    input{ font-size: x-large; padding: 2vh 3%; }
+    input[type="submit"]{ padding: 2vh 23%; }
+    .form-titulo{ font-size: 380%; }
+}
+@media only screen and (min-width: 800px) and (max-width: 1000px) {
+    .form-login{ margin: 17vh 15%; }
+    .form-register{ margin: 8.5vh 15%; }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 1000px) and (max-width: 1300px) {
+    .form-login{ margin: 17vh 12%; }
+    .form-register{ margin: 9vh 12%; }
+    label, a{ font-size: large; }
+    input{ font-size: medium; padding: 2vh 3%; }
+    .form-titulo{ font-size: 200%; }
+}
+
+/* Extra large devices (large laptops and desktops, 1500px and up) */
+@media only screen and (min-width: 1450px){
+    .form-login{ margin: 16vh 12%; }
+    .form-register{ margin: 6.5vh 12%; }
+}
+@media only screen and (min-width: 1600px){
+    .form-login{ margin: 17vh 12%; }
+    .form-register{ margin: 8vh 12%; }
+}
+@media only screen and (min-width: 1700px){
+    .form-login{ margin: 18vh 12%; }
+    .form-register{ margin: 9.5vh 12%; }
+}
+@media only screen and (min-width: 1800px){
+    .form-register{ margin: 11vh 12%; }
+}
+
+/* Extra large devices (extra large laptops and desktops, 1900px and up) */
+@media only screen and (min-width: 1900px) {
+    .form-login{ margin: 14vh 12%; }
+    .form-register{ margin: 3vh 12%; }
+    label, a{ font-size: xx-large; }
+    input{ font-size: x-large; padding: 2vh 3%; }
+    .form-titulo{ font-size: 350%; }
 }
