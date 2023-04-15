@@ -294,7 +294,7 @@ input[type="submit"]:active{
     .form-login{ margin: 17vh 12%; }
     .form-register{ margin: 9vh 12%; }
     label, a{ font-size: large; }
-    input{ font-size: medium; padding: 2vh 3%; }
+    input{ font-size: medium; padding: 2vh 10%; }
     .form-titulo{ font-size: 200%; }
 }
 

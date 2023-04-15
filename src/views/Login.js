@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
+import ReactDOM from 'react-dom/client';
 import { Link } from 'react-router-dom';
 import '../styles/GlobalStyle.css'
 
@@ -12,19 +13,84 @@ import '../styles/GlobalStyle.css'
 */
 
 class Login extends Component {
-    // state = {  }
+    constructor(props) {
+        super(props);
+        this.state = {
+          correo: "",
+          contrasena: ""
+        };
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleCorreoChange = this.handleCorreoChange.bind(this);
+        this.handleContrasenaChange = this.handleContrasenaChange.bind(this);
+    }
+
+    handleSubmit(event) {
+        event.preventDefault(); // Evita que la página se recargue al enviar el formulario
+
+        var autentificacion = false;
+
+        const raw = {
+            correo: this.state.correo,
+            password: this.state.contrasena
+        };
+
+        var requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(raw),
+            redirect: 'follow'
+        };
+
+        function fetchData() {
+            return new Promise((resolve, reject) => {
+                fetch("https://api-arquitecturas-ti.vercel.app/api/auth/login/", requestOptions)
+                    .then(response => {
+                        if (response.ok) {
+                            autentificacion = true;
+                            return response.text();
+                        } else {
+                            throw new Error('La solicitud Fetch no se realizó correctamente');
+                        }
+                    })
+                    .then(result => {
+                        console.log("Resultado: " + result)
+                        resolve(autentificacion);
+                    })
+                    .catch(error => console.log('error', error));
+            });
+        }
+
+        // Llamada a la función fetchData
+        fetchData().then(autentificacion => {
+            console.log('Autentificacion:', autentificacion);
+            // ---------------------------------- aqui
+        }).catch(error => {
+            console.error('Error en fetchData:', error);
+        });
+    }
+    
+    handleCorreoChange(event) {
+        this.setState({ correo: event.target.value });
+    }
+
+    handleContrasenaChange(event) {
+        this.setState({ contrasena: event.target.value });
+    }
+
     render() { 
         return (
             <div className="grid">
                 <div className="grid-1">
-                    <form action="" method="POST" className="form-login">
+                    <form className="form-login" onSubmit={this.handleSubmit}>
                         <label className="form-titulo">¡Bienvenida/o!</label><br></br>
 
                         <label for="correo_electronico" className="form-label">Correo Electrónico:</label><br></br>
-                        <input type="email" id="correo_electronico" name="correo_electronico" placeholder="Correo Electrónico"></input><br></br>
+                        <input type="email" id="correo_electronico" name="correo_electronico" placeholder="Correo Electrónico" value={this.state.correo} onChange={this.handleCorreoChange} ></input><br></br>
 
                         <label for="contrasena" className="form-label">Contraseña:</label><br></br>
-                        <input type="password" id="contrasena" name="contrasena" placeholder="Contraseña"></input><br></br>
+                        <input type="password" id="contrasena" name="contrasena" placeholder="Contraseña"  value={this.state.contrasena} onChange={this.handleContrasenaChange} ></input><br></br>
 
                         <Link to="/register" className="form-link">
                             <a>No tienes cuenta, ¡Registrate!</a><br></br>
