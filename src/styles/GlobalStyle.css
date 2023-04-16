@@ -242,6 +242,67 @@ input[type="submit"]:active{
     margin-left: 2vw;
 }
 
+/* Página Principal y Home */
+.grid-home {
+    height: 100vh;
+    width: 100vw;
+    display: grid;
+    grid-template-columns: 0.5fr repeat(4, 1fr);
+    grid-template-rows: 0.4fr repeat(4, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+}
+
+.grid-home-1 { 
+    grid-area: 1 / 1 / 2 / 6; 
+    background-color: #007034;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.grid-home-2 { grid-area: 2 / 1 / 6 / 2; background-color: #37A943; }
+.grid-home-3 { grid-area: 2 / 2 / 6 / 6; }
+
+.titulo-examen{
+    width: 100%;
+    font-size: xx-large;
+    font-weight: 600;
+    padding: 2.5% 0 1.5% 0;
+}
+.titulo-usuario{
+    width: 100%;
+    font-size: x-large;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+}
+.examen-card{
+    width: 82%;
+    background-color: #DDDDDD;
+    color: #000;
+    box-shadow: 10px 10px 10px rgba(0.0, 0.0, 0.0, 0.2);
+    padding: 3% 4%;
+    margin: 0 5% 2% 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    font-size: x-large;
+    border-radius: 10px;
+}
+.examen-button{
+    width: 10%;
+    background-color: #8DBF4C;
+    color: #fff;
+    padding: 1% 0;
+    margin: 0;
+    font-size: large;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 10px;
+}
+
 /* Media Queries */
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {

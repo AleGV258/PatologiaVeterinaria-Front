@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/GlobalStyle.css'
 
 /* 
@@ -11,66 +11,123 @@ import '../styles/GlobalStyle.css'
         - García Vargas Michell Alejandro - 259663
 */
 
-class Register extends Component {
-    // state = {  }
-    render() { 
-        return (
-            <div className="grid">
-                <div className="grid-1">
-                    <form action="" method="POST" className="form-register">
-                        <label className="form-titulo">¡Registrate!</label><br></br>
+function Register() {
+    const [usuario, setUsuario] = useState("");
+    const [correo, setCorreo] = useState("");
+    const [contrasena, setContrasena] = useState("");
+    const [contrasenaRepetir, setContrasenaRepetir] = useState("");
+    const navigate = useNavigate();
 
-                        <label for="correo_electronico" className="form-label">Correo Electrónico:</label><br></br>
-                        <input type="email" id="correo_electronico" name="correo_electronico" placeholder="Correo Electrónico" className="form-register-input" required></input><br></br>
+    const handleSubmit = (event) => {
+        event.preventDefault(); // Evita que la página se recargue al enviar el formulario
 
-                        <label for="usuario" className="form-label">Nombre de Usuario:</label><br></br>
-                        <input type="text" id="usuario" name="usuario" placeholder="Nombre de Usuario" className="form-register-input" required></input><br></br>
+        const raw = {
+            nombre: usuario,
+            correo: correo,
+            password: contrasena,
+            rol: "USER_ROLE"
+        };
 
-                        <label for="contrasena" className="form-label">Contraseña:</label><br></br>
-                        <input type="password" id="contrasena" name="contrasena" placeholder="Contraseña" className="form-register-input" required></input><br></br>
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(raw),
+            redirect: 'follow'
+        };
 
-                        <label for="contrasena_repetir" className="form-label">Repetir Contraseña:</label><br></br>
-                        <input type="password" id="contrasena_repetir" name="contrasena_repetir" placeholder="Repetir Contraseña" className="form-register-input" required></input><br></br>
+        if(contrasenaRepetir == contrasena){
+            fetch("https://api-arquitecturas-ti.vercel.app/api/users/", requestOptions)
+                .then(response => {
+                    if (response.ok) {
+                        alert("Usuario registrado correctamente, ¡Inicia Sesión!")
+                        navigate("/login");
+                        return response.text();
+                    } else {
+                        alert("Usuario no registrado. ¡Intenta Nuevamente!")
+                        throw new Error('La solicitud Fetch no se realizó correctamente');
+                    }
+                })
+                .then(result => console.log("Resultado: " + result))
+                .catch(error => console.log('error', error));
+        }else{
+            alert("Las contraseñas no coinciden. ¡Intenta Nuevamente!")
+        }
+    }
+    
+    const handleUsuarioChange = (event) => {
+        setUsuario(event.target.value);
+    };
 
-                        <Link to="/login" className="form-link">
-                            <a className="form-link">Ya tienes cuenta, ¡Inicia Sesión!</a><br></br>
-                        </Link>
+    const handleCorreoChange = (event) => {
+        setCorreo(event.target.value);
+    };
 
-                        <input type="submit" value="Registrar"></input><br></br>
-                    </form>
+    const handleContrasenaChange = (event) => {
+        setContrasena(event.target.value);
+    };
 
-                    <div className="cuadrado-grande cuad-9"></div>
-                    <div className="cuadrado-mediano cuad-10"></div>
-                    <div className="cuadrado-grande cuad-11"></div>
-                    <div className="cuadrado-chico cuad-12"></div>
-                    <div className="cuadrado-mediano cuad-13"></div>
-                    <div className="cuadrado-mediano cuad-14"></div>
-                    <div className="cuadrado-chico cuad-15"></div>
-                    <div className="cuadrado-grande cuad-16"></div>
+    const handleContrasenaRepetirChange = (event) => {
+        setContrasenaRepetir(event.target.value);
+    };
+
+    return (
+        <div className="grid">
+            <div className="grid-1">
+                <form className="form-register" onSubmit={handleSubmit}>
+                    <label className="form-titulo">¡Registrate!</label><br></br>
+
+                    <label for="correo_electronico" className="form-label">Correo Electrónico:</label><br></br>
+                    <input type="email" id="correo_electronico" name="correo_electronico" placeholder="Correo Electrónico" className="form-register-input" required value={correo} onChange={handleCorreoChange} ></input><br></br>
+
+                    <label for="usuario" className="form-label">Nombre de Usuario:</label><br></br>
+                    <input type="text" id="usuario" name="usuario" placeholder="Nombre de Usuario" className="form-register-input" required value={usuario} onChange={handleUsuarioChange} ></input><br></br>
+
+                    <label for="contrasena" className="form-label">Contraseña:</label><br></br>
+                    <input type="password" id="contrasena" name="contrasena" placeholder="Contraseña" className="form-register-input" required  value={contrasena} onChange={handleContrasenaChange} ></input><br></br>
+
+                    <label for="contrasena_repetir" className="form-label">Repetir Contraseña:</label><br></br>
+                    <input type="password" id="contrasena_repetir" name="contrasena_repetir" placeholder="Repetir Contraseña" className="form-register-input" required value={contrasenaRepetir} onChange={handleContrasenaRepetirChange} ></input><br></br>
+
+                    <Link to="/login" className="form-link">
+                        <a className="form-link">Ya tienes cuenta, ¡Inicia Sesión!</a><br></br>
+                    </Link>
+
+                    <input type="submit" value="Registrar"></input><br></br>
+                </form>
+
+                <div className="cuadrado-grande cuad-9"></div>
+                <div className="cuadrado-mediano cuad-10"></div>
+                <div className="cuadrado-grande cuad-11"></div>
+                <div className="cuadrado-chico cuad-12"></div>
+                <div className="cuadrado-mediano cuad-13"></div>
+                <div className="cuadrado-mediano cuad-14"></div>
+                <div className="cuadrado-chico cuad-15"></div>
+                <div className="cuadrado-grande cuad-16"></div>
+            </div>
+            <div className="grid-2">
+                <div className="triangulo-superior tri-sup-grande">
                 </div>
-                <div className="grid-2">
-                    <div class="triangulo-superior tri-sup-grande">
-                    </div>
-                    <div class="triangulo-superior tri-sup-mediano">
-                    </div>
-                    <div class="triangulo-superior tri-sup-chico">
-                    </div>
+                <div className="triangulo-superior tri-sup-mediano">
                 </div>
-                <div className="grid-3"></div>
-                <div className="grid-4"></div>
-                <div className="grid-5"></div>
-                <div className="grid-6"></div>
-                <div className="grid-7">
-                    <div class="triangulo-inferior tri-inf-grande">
-                    </div>
-                    <div class="triangulo-inferior tri-inf-mediano">
-                    </div>
-                    <div class="triangulo-inferior tri-inf-chico">
-                    </div>
+                <div className="triangulo-superior tri-sup-chico">
                 </div>
             </div>
-        );
-    }
+            <div className="grid-3"></div>
+            <div className="grid-4"></div>
+            <div className="grid-5"></div>
+            <div className="grid-6"></div>
+            <div className="grid-7">
+                <div className="triangulo-inferior tri-inf-grande">
+                </div>
+                <div className="triangulo-inferior tri-inf-mediano">
+                </div>
+                <div className="triangulo-inferior tri-inf-chico">
+                </div>
+            </div>
+        </div>
+    );
 }
  
 export default Register;

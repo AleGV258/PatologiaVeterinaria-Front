@@ -1,6 +1,5 @@
-import React, { Component, useState } from 'react';
-import ReactDOM from 'react-dom/client';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/GlobalStyle.css'
 
 /* 
@@ -12,29 +11,28 @@ import '../styles/GlobalStyle.css'
         - García Vargas Michell Alejandro - 259663
 */
 
-class Login extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-          correo: "",
-          contrasena: ""
-        };
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleCorreoChange = this.handleCorreoChange.bind(this);
-        this.handleContrasenaChange = this.handleContrasenaChange.bind(this);
-    }
+function Login() {
+    const [correo, setCorreo] = useState("");
+    const [contrasena, setContrasena] = useState("");
+    const [autentificacion, setAutentificacion] = useState(false);
+    const navigate = useNavigate();
 
-    handleSubmit(event) {
+    useEffect(() => {
+        const autentificacionGuardada = localStorage.getItem("autentificacion");
+        if (autentificacionGuardada) {
+            setAutentificacion(autentificacionGuardada);
+        }
+    }, []);
+
+    const handleSubmit = (event) => {
         event.preventDefault(); // Evita que la página se recargue al enviar el formulario
 
-        var autentificacion = false;
-
         const raw = {
-            correo: this.state.correo,
-            password: this.state.contrasena
+            correo: correo,
+            password: contrasena
         };
 
-        var requestOptions = {
+        const requestOptions = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -43,95 +41,95 @@ class Login extends Component {
             redirect: 'follow'
         };
 
-        function fetchData() {
-            return new Promise((resolve, reject) => {
-                fetch("https://api-arquitecturas-ti.vercel.app/api/auth/login/", requestOptions)
-                    .then(response => {
-                        if (response.ok) {
-                            autentificacion = true;
-                            return response.text();
-                        } else {
-                            throw new Error('La solicitud Fetch no se realizó correctamente');
-                        }
-                    })
-                    .then(result => {
-                        console.log("Resultado: " + result)
-                        resolve(autentificacion);
-                    })
-                    .catch(error => console.log('error', error));
-            });
-        }
-
-        // Llamada a la función fetchData
-        fetchData().then(autentificacion => {
-            console.log('Autentificacion:', autentificacion);
-            // ---------------------------------- aqui
-        }).catch(error => {
-            console.error('Error en fetchData:', error);
-        });
+        fetch("https://api-arquitecturas-ti.vercel.app/api/auth/login/", requestOptions)
+        .then(response => {
+            if (response.ok) {
+                setAutentificacion(true);
+                return response.json();
+            } else {
+                alert("El usuario y la contraseña no coinciden. ¡Intenta Nuevamente!")
+                throw new Error('La solicitud Fetch no se realizó correctamente');
+            }
+        })
+        .then(result => {
+            // console.log("Resultado: " + JSON.stringify(result))
+            var user = result.user.nombre
+            setCorreo(result.user.correo)
+            return user
+        }).then(user => {
+            localStorage.setItem("autentificacion", autentificacion);
+            localStorage.setItem("usuario", user);
+            localStorage.setItem("correo", correo);
+            return user
+        })
+        .then(() => {
+            navigate("/home");
+        })
+        .catch(error => console.log('error', error));
     }
     
-    handleCorreoChange(event) {
-        this.setState({ correo: event.target.value });
-    }
+    const handleCorreoChange = (event) => {
+        setCorreo(event.target.value);
+    };
 
-    handleContrasenaChange(event) {
-        this.setState({ contrasena: event.target.value });
-    }
+    const handleContrasenaChange = (event) => {
+        setContrasena(event.target.value);
+    };
 
-    render() { 
-        return (
-            <div className="grid">
-                <div className="grid-1">
-                    <form className="form-login" onSubmit={this.handleSubmit}>
-                        <label className="form-titulo">¡Bienvenida/o!</label><br></br>
+    // useEffect(() => {
+    //     console.log("autentificacion actualizada:", autentificacion);
+    // }, [autentificacion]);
 
-                        <label for="correo_electronico" className="form-label">Correo Electrónico:</label><br></br>
-                        <input type="email" id="correo_electronico" name="correo_electronico" placeholder="Correo Electrónico" value={this.state.correo} onChange={this.handleCorreoChange} ></input><br></br>
+    return (
+        <div className="grid">
+            <div className="grid-1">
+                <form className="form-login" onSubmit={handleSubmit}>
+                    <label className="form-titulo">¡Bienvenida/o!</label><br></br>
 
-                        <label for="contrasena" className="form-label">Contraseña:</label><br></br>
-                        <input type="password" id="contrasena" name="contrasena" placeholder="Contraseña"  value={this.state.contrasena} onChange={this.handleContrasenaChange} ></input><br></br>
+                    <label for="correo_electronico" className="form-label">Correo Electrónico:</label><br></br>
+                    <input type="email" id="correo_electronico" name="correo_electronico" placeholder="Correo Electrónico" value={correo} onChange={handleCorreoChange} ></input><br></br>
 
-                        <Link to="/register" className="form-link">
-                            <a>No tienes cuenta, ¡Registrate!</a><br></br>
-                        </Link>
+                    <label for="contrasena" className="form-label">Contraseña:</label><br></br>
+                    <input type="password" id="contrasena" name="contrasena" placeholder="Contraseña" value={contrasena} onChange={handleContrasenaChange} ></input><br></br>
 
-                        <input type="submit" value="Ingresar"></input><br></br>
-                    </form>
-                    
+                    <Link to="/register" className="form-link">
+                        <a>No tienes cuenta, ¡Registrate!</a><br></br>
+                    </Link>
 
-                    <div className="cuadrado-grande cuad-1"></div>
-                    <div className="cuadrado-mediano cuad-2"></div>
-                    <div className="cuadrado-mediano cuad-3"></div>
-                    <div className="cuadrado-chico cuad-4"></div>
-                    <div className="cuadrado-grande cuad-5"></div>
-                    <div className="cuadrado-grande cuad-6"></div>
-                    <div className="cuadrado-mediano cuad-7"></div>
-                    <div className="cuadrado-chico cuad-8"></div>
+                    <input type="submit" value="Ingresar"></input><br></br>
+                </form>
+                
+                <div className="cuadrado-grande cuad-1"></div>
+                <div className="cuadrado-mediano cuad-2"></div>
+                <div className="cuadrado-mediano cuad-3"></div>
+                <div className="cuadrado-chico cuad-4"></div>
+                <div className="cuadrado-grande cuad-5"></div>
+                <div className="cuadrado-grande cuad-6"></div>
+                <div className="cuadrado-mediano cuad-7"></div>
+                <div className="cuadrado-chico cuad-8"></div>
+            </div>
+            <div className="grid-2">
+                <div className="triangulo-superior tri-sup-grande">
                 </div>
-                <div className="grid-2">
-                    <div class="triangulo-superior tri-sup-grande">
-                    </div>
-                    <div class="triangulo-superior tri-sup-mediano">
-                    </div>
-                    <div class="triangulo-superior tri-sup-chico">
-                    </div>
+                <div className="triangulo-superior tri-sup-mediano">
                 </div>
-                <div className="grid-3"></div>
-                <div className="grid-4"></div>
-                <div className="grid-5"></div>
-                <div className="grid-6"></div>
-                <div className="grid-7">
-                    <div class="triangulo-inferior tri-inf-grande">
-                    </div>
-                    <div class="triangulo-inferior tri-inf-mediano">
-                    </div>
-                    <div class="triangulo-inferior tri-inf-chico">
-                    </div>
+                <div className="triangulo-superior tri-sup-chico">
                 </div>
             </div>
-        );
-    }
+            <div className="grid-3"></div>
+            <div className="grid-4"></div>
+            <div className="grid-5"></div>
+            <div className="grid-6"></div>
+            <div className="grid-7">
+                <div className="triangulo-inferior tri-inf-grande">
+                </div>
+                <div className="triangulo-inferior tri-inf-mediano">
+                </div>
+                <div className="triangulo-inferior tri-inf-chico">
+                </div>
+            </div>
+        </div>
+    );
 }
  
 export default Login;
