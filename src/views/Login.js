@@ -87,10 +87,10 @@ function Login() {
                     <label className="form-titulo">¡Bienvenida/o!</label><br></br>
 
                     <label for="correo_electronico" className="form-label">Correo Electrónico:</label><br></br>
-                    <input type="email" id="correo_electronico" name="correo_electronico" placeholder="Correo Electrónico" value={correo} onChange={handleCorreoChange} ></input><br></br>
+                    <input type="email" required id="correo_electronico" name="correo_electronico" placeholder="Correo Electrónico" value={correo} onChange={handleCorreoChange} ></input><br></br>
 
                     <label for="contrasena" className="form-label">Contraseña:</label><br></br>
-                    <input type="password" id="contrasena" name="contrasena" placeholder="Contraseña" value={contrasena} onChange={handleContrasenaChange} ></input><br></br>
+                    <input type="password" required id="contrasena" name="contrasena" placeholder="Contraseña" value={contrasena} onChange={handleContrasenaChange} ></input><br></br>
 
                     <Link to="/register" className="form-link">
                         <a>No tienes cuenta, ¡Registrate!</a><br></br>

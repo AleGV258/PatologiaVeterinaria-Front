@@ -252,7 +252,6 @@ input[type="submit"]:active{
     grid-column-gap: 0px;
     grid-row-gap: 0px;
 }
-
 .grid-home-1 { 
     grid-area: 1 / 1 / 2 / 6; 
     background-color: #007034;
@@ -260,7 +259,13 @@ input[type="submit"]:active{
     justify-content: center;
     align-items: center;
 }
-.grid-home-2 { grid-area: 2 / 1 / 6 / 2; background-color: #37A943; }
+.grid-home-2 { 
+    grid-area: 2 / 1 / 6 / 2; 
+    background-color: #37A943; 
+    display: flex;
+    justify-content: center;
+    align-items: end;
+}
 .grid-home-3 { grid-area: 2 / 2 / 6 / 6; }
 
 .titulo-examen{
@@ -290,6 +295,14 @@ input[type="submit"]:active{
     font-size: x-large;
     border-radius: 10px;
 }
+.examen-card:hover{
+    background-color: #8dbf4c;
+    color: #fff;
+    cursor: pointer;
+}
+.examen-card:active{
+    background-color: #000;
+}
 .examen-button{
     width: 10%;
     background-color: #8DBF4C;
@@ -302,10 +315,40 @@ input[type="submit"]:active{
     text-align: center;
     border-radius: 10px;
 }
+.examen-button:hover{
+    background-color: #007034;
+    color: #fff;
+    cursor: pointer;
+}
+.examen-button:active{
+    background-color: #DDDDDD;
+    color: #000;
+}
+.logout-button{
+    background-color: #DDDDDD;
+    color: #000;
+    box-shadow: 10px 10px 10px rgba(0.0, 0.0, 0.0, 0.2);
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    font-size: medium;
+    font-weight: 600;
+    padding: 6% 20%;
+    margin: 15% 0;
+}
+.logout-button:hover{
+    background-color: #8dbf4c;
+    color: #fff;
+    cursor: pointer;
+}
+.logout-button:active{
+    background-color: #000;
+}
 
 /* Media Queries */
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
+    /* Login y Register */
     .cuadrado-chico{ display: none; }
     .cuadrado-mediano{ display: none; }
     .cuadrado-grande{ display: none; }
@@ -322,18 +365,46 @@ input[type="submit"]:active{
     input{ font-size: medium; padding: 2vh 3%; }
     input[type="submit"]{ padding: 2vh 25%; }
     .form-titulo{ font-size: 200%; }
+
+    /* Home */
+    .grid-home {
+        grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: 0.5fr repeat(3, 1fr) 0.4fr;
+    }
+    .grid-home-1 { grid-area: 1 / 1 / 2 / 6; }
+    .grid-home-2 { grid-area: 5 / 1 / 6 / 6; }
+    .grid-home-3 { grid-area: 2 / 1 / 5 / 6; }
+    .examen-card{ 
+        width: 80%; 
+        padding: 3% 5%; 
+        margin: 0 5% 5% 5%; 
+    }
+    .examen-button{ width: 20%; }
+    .logout-button{ 
+        font-size: medium; 
+        padding: 3% 15%; 
+        margin: 5% 0; 
+    }
+    .break-point{ display: none; }
 }
 @media only screen and (max-width: 380px) {
+    /* Login y Register */
     .form-login{ margin: 17vh 10%; }
     .form-register{ margin: 8vh 10%; }
     label, a{ font-size: medium; }
     input{ font-size: x-small; padding: 2vh 3%; }
     input[type="submit"]{ padding: 2vh 25%; }
     .form-titulo{ font-size: 150%; }
+
+    /* Home */
+    .examen-card{ font-size: large; }
+    .logout-button{ font-size: large; }
+    .titulo-usuario{ font-size: large; }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 600px) and (max-width: 1000px) {
+    /* Login y Register */
     .cuadrado-chico{ display: none; }
     .cuadrado-mediano{ display: none; }
     .cuadrado-grande{ display: none; }
@@ -344,6 +415,29 @@ input[type="submit"]:active{
     input{ font-size: x-large; padding: 2vh 3%; }
     input[type="submit"]{ padding: 2vh 23%; }
     .form-titulo{ font-size: 380%; }
+
+    /* Home */
+    .grid-home {
+        grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: 0.5fr repeat(3, 1fr) 0.4fr;
+    }
+    .grid-home-1 { grid-area: 1 / 1 / 2 / 6; }
+    .grid-home-2 { grid-area: 5 / 1 / 6 / 6; }
+    .grid-home-3 { grid-area: 2 / 1 / 5 / 6; }
+    .examen-card{ 
+        width: 80%; 
+        padding: 3% 5%; 
+        margin: 0 5% 5% 5%; 
+        font-size: xx-large;
+    }
+    .examen-button{ width: 20%; }
+    .logout-button{ 
+        font-size: xx-large; 
+        padding: 3% 15%; 
+        margin: 4% 0; 
+    }
+    .break-point{ display: none; }
+    .titulo-usuario{ font-size: xx-large; }
 }
 @media only screen and (min-width: 800px) and (max-width: 1000px) {
     .form-login{ margin: 17vh 15%; }
@@ -365,8 +459,14 @@ input[type="submit"]:active{
     .form-register{ margin: 6.5vh 12%; }
 }
 @media only screen and (min-width: 1600px){
+    /* Login y Register */
     .form-login{ margin: 17vh 12%; }
     .form-register{ margin: 8vh 12%; }
+
+    /* Home */
+    .examen-card{ font-size: xx-large; }
+    .logout-button{ font-size: x-large; }
+    .titulo-usuario{ font-size: x-large; }
 }
 @media only screen and (min-width: 1700px){
     .form-login{ margin: 18vh 12%; }

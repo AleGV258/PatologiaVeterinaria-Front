@@ -15,20 +15,30 @@ function Home() {
     const [usuario, setUsuario] = useState(localStorage.getItem("usuario"));
     const navigate = useNavigate();
 
+    const logoutUser = () =>{
+        localStorage.clear();
+        navigate("/login");
+    }
+
     return (
         <div className="grid-home">
             <div className="grid-home-1">
                 <label className="titulo-usuario">¡Bienvenido {usuario}!</label>
             </div>
-            <div className="grid-home-2"></div>
+            <div className="grid-home-2">
+                <button onClick={logoutUser} className="logout-button">Cerrar <br className="break-point"></br>Sesión</button>
+            </div>
             <div className="grid-home-3">
                 <label className="titulo-examen">Exámenes Clínicos</label>
+
                 <Link to="#" className="examen-card">Examen 1
                     <Link to="#" className="examen-button">Ir</Link>
                 </Link>
+
                 <Link to="#" className="examen-card">Examen 2
                     <Link to="#" className="examen-button">Ir</Link>
                 </Link>
+
                 <Link to="#" className="examen-card">Examen 3
                     <Link to="#" className="examen-button">Ir</Link>
                 </Link>
