@@ -20,6 +20,8 @@ function Home() {
         navigate("/login");
     }
 
+    
+
     return (
         <div className="grid-home">
             <div className="grid-home-1">
@@ -29,19 +31,42 @@ function Home() {
                 <button onClick={logoutUser} className="logout-button">Cerrar <br className="break-point"></br>Sesión</button>
             </div>
             <div className="grid-home-3">
-                <label className="titulo-examen">Exámenes Clínicos</label>
+                <label className="titulo-examen">Mis Mascotas:</label>
 
-                <Link to="#" className="examen-card">Examen 1
-                    <Link to="#" className="examen-button">Ir</Link>
+                <Link to="#" className="examen-card">
+                    <img src='../imgs/Mascota.png' className='examen-image'></img>
+                    <label className='examen-titulo-examen'>Examen 1</label>
+                    <label className='examen-titulo-dato'>Raza: <br></br><br></br>Edad: </label>
+                    <Link to="#" className="examen-button-info">+ Info</Link>
+                    <Link to="#" className="examen-button-examen">Examenes</Link>
                 </Link>
 
-                <Link to="#" className="examen-card">Examen 2
-                    <Link to="#" className="examen-button">Ir</Link>
+                <Link to="#" className="examen-card">
+                    <img src='../imgs/Mascota.png' className='examen-image'></img>
+                    <label className='examen-titulo-examen'>Examen 2</label>
+                    <label className='examen-titulo-dato'>Raza: <br></br><br></br>Edad: </label>
+                    <Link to="#" className="examen-button-info">+ Info</Link>
+                    <Link to="#" className="examen-button-examen">Examenes</Link>
                 </Link>
 
-                <Link to="#" className="examen-card">Examen 3
-                    <Link to="#" className="examen-button">Ir</Link>
+                <Link to="#" className="examen-card">
+                    <img src='../imgs/Mascota.png' className='examen-image'></img>
+                    <label className='examen-titulo-examen'>Examen 3</label>
+                    <label className='examen-titulo-dato'>Raza: <br></br><br></br>Edad: </label>
+                    <Link to="#" className="examen-button-info">+ Info</Link>
+                    <Link to="#" className="examen-button-examen">Examenes</Link>
                 </Link>
+
+                <Link to="#" className="examen-card">
+                    <img src='../imgs/Mascota.png' className='examen-image'></img>
+                    <label className='examen-titulo-examen'>Examen 3</label>
+                    <label className='examen-titulo-dato'>Raza: <br></br><br></br>Edad: </label>
+                    <Link to="#" className="examen-button-info">+ Info</Link>
+                    <Link to="#" className="examen-button-examen">Examenes</Link>
+                </Link>
+
+                <br></br>
+                
             </div>
         </div>
     );

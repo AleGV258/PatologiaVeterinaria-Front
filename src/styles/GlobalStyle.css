@@ -12,6 +12,7 @@
 body{
     font-family: 'Jost', sans-serif;
     overflow-y: hidden;
+    overflow-x: hidden;
 }
 .grid {
     height: 100vh;
@@ -247,26 +248,36 @@ input[type="submit"]:active{
     height: 100vh;
     width: 100vw;
     display: grid;
-    grid-template-columns: 0.5fr repeat(4, 1fr);
+    grid-template-columns: 0.6fr repeat(4, 1fr);
     grid-template-rows: 0.4fr repeat(4, 1fr);
     grid-column-gap: 0px;
     grid-row-gap: 0px;
 }
 .grid-home-1 { 
-    grid-area: 1 / 1 / 2 / 6; 
+    grid-area: 1 / 1 / 2 / 5; 
+    width: 100vw;
+    height: 9vh;
     background-color: #007034;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: fixed;
+    z-index: 1;
 }
 .grid-home-2 { 
-    grid-area: 2 / 1 / 6 / 2; 
+    grid-area: 2 / 1 / 6 / 2;
+    width: 13vw;
+    height: 100vh;
     background-color: #37A943; 
     display: flex;
     justify-content: center;
     align-items: end;
+    position: fixed;
+    z-index: 0;
 }
-.grid-home-3 { grid-area: 2 / 2 / 6 / 6; }
+.grid-home-3 { 
+    grid-area: 2 / 2 / 6 / 6; 
+}
 
 .titulo-examen{
     width: 100%;
@@ -281,13 +292,21 @@ input[type="submit"]:active{
     color: #fff;
     margin: 0;
 }
+.examen-titulo-examen{
+    margin: auto 0 auto -10%;
+    font-size: x-large;
+}
+.examen-titulo-dato{
+    margin: auto 0;
+    font-size: large;
+}
 .examen-card{
     width: 82%;
     background-color: #DDDDDD;
     color: #000;
     box-shadow: 10px 10px 10px rgba(0.0, 0.0, 0.0, 0.2);
-    padding: 3% 4%;
-    margin: 0 5% 2% 5%;
+    padding: 2% 4%;
+    margin: 0 5% 3% 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -301,28 +320,47 @@ input[type="submit"]:active{
     cursor: pointer;
 }
 .examen-card:active{
-    background-color: #000;
+    background-color: #272c33;
 }
-.examen-button{
-    width: 10%;
-    background-color: #8DBF4C;
+.examen-button-info{
+    width: 15%;
+    background-color: #00939d;
     color: #fff;
     padding: 1% 0;
-    margin: 0;
+    margin: auto 0;
     font-size: large;
     font-weight: 600;
     text-decoration: none;
     text-align: center;
     border-radius: 10px;
 }
-.examen-button:hover{
+.examen-button-examen{
+    width: 15%;
+    background-color: #37a943;
+    color: #fff;
+    padding: 1% 0;
+    margin: auto 0 auto -10%;
+    font-size: large;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 10px;
+}
+.examen-button-info:hover,
+.examen-button-examen:hover{
     background-color: #007034;
     color: #fff;
     cursor: pointer;
 }
-.examen-button:active{
+.examen-button-info:active,
+.examen-button-examen:active{
     background-color: #DDDDDD;
     color: #000;
+}
+.examen-image{
+    width: 10%;
+    border-radius: 100px;
+    filter: grayscale();
 }
 .logout-button{
     background-color: #DDDDDD;
@@ -346,8 +384,30 @@ input[type="submit"]:active{
 }
 
 /* Media Queries */
+@media only screen and (max-width: 400px) {
+    /* Login y Register */
+    .form-login{ margin: 17vh 10%; }
+    .form-register{ margin: 8vh 10%; }
+    label, a{ font-size: medium; }
+    input{ font-size: x-small; padding: 2vh 3%; }
+    input[type="submit"]{ padding: 2vh 25%; }
+    .form-titulo{ font-size: 150%; }
+
+    /* Home */
+    .examen-card{ font-size: large; }
+    .logout-button{ font-size: large; }
+    .titulo-usuario{ font-size: large; }
+}
+
+@media only screen and (min-width: 500px) {
+    /* Login y Register */
+    .form-login{ margin: 14vh 15%; }
+    .form-register{ margin: 3vh 15%; }
+    .form-titulo{ font-size: 150%; }
+}
+
 /* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 700px) {
     /* Login y Register */
     .cuadrado-chico{ display: none; }
     .cuadrado-mediano{ display: none; }
@@ -359,8 +419,8 @@ input[type="submit"]:active{
     .tri-inf-mediano{ border-top: 100px solid transparent; border-right: 100px solid #37a943; }
     .tri-inf-grande{ border-top: 150px solid transparent; border-right: 150px solid #8dbf4c; }
     .grid-1 { grid-area: 1 / 1 / 7 / 8; }
-    .form-login{ margin: 18vh 10%; }
-    .form-register{ margin: 11.5vh 10%; }
+    .form-login{ margin: 15vh 7%; }
+    .form-register{ margin: 2vh 7%; }
     label, a{ font-size: large; }
     input{ font-size: medium; padding: 2vh 3%; }
     input[type="submit"]{ padding: 2vh 25%; }
@@ -387,34 +447,20 @@ input[type="submit"]:active{
     }
     .break-point{ display: none; }
 }
-@media only screen and (max-width: 380px) {
-    /* Login y Register */
-    .form-login{ margin: 17vh 10%; }
-    .form-register{ margin: 8vh 10%; }
-    label, a{ font-size: medium; }
-    input{ font-size: x-small; padding: 2vh 3%; }
-    input[type="submit"]{ padding: 2vh 25%; }
-    .form-titulo{ font-size: 150%; }
-
-    /* Home */
-    .examen-card{ font-size: large; }
-    .logout-button{ font-size: large; }
-    .titulo-usuario{ font-size: large; }
-}
 
 /* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 600px) and (max-width: 1000px) {
+@media only screen and (min-width: 701px) and (max-width: 1000px) {
     /* Login y Register */
     .cuadrado-chico{ display: none; }
     .cuadrado-mediano{ display: none; }
     .cuadrado-grande{ display: none; }
     .grid-1 { grid-area: 1 / 1 / 7 / 8; }
-    .form-login{ margin: 15vh 15%; }
-    .form-register{ margin: 5vh 15%; }
-    label, a{ font-size: xx-large; }
-    input{ font-size: x-large; padding: 2vh 3%; }
+    .form-login{ margin: 11.5vh 20%; }
+    .form-register{ margin: 1.5vh 20%; }
+    label, a{ font-size: large; }
+    input{ font-size: medium; padding: 2vh 3%; }
     input[type="submit"]{ padding: 2vh 23%; }
-    .form-titulo{ font-size: 380%; }
+    .form-titulo{ font-size: 200%; }
 
     /* Home */
     .grid-home {
@@ -440,25 +486,41 @@ input[type="submit"]:active{
     .titulo-usuario{ font-size: xx-large; }
 }
 @media only screen and (min-width: 800px) and (max-width: 1000px) {
-    .form-login{ margin: 17vh 15%; }
-    .form-register{ margin: 8.5vh 15%; }
+    .form-login{ margin: 14vh 25%; }
+    .form-register{ margin: 2vh 25%; }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 1000px) and (max-width: 1300px) {
+@media only screen and (min-width: 1001px) and (max-width: 1200px) {
+    .form-login{ margin: 13vh 12%; }
+    .form-register{ margin: 1.5vh 12%; }
+    label, a{ font-size: large; }
+    input{ font-size: medium; padding: 2vh 10%; }
+    .form-titulo{ font-size: 200%; }
+}
+
+@media only screen and (min-width: 1201px) and (max-width: 1300px) {
+    .form-login{ margin: 16vh 12%; }
+    .form-register{ margin: 6vh 12%; }
+    label, a{ font-size: large; }
+    input{ font-size: medium; padding: 2vh 10%; }
+    .form-titulo{ font-size: 200%; }
+}
+
+@media only screen and (min-width: 1301px) and (max-width: 1450px) {
     .form-login{ margin: 17vh 12%; }
-    .form-register{ margin: 9vh 12%; }
+    .form-register{ margin: 8vh 12%; }
     label, a{ font-size: large; }
     input{ font-size: medium; padding: 2vh 10%; }
     .form-titulo{ font-size: 200%; }
 }
 
 /* Extra large devices (large laptops and desktops, 1500px and up) */
-@media only screen and (min-width: 1450px){
+@media only screen and (min-width: 1451px) and (max-width: 1600px) {
     .form-login{ margin: 16vh 12%; }
-    .form-register{ margin: 6.5vh 12%; }
+    .form-register{ margin: 8vh 12%; }
 }
-@media only screen and (min-width: 1600px){
+@media only screen and (min-width: 1601px) and (max-width: 1700px) {
     /* Login y Register */
     .form-login{ margin: 17vh 12%; }
     .form-register{ margin: 8vh 12%; }
@@ -468,19 +530,75 @@ input[type="submit"]:active{
     .logout-button{ font-size: x-large; }
     .titulo-usuario{ font-size: x-large; }
 }
-@media only screen and (min-width: 1700px){
+@media only screen and (min-width: 1701px) and (max-width: 1900px) {
     .form-login{ margin: 18vh 12%; }
     .form-register{ margin: 9.5vh 12%; }
 }
-@media only screen and (min-width: 1800px){
-    .form-register{ margin: 11vh 12%; }
-}
 
 /* Extra large devices (extra large laptops and desktops, 1900px and up) */
-@media only screen and (min-width: 1900px) {
-    .form-login{ margin: 14vh 12%; }
-    .form-register{ margin: 3vh 12%; }
-    label, a{ font-size: xx-large; }
-    input{ font-size: x-large; padding: 2vh 3%; }
-    .form-titulo{ font-size: 350%; }
+@media only screen and (min-width: 1901px) {
+    .form-login{ margin: 15.5vh 15%; }
+    .form-register{ margin: 6vh 15%; }
+    label, a{ font-size: x-large; }
+    input{ font-size: larger; padding: 2vh 3%; }
+    .form-titulo{ font-size: 300%; }
+}
+
+/* Animate Style */
+.carga {
+    background-color: rgba(0.0, 0.0, 0.0, 0.6);
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    z-index: 9;
+    display: none;
+}
+.carga-texto{
+    color: #fff;
+    position: absolute;
+    font-size: x-large;
+    left: 45.5vw;
+    top: 65vh;
+}
+.pulsar {
+    --uib-size: 15vw;
+    --uib-speed: 1.5s;
+    --uib-color: #37a943;
+
+    position: absolute;
+    left: 42.5vw;
+    top: 32vh;
+    z-index: 10;
+    height: var(--uib-size);
+    width: var(--uib-size);
+}
+
+.pulsar::before,
+.pulsar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    background-color: var(--uib-color);
+    animation: pulse var(--uib-speed) ease-in-out infinite;
+    transform: scale(0);
+}
+
+.pulsar::after {
+    animation-delay: calc(var(--uib-speed) / -2);
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1);
+        opacity: 0.25;
+    }
 }

@@ -12,6 +12,7 @@ import '../styles/GlobalStyle.css'
 */
 
 function Register() {
+    const [cargando, setCargando] = useState(false);
     const [usuario, setUsuario] = useState("");
     const [correo, setCorreo] = useState("");
     const [contrasena, setContrasena] = useState("");
@@ -20,6 +21,7 @@ function Register() {
 
     const handleSubmit = (event) => {
         event.preventDefault(); // Evita que la página se recargue al enviar el formulario
+        setCargando(true);
 
         const raw = {
             nombre: usuario,
@@ -41,10 +43,12 @@ function Register() {
             fetch("https://api-arquitecturas-ti.vercel.app/api/users/", requestOptions)
                 .then(response => {
                     if (response.ok) {
+                        setCargando(false);
                         alert("Usuario registrado correctamente, ¡Inicia Sesión!")
                         navigate("/login");
                         return response.text();
                     } else {
+                        setCargando(false);
                         alert("Usuario no registrado. ¡Intenta Nuevamente!")
                         throw new Error('La solicitud Fetch no se realizó correctamente');
                     }
@@ -52,6 +56,7 @@ function Register() {
                 .then(result => console.log("Resultado: " + result))
                 .catch(error => console.log('error', error));
         }else{
+            setCargando(false);
             alert("Las contraseñas no coinciden. ¡Intenta Nuevamente!")
         }
     }
@@ -74,6 +79,10 @@ function Register() {
 
     return (
         <div className="grid">
+            <div className="carga" style={ cargando ? { display: "grid"} : {display: "none"}}>
+                <div className="pulsar"></div>
+                <label className="carga-texto">Registrando...</label>
+            </div>
             <div className="grid-1">
                 <form className="form-register" onSubmit={handleSubmit}>
                     <label className="form-titulo">¡Registrate!</label><br></br>

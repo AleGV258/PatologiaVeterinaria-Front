@@ -12,10 +12,12 @@ import '../styles/GlobalStyle.css'
 */
 
 function Login() {
+    const [cargando, setCargando] = useState(false);
     const [correo, setCorreo] = useState("");
     const [contrasena, setContrasena] = useState("");
     const [autentificacion, setAutentificacion] = useState(false);
     const navigate = useNavigate();
+    
 
     useEffect(() => {
         const autentificacionGuardada = localStorage.getItem("autentificacion");
@@ -26,6 +28,7 @@ function Login() {
 
     const handleSubmit = (event) => {
         event.preventDefault(); // Evita que la página se recargue al enviar el formulario
+        setCargando(true);
 
         const raw = {
             correo: correo,
@@ -47,6 +50,7 @@ function Login() {
                 setAutentificacion(true);
                 return response.json();
             } else {
+                setCargando(false);
                 alert("El usuario y la contraseña no coinciden. ¡Intenta Nuevamente!")
                 throw new Error('La solicitud Fetch no se realizó correctamente');
             }
@@ -63,6 +67,8 @@ function Login() {
             return user
         })
         .then(() => {
+            setCargando(false);
+            document.body.style.overflowY = "visible";
             navigate("/home");
         })
         .catch(error => console.log('error', error));
@@ -82,6 +88,10 @@ function Login() {
 
     return (
         <div className="grid">
+            <div className="carga" style={ cargando ? { display: "grid"} : {display: "none"}}>
+                <div className="pulsar"></div>
+                <label className="carga-texto">Conectando...</label>
+            </div>
             <div className="grid-1">
                 <form className="form-login" onSubmit={handleSubmit}>
                     <label className="form-titulo">¡Bienvenida/o!</label><br></br>
