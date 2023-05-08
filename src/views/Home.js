@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../styles/GlobalStyle.css'
 
 /* 
@@ -15,12 +15,32 @@ function Home() {
     const [usuario, setUsuario] = useState(localStorage.getItem("usuario"));
     const navigate = useNavigate();
 
-    const logoutUser = () =>{
+    document.body.style.overflowY = "visible";
+
+    const logoutUser = () => {
         localStorage.clear();
         navigate("/login");
     }
 
-    
+    const returnHome = () =>{
+        navigate("/home");
+    }
+
+    const petExamDetails = () => {
+        navigate("/pet-exam");
+    }
+
+    const petSpecificDetails = () => {
+        navigate("/pet-specific");
+    }
+
+    const addNewExam = () => {
+        navigate("/add-exam");
+    }
+
+    const addNewPet = () => {
+        navigate("/add-pet");
+    }
 
     return (
         <div className="grid-home">
@@ -28,42 +48,47 @@ function Home() {
                 <label className="titulo-usuario">¡Bienvenido {usuario}!</label>
             </div>
             <div className="grid-home-2">
+                <div>
+                    <button onClick={returnHome} className="moreOption-button-selected" title="Regresar Página Principal"><img src='../imgs/Home.png' className="moreOption-image"></img></button><br></br>
+                    <button onClick={addNewPet} className="moreOption-button" title="Agregar Nueva Mascota"><img src='../imgs/Agregar-Mascota.png' className="moreOption-image"></img></button><br></br>
+                    <button onClick={addNewExam} className="moreOption-button" title="Solicitar Nuevo Examen Clínico"><img src='../imgs/Solicitar-Examen.png' className="moreOption-image"></img></button>
+                </div>
                 <button onClick={logoutUser} className="logout-button">Cerrar <br className="break-point"></br>Sesión</button>
             </div>
             <div className="grid-home-3">
                 <label className="titulo-examen">Mis Mascotas:</label>
 
-                <Link to="#" className="examen-card">
-                    <img src='../imgs/Mascota.png' className='examen-image'></img>
-                    <label className='examen-titulo-examen'>Examen 1</label>
-                    <label className='examen-titulo-dato'>Raza: <br></br><br></br>Edad: </label>
-                    <Link to="#" className="examen-button-info">+ Info</Link>
-                    <Link to="#" className="examen-button-examen">Examenes</Link>
-                </Link>
+                <div className="mascota-card">
+                    <img src='../imgs/Mascota.png' className='mascota-image'></img>
+                    <label className='mascota-titulo-examen'>Mascota 1</label>
+                    <label className='mascota-titulo-dato'>Raza: <br></br><br></br>Edad: </label>
+                    <button onClick={petSpecificDetails} className="mascota-button-info">+ Info</button>
+                    <button onClick={petExamDetails} className="mascota-button-examen">Examenes</button>
+                </div>
 
-                <Link to="#" className="examen-card">
-                    <img src='../imgs/Mascota.png' className='examen-image'></img>
-                    <label className='examen-titulo-examen'>Examen 2</label>
-                    <label className='examen-titulo-dato'>Raza: <br></br><br></br>Edad: </label>
-                    <Link to="#" className="examen-button-info">+ Info</Link>
-                    <Link to="#" className="examen-button-examen">Examenes</Link>
-                </Link>
-
-                <Link to="#" className="examen-card">
-                    <img src='../imgs/Mascota.png' className='examen-image'></img>
-                    <label className='examen-titulo-examen'>Examen 3</label>
-                    <label className='examen-titulo-dato'>Raza: <br></br><br></br>Edad: </label>
-                    <Link to="#" className="examen-button-info">+ Info</Link>
-                    <Link to="#" className="examen-button-examen">Examenes</Link>
-                </Link>
-
-                <Link to="#" className="examen-card">
-                    <img src='../imgs/Mascota.png' className='examen-image'></img>
-                    <label className='examen-titulo-examen'>Examen 3</label>
-                    <label className='examen-titulo-dato'>Raza: <br></br><br></br>Edad: </label>
-                    <Link to="#" className="examen-button-info">+ Info</Link>
-                    <Link to="#" className="examen-button-examen">Examenes</Link>
-                </Link>
+                <div className="mascota-card">
+                    <img src='../imgs/Mascota.png' className='mascota-image'></img>
+                    <label className='mascota-titulo-examen'>Mascota 2</label>
+                    <label className='mascota-titulo-dato'>Raza: <br></br><br></br>Edad: </label>
+                    <button onClick={petSpecificDetails} className="mascota-button-info">+ Info</button>
+                    <button onClick={petExamDetails} className="mascota-button-examen">Examenes</button>
+                </div>
+                
+                <div className="mascota-card">
+                    <img src='../imgs/Mascota.png' className='mascota-image'></img>
+                    <label className='mascota-titulo-examen'>Mascota 3</label>
+                    <label className='mascota-titulo-dato'>Raza: <br></br><br></br>Edad: </label>
+                    <button onClick={petSpecificDetails} className="mascota-button-info">+ Info</button>
+                    <button onClick={petExamDetails} className="mascota-button-examen">Examenes</button>
+                </div>
+                
+                <div className="mascota-card">
+                    <img src='../imgs/Mascota.png' className='mascota-image'></img>
+                    <label className='mascota-titulo-examen'>Mascota 4</label>
+                    <label className='mascota-titulo-dato'>Raza: <br></br><br></br>Edad: </label>
+                    <button onClick={petSpecificDetails} className="mascota-button-info">+ Info</button>
+                    <button onClick={petExamDetails} className="mascota-button-examen">Examenes</button>
+                </div>
 
                 <br></br>
                 

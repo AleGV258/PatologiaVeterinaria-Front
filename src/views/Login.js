@@ -18,7 +18,6 @@ function Login() {
     const [autentificacion, setAutentificacion] = useState(false);
     const navigate = useNavigate();
     
-
     useEffect(() => {
         const autentificacionGuardada = localStorage.getItem("autentificacion");
         if (autentificacionGuardada) {
@@ -68,7 +67,6 @@ function Login() {
         })
         .then(() => {
             setCargando(false);
-            document.body.style.overflowY = "visible";
             navigate("/home");
         })
         .catch(error => console.log('error', error));
