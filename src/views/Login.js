@@ -50,24 +50,33 @@ function Login() {
                 return response.json();
             } else {
                 setCargando(false);
-                alert("El usuario y la contraseña no coinciden. ¡Intenta Nuevamente!")
+                alert("El usuario y la contraseña no coinciden. ¡Intenta Nuevamente!");
                 throw new Error('La solicitud Fetch no se realizó correctamente');
             }
         })
         .then(result => {
             // console.log("Resultado: " + JSON.stringify(result))
-            var user = result.user.nombre
-            setCorreo(result.user.correo)
-            return user
-        }).then(user => {
+            var data = [];
+            var user = result.user.nombre;
+            var rol = result.user.rol;
+            data.push(user);
+            data.push(rol);
+            setCorreo(result.user.correo);
+            return data;
+        }).then(data => {
             localStorage.setItem("autentificacion", autentificacion);
-            localStorage.setItem("usuario", user);
+            localStorage.setItem("usuario", data[0]);
+            localStorage.setItem("rol", data[1]);
             localStorage.setItem("correo", correo);
-            return user
+            return data;
         })
-        .then(() => {
+        .then(data => {
             setCargando(false);
-            navigate("/home");
+            if(data[1] == "USER_ROLE"){
+                navigate("/home");
+            }else if(data[1] == "VETERINARIO_ROLE"){
+                navigate("/home-vet");
+            }
         })
         .catch(error => console.log('error', error));
     }

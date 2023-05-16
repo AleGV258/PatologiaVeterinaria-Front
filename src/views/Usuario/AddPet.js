@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/GlobalStyle.css'
+import '../../styles/GlobalStyle.css'
 
 /* 
     Materia: Arquitectura de TI Empresariales
@@ -71,6 +71,16 @@ function AddPet() {
         setCastradoMascota(event.target.value);
     };
 
+    const cancelarForm = () => {
+        setNombreMascota("");
+        setEspecieMascota("");
+        setSexoMascota("");
+        setMVZMascota("");
+        setRazaMascota("");
+        setEdadMascota("");
+        setCastradoMascota("");
+    }
+
     return (
         <div className="grid-home">
             <div className="grid-home-1" onClick={returnHome}>
@@ -102,7 +112,11 @@ function AddPet() {
                         
                         <div className="option-section">
                             <label className="option-text" for="sexo_mascota">Sexo:</label>
-                            <input type="text" id="sexo_mascota" name="sexo_mascota" placeholder="Sexo" className="option-input" required value={sexoMascota} onChange={handleSexoMascotaChange} ></input>
+                            <select name="sexo_mascota" id="sexo_mascota" className="option-select" value={sexoMascota} onChange={handleSexoMascotaChange} required placeholder="Sexo" >
+                                <option value="hembra">Hembra</option>
+                                <option value="macho">Macho</option>
+                            </select>
+                            {/* <input type="text" id="sexo_mascota" name="sexo_mascota" placeholder="Sexo" className="option-input" required value={sexoMascota} onChange={handleSexoMascotaChange} ></input> */}
                         </div>
                         
                         <div className="option-section">
@@ -117,16 +131,20 @@ function AddPet() {
                         
                         <div className="option-section">
                             <label className="option-text" for="edad_mascota">Edad:</label>
-                            <input type="text" id="edad_mascota" name="edad_mascota" placeholder="Edad" className="option-input" required value={edadMascota} onChange={handleEdadMascotaChange} ></input>
+                            <input type="number" id="edad_mascota" name="edad_mascota" placeholder="Edad" className="option-input" required value={edadMascota} onChange={handleEdadMascotaChange} ></input>
                         </div>
                         
                         <div className="option-section">
                             <label className="option-text" for="castrado_mascota">Castrado:</label>
-                            <input type="text" id="castrado_mascota" name="castrado_mascota" placeholder="Castrado" className="option-input" required value={castradoMascota} onChange={handleCastradoMascotaChange} ></input>
+                            <select name="castrado_mascota" id="castrado_mascota" className="option-select" value={castradoMascota} onChange={handleCastradoMascotaChange} required placeholder="Castrado" >
+                                <option value="no">No</option>
+                                <option value="si">Si</option>
+                            </select>
+                            {/* <input type="text" id="castrado_mascota" name="castrado_mascota" placeholder="Castrado" className="option-input" required value={castradoMascota} onChange={handleCastradoMascotaChange} ></input> */}
                         </div>
 
                         <div className="option-section">
-                            <button className="option-button-cancel">Cancelar</button>
+                            <button className="option-button-cancel" onClick={cancelarForm}>Cancelar</button>
                             <input type="submit" value="Guardar" className="option-button-save"></input>
                         </div>
 

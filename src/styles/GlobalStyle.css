@@ -166,7 +166,6 @@ input[type="submit"]:active{
     background-color: #37a943;
     z-index: 1;
     position: relative;
-    position: relative;
     -webkit-filter: drop-shadow(-5px -5px 10px rgba(0.0, 0.0, 0.0, 0.2));
     filter: drop-shadow(-5px -5px 10px rgba(0.0, 0.0, 0.0, 0.2));
     transform: rotate(45deg);
@@ -262,7 +261,7 @@ input[type="submit"]:active{
     justify-content: center;
     align-items: center;
     position: fixed;
-    z-index: 1;
+    z-index: 10;
 }
 .grid-home-2 { 
     grid-area: 2 / 1 / 6 / 2;
@@ -367,6 +366,10 @@ input[type="submit"]:active{
     border-radius: 100px;
     filter: grayscale();
 }
+.logout-button-veterinario{
+    padding: 5% 20% !important;
+    margin: 30% 12% 15% 12% !important;
+}
 .logout-button{
     background-color: #DDDDDD;
     color: #000;
@@ -377,7 +380,7 @@ input[type="submit"]:active{
     font-size: medium;
     font-weight: 600;
     padding: 2% 20%;
-    margin: 70% 12% 15% 12%;
+    margin: 80% 12% 15% 12%;
 }
 .logout-button:hover{
     background-color: #8dbf4c;
@@ -402,7 +405,7 @@ input[type="submit"]:active{
     border-radius: 50px;
     border: none;
     outline: none;
-    margin: 15% 20% 0 20%;
+    margin: 15% 25% 0 25%;
     padding: 10% 12%;
 }
 .moreOption-button-selected:hover,
@@ -541,8 +544,8 @@ input[type="submit"]:active{
     width: 15%;
     background-color: #ff0000;
     color: #fff;
-    padding: 1.5% 0;
-    margin: auto 0;
+    padding: 1.5% 3% !important;
+    margin: 1.5% 0 auto 70%;
     border: none;
     outline: none;
     font-size: large;
@@ -551,10 +554,166 @@ input[type="submit"]:active{
     text-align: center;
     border-radius: 10px;
 }
+.option-button-cancel:hover{
+    background-color: #c23616;
+}
 .option-button-save{
     color: #fff;
-    padding: 1.5% % !important;
-    margin: auto 0;
+    padding: 1.5% 3% !important;
+    margin: 1.5% 0 auto 0 !important;
+    border: none;
+    outline: none;
+    font-size: large;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 10px;
+}
+.option-button-save:active,
+.option-button-cancel:active{
+    background-color: #000;
+}
+.option-select{
+    display: inline-block;
+    border-radius: 50px;
+    background-color: #fff;
+    color: black;
+    border: none;
+    outline: none;
+    text-align: center;
+    font-size: large;
+    padding: 2vh 10%;
+    margin: 2% 0;
+    width: 85%;
+    font-size: x-large;
+}
+
+/* Home Veterinario */
+.seccion-buscador{
+    width: 100%;
+    padding: 0.5%;
+}
+.input-buscador{
+    display: inline-block;
+    border-radius: 50px;
+    background-color: #DDDDDD;
+    color: black;
+    border: none;
+    outline: none;
+    text-align: center;
+    font-size: large;
+    padding: 2.5vh 0;
+    margin: 0;
+    width: 70%;
+    font-size: x-large;
+}
+.boton-buscador{
+    background-color: #37a943;
+    color: #fff;
+    padding: 1.5% 3% !important;
+    margin: 1.5% 0 auto 5% !important;
+    border: none;
+    outline: none;
+    font-size: large;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 10px;
+}
+.boton-buscador:hover{
+    background-color: #007034;
+}
+.boton-buscador:active{
+    background-color: #000;
+}
+.opcion-mascota-veterinario{
+    display: inline-block;
+    width: 30vh;
+    height: 30vh;
+    padding: 0.1%;
+    margin: 3%;
+    border-radius: 200px;
+    border: 3px solid #DDDDDD;
+    box-shadow: 10px 10px 10px rgba(0.0, 0.0, 0.0, 0.2);
+}
+.imagen-mascota-veterinario{
+    width: 30vh;
+    height: 30vh;
+    border-radius: 200px;
+    position: relative;
+    z-index: 0;
+}
+.nombre-mascota-veterinario{
+    width: 30vh;
+    height: 30vh;
+    border-radius: 200px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin: 0 0 -30vh 0;
+    color: #fff;
+    font-size: x-large;
+    position: relative;
+    z-index: 1;
+    background-color: rgba(0.0, 0.0, 0.0, 0.5);
+    filter: opacity(0);
+}
+.nombre-mascota-veterinario:hover{
+    filter: opacity(1);
+    cursor: pointer;
+}
+
+/* Exámenes Veterinario */
+.veterinario-titulo-dato{
+    margin: auto 0 auto 0;
+    font-size: large;
+    text-align: start;
+}
+.veterinario-titulo-examen{
+    margin: auto 3%;
+    font-size: x-large;
+}
+
+/* Página Reporte */
+.veterinario-big-card{
+    width: 82%;
+    background-color: #DDDDDD;
+    color: #000;
+    box-shadow: 10px 10px 10px rgba(0.0, 0.0, 0.0, 0.2);
+    padding: 2%;
+    margin: 0 6% 3% 6%;
+    display: grid;
+    align-items: center;
+    text-decoration: none;
+    font-size: x-large;
+    border-radius: 10px;
+}
+.report-card{
+    width: 92%;
+    background-color: #fff;
+    color: #000;
+    box-shadow: 10px 10px 10px rgba(0.0, 0.0, 0.0, 0.2);
+    padding: 2% 3%;
+    margin: 0 1% 3% 1%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    font-size: x-large;
+    border-radius: 10px;
+}
+.report-titulo-dato{
+    margin: auto 0 auto -25%;
+    font-size: large;
+    text-align: start;
+}
+.report-button-examen{
+    width: 15%;
+    background-color: #37a943;
+    color: #fff;
+    padding: 1.5% 0;
+    margin: auto 0 auto -25%;
     border: none;
     outline: none;
     font-size: large;
@@ -564,13 +723,133 @@ input[type="submit"]:active{
     border-radius: 10px;
 }
 
+/* Examenes Parasitología, Urianálisis, Hemograma */
+.examen{
+    width: 100%;
+    padding: 2%;
+}
+.examen-encabezado{
+    width: 95.4%;
+}
+.examen-encabezado-divisor{
+    width: 100%;
+    background-color: #00939d;
+    padding: 0.3%;
+}
+.examen-encabezado-facultad{
+    padding: 2% 0 0 0;
+    display: flex;
+    justify-content: space-around;
+}
+.examen-encabezado-titulo{
+    color: #00939d;
+    font-size: large;
+    font-weight: 600;
+}
+.examen-encabezado-escudo{
+    width: 5vw;
+    height: 5vw;
+}
+.examen-encabezado-mascotas{
+    padding: 4% 0 0 0;
+    display: flex;
+    justify-content: center;
+}
+.examen-encabezado-resultado{
+    width: 40%;
+    border-radius: 20px;
+    color: #fff;
+    background-color: #00939d;
+    padding: 3% 0;
+    font-size: x-large;
+    font-weight: 500;
+}
+.examen-encabezado-imagenes{
+    width: 15%;
+}
+.examen-encabezado-animal{
+    width: 4.5vw;
+    height: 3.5vw;
+}
+.examen-encabezado-animal2{
+    width: 9vw;
+    height: 7vw;
+}
+.examen-encabezado-datos{
+    width: 100%;
+    padding: 4% 0 0 0;
+    display: flex;
+    justify-content: space-around;
+}
+.examen-encabezado-tablaPropietario{
+    width: 35%;
+}
+.examen-encabezado-tablaMascota{
+    width: 60%;
+}
+.examen-encabezado-tablaTratamiento{
+    width: 80%;
+}
+.examen-encabezado-tablaAnalisis{
+    width: 95%;
+}
+table, th, td {
+    border: 1px solid #3B4D79;
+    border-collapse: collapse;
+    padding: 1%;
+}
+/* th{
+    background-color: #00939d;
+    color: #fff;
+} */
+tr:nth-child(even) {
+    background-color: #00939d;
+    color: #fff;
+}
+.examen-segunda-version1{
+    background-color: #00939d;
+    color: #fff;
+}
+.examen-segunda-version2{
+    background-color: #fff;
+    color: #000;
+}
+.examen-tabla-continuacion{
+    display: flex;
+    justify-content: center;
+    margin: 2.6% 0 -2.6% 0;
+    border: none;
+}
+.examen-input-continuacion{
+    width: 75% !important;
+    padding: 0% 0 !important;
+}
+.examen-input-tabla{
+    width: 100%;
+    font-size: medium;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    border: none;
+}
+.option-section-examen{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4% 0 0 0;
+}
+
 /* Media Queries */
 @media only screen and (max-width: 400px) {
     /* Login y Register */
     .form-login{ margin: 17vh 10%; }
     .form-register{ margin: 8vh 10%; }
     label, a{ font-size: medium; }
-    input{ font-size: x-small; padding: 2vh 3%; }
+.moreOption-button-selected
     input[type="submit"]{ padding: 2vh 25%; }
     .form-titulo{ font-size: 150%; }
 

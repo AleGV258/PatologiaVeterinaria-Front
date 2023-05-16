@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/GlobalStyle.css'
+import '../../styles/GlobalStyle.css'
 
 /* 
     Materia: Arquitectura de TI Empresariales

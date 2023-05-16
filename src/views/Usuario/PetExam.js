@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/GlobalStyle.css'
+import '../../styles/GlobalStyle.css'
 
 /* 
     Materia: Arquitectura de TI Empresariales
@@ -11,7 +11,7 @@ import '../styles/GlobalStyle.css'
         - García Vargas Michell Alejandro - 259663
 */
 
-function AddExam() {
+function PetExam() {
     const [usuario, setUsuario] = useState(localStorage.getItem("usuario"));
     const navigate = useNavigate();
 
@@ -37,18 +37,19 @@ function AddExam() {
     return (
         <div className="grid-home">
             <div className="grid-home-1" onClick={returnHome}>
-                <label className="titulo-usuario">Solicita un Nuevo Examen Clínico</label>
+                <img src='../imgs/Regresar.png' className="regresar" onClick={returnHome}></img>
+                <label className="titulo-usuario">Examen Clínico</label>
             </div>
             <div className="grid-home-2">
                 <div>
                     <button onClick={returnHome} className="moreOption-button" title="Regresar Página Principal"><img src='../imgs/Home.png' className="moreOption-image"></img></button><br></br>
                     <button onClick={addNewPet} className="moreOption-button" title="Agregar Nueva Mascota"><img src='../imgs/Agregar-Mascota.png' className="moreOption-image"></img></button><br></br>
-                    <button onClick={addNewExam} className="moreOption-button-selected" title="Solicitar Nuevo Examen Clínico"><img src='../imgs/Solicitar-Examen.png' className="moreOption-image"></img></button>
+                    <button onClick={addNewExam} className="moreOption-button" title="Solicitar Nuevo Examen Clínico"><img src='../imgs/Solicitar-Examen.png' className="moreOption-image"></img></button>
                 </div>
                 <button onClick={logoutUser} className="logout-button">Cerrar <br className="break-point"></br>Sesión</button>
             </div>
             <div className="grid-home-3">
-                <label className="titulo-examen">Solicitar Examen:</label>
+                <label className="titulo-examen">Exámenes Clínicos:</label>
 
                 <div className="mascota-card">
                     <label className="clinico-titulo-examen">Examen</label>
@@ -69,4 +70,4 @@ function AddExam() {
     );
 }
  
-export default AddExam;
+export default PetExam;
