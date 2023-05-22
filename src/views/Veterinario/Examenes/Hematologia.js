@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../../../styles/GlobalStyle.css'
 
 /* 
@@ -12,7 +12,8 @@ import '../../../styles/GlobalStyle.css'
 */
 
 function Hematologia() {
-    const [usuario, setUsuario] = useState(localStorage.getItem("usuario"));
+    const [cargando, setCargando] = useState(false);
+    const Token = useState(localStorage.getItem("token"));
     // Examen General
     const [caso, setCaso] = useState("");
     const [propietario, setPropietario] = useState("");
@@ -81,6 +82,8 @@ function Hematologia() {
     const [morfologiaArtefactos, setMorfologiaArtefactos] = useState("");
 
     const navigate = useNavigate();
+    const location = useLocation();
+    const examenSeleccionado = location.state?.examenSeleccionado || [];
 
     document.body.style.overflowY = "visible";
 
@@ -106,6 +109,135 @@ function Hematologia() {
     
         return `${horaFormateada}:${minutosFormateados}`;
     };
+
+    const handleSubmit = (event) => {
+        event.preventDefault(); // Evita que la página se recargue al enviar el formulario
+        setCargando(true);
+
+        const raw = {
+            datos: {
+                "Datos Generales": {
+                    "Caso": caso,
+                    "Propietario": propietario,
+                    "Dirección": direccion,
+                    "Teléfono": telefono,
+                    "Fecha": fecha,
+                    "Hora": hora,
+                    "Raza": raza,
+                    "Sexo": sexo,
+                    "MVZ": mvz
+                },
+                "Anamnesis": anamnesis,
+                "Tratamiento Previo": tratamiento,
+                "Hematocrito": {
+                    "Valor": valorHematocrito,
+                    "Variación": variacionHematocrito,
+                    "Morfología Celular": morfologiaHematocrito
+                },
+                "Hemoglobina": {
+                    "Valor": valorHemoglobina,
+                    "Variación": variacionHemoglobina,
+                    "Morfología Celular": morfologiaHemoglobina
+                },
+                "Eritrocitos": {
+                    "Valor": valorEritrocitos,
+                    "Variación": variacionEritrocitos,
+                    "Morfología Celular": morfologiaEritrocitos
+                },
+                "VGM": {
+                    "Valor": valorVGM,
+                    "Variación": variacionVGM,
+                    "Morfología Celular": morfologiaVGM
+                },
+                "CGMH": {
+                    "Valor": valorCGMH,
+                    "Variación": variacionCGMH,
+                    "Morfología Celular": morfologiaCGMH
+                },
+                "Reticulocitos": {
+                    "Valor": valorReticulocitos,
+                    "Variación": variacionReticulocitos,
+                    "Morfología Celular": morfologiaReticulocitos
+                },
+                "Plaquetas": {
+                    "Valor": valorPlaquetas,
+                    "Variación": variacionPlaquetas,
+                    "Morfología Celular": morfologiaTipo
+                },
+                "Sólidos Totales": {
+                    "Valor": valorSolidos,
+                    "Variación": variacionSolidos,
+                    "Morfología Celular": morfologiaSolidos
+                },
+                "Leucocitos Totales": {
+                    "Valor": valorLeucocitos,
+                    "Variación": variacionLeucocitos,
+                    "Morfología Celular": morfologiaLeucocitos
+                },
+                "Neutrófilos": {
+                    "Valor": valorNeutrofilos,
+                    "Variación": variacionNeutrofilos,
+                    "Morfología Celular": morfologiaLeucocitos
+                },
+                "Bandas": {
+                    "Valor": valorBandas,
+                    "Variación": variacionBandas,
+                    "Morfología Celular": morfologiaLeucocitos
+                },
+                "Linfocitos": {
+                    "Valor": valorLinfocitos,
+                    "Variación": variacionLinfocitos,
+                    "Morfología Celular": morfologiaLinfocitos
+                },
+                "Monocitos": {
+                    "Valor": valorMonocitos,
+                    "Variación": variacionMonocitos,
+                    "Morfología Celular": morfologiaMonocitos
+                },
+                "Eosinófilos": {
+                    "Valor": valorEosinofilos,
+                    "Variación": variacionEosinofilos,
+                    "Morfología Celular": morfologiaEosinofilos
+                },
+                "Basófilos": {
+                    "Valor": valorBasofilos,
+                    "Variación": variacionBasofilos,
+                    "Morfología Celular": morfologiaBasofilos
+                },
+                "Artefactos": {
+                    "Valor": valorArtefactos,
+                    "Morfología Celular": morfologiaArtefactos
+                },
+                "Interpretacion": interpretacion
+            }
+        };
+
+        const requestOptions = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                token: Token[0]
+            },
+            body: JSON.stringify(raw),
+            redirect: 'follow'
+        };
+
+        var url = "https://api-arquitecturas-ti.vercel.app/api/examen/" + examenSeleccionado;
+        fetch(url, requestOptions)
+        .then(response => {
+            if (response.ok) {
+                setCargando(false);
+                alert("El examen se ha registrado con éxito.");
+                navigate("/home-vet");
+                return response.json();
+            } else {
+                setCargando(false);
+                alert("El examen no se ha registrado correctamente. ¡Intenta Nuevamente!");
+                throw new Error('La solicitud Fetch no se realizó correctamente');
+            }
+        })
+        .catch(error => console.log('error', error));
+    }
 
     // Rutas
     const logoutUser = () =>{
@@ -450,8 +582,12 @@ function Hematologia() {
 
     return (
         <div className="grid-home">
-            <div className="grid-home-1" onClick={returnHome}>
-                <img src='../imgs/Regresar.png' className="regresar" onClick={returnHome}></img>
+            <div className="carga" style={ cargando ? { display: "grid"} : {display: "none"}}>
+                <div className="pulsar"></div>
+                <label className="carga-texto">Registrando...</label>
+            </div>
+            <div className="grid-home-1" onClick={seeExamPending}>
+                <img src='../imgs/Regresar.png' className="regresar" onClick={seeExamPending}></img>
                 <label className="titulo-usuario">Examen de Parasitología</label>
             </div>
             <div className="grid-home-2">
@@ -467,7 +603,7 @@ function Hematologia() {
 
                 {/* <label className="titulo-examen"></label> */}
 
-                <form className="examen">
+                <form className="examen" onSubmit={handleSubmit}>
                     <div className="examen-encabezado">
 
                         <div className="examen-encabezado-divisor"></div>

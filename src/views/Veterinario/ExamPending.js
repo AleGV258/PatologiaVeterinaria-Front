@@ -12,10 +12,66 @@ import '../../styles/GlobalStyle.css'
 */
 
 function ExamPending() {
-    const [usuario, setUsuario] = useState(localStorage.getItem("usuario"));
+    const Token = useState(localStorage.getItem("token"));
+    const [examenesPendientes, setExamenesPendientes] = useState([]);
     const navigate = useNavigate();
 
     document.body.style.overflowY = "visible";
+
+    useEffect(() => {
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                token: Token[0]
+            },
+            redirect: 'follow'
+        };
+
+        fetch("https://api-arquitecturas-ti.vercel.app/api/examen/listado/Pendiente", requestOptions)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('La solicitud Fetch no se realizó correctamente');
+            }
+        })
+        .then(result => {
+            // console.log("Resultado: " + JSON.stringify(result.examenes))
+            var pendientes = result.examenes.map(examen => {
+                if(examen.tipoExamen == "Parasitologia"){
+                    return (
+                        <div className="mascota-card" key={examen._id}>
+                            <label className="veterinario-titulo-examen">{examen.tipoExamen}</label>
+                            <label className='veterinario-titulo-dato'>Estado: Pendiente<br></br><br></br>Más Datos... </label>
+                            <label className='veterinario-titulo-dato'>Propietario: ...</label>
+                            <button onClick={() => goParasitologia(examen._id)} className="clinico-button-descarga">Responder</button>
+                        </div>
+                    );
+                }else if(examen.tipoExamen == "Urianalisis"){
+                    return (
+                        <div className="mascota-card" key={examen._id}>
+                            <label className="veterinario-titulo-examen">{examen.tipoExamen}</label>
+                            <label className='veterinario-titulo-dato'>Estado: Pendiente<br></br><br></br>Más Datos... </label>
+                            <label className='veterinario-titulo-dato'>Propietario: ...</label>
+                            <button onClick={() => goUrianalisis(examen._id)} className="clinico-button-descarga">Responder</button>
+                        </div>
+                    );
+                }else if(examen.tipoExamen == "Hematologia"){
+                    return (
+                        <div className="mascota-card" key={examen._id}>
+                            <label className="veterinario-titulo-examen">{examen.tipoExamen}</label>
+                            <label className='veterinario-titulo-dato'>Estado: Pendiente<br></br><br></br>Más Datos... </label>
+                            <label className='veterinario-titulo-dato'>Propietario: ...</label>
+                            <button onClick={() => goHematologia(examen._id)} className="clinico-button-descarga">Responder</button>
+                        </div>
+                    );
+                }
+            })
+            setExamenesPendientes(pendientes);
+        })
+        .catch(error => console.log('error', error));
+    }, []);
 
     const logoutUser = () =>{
         localStorage.clear();
@@ -38,16 +94,16 @@ function ExamPending() {
         navigate("/report");
     }
 
-    const goParasitologia = () => {
-        navigate("/parasitologia");
+    const goParasitologia = (examenSeleccionado) => {
+        navigate("/parasitologia", { state: {examenSeleccionado}});
     }
 
-    const goHematologia = () => {
-        navigate("/hematologia");
+    const goHematologia = (examenSeleccionado) => {
+        navigate("/hematologia", { state: {examenSeleccionado}});
     }
 
-    const goUrianalisis = () => {
-        navigate("/urianalisis");
+    const goUrianalisis = (examenSeleccionado) => {
+        navigate("/urianalisis", { state: {examenSeleccionado}});
     }
 
     return (
@@ -67,26 +123,7 @@ function ExamPending() {
             <div className="grid-home-3">
                 <label className="titulo-examen">Exámenes Pendientes:</label>
 
-                <div className="mascota-card">
-                    <label className="veterinario-titulo-examen">Urianálisis</label>
-                    <label className='veterinario-titulo-dato'>Estado: Pendiente<br></br><br></br>Más Datos... </label>
-                    <label className='veterinario-titulo-dato'>Propietario: ...</label>
-                    <button onClick={goUrianalisis} className="clinico-button-descarga">Responder</button>
-                </div>
-
-                <div className="mascota-card">
-                    <label className="veterinario-titulo-examen">Parasitología</label>
-                    <label className='veterinario-titulo-dato'>Estado: Pendiente<br></br><br></br>Más Datos... </label>
-                    <label className='veterinario-titulo-dato'>Propietario: ...</label>
-                    <button onClick={goParasitologia} className="clinico-button-descarga">Responder</button>
-                </div>
-
-                <div className="mascota-card">
-                    <label className="veterinario-titulo-examen">Hematología</label>
-                    <label className='veterinario-titulo-dato'>Estado: Pendiente<br></br><br></br>Más Datos... </label>
-                    <label className='veterinario-titulo-dato'>Propietario: ...</label>
-                    <button onClick={goHematologia} className="clinico-button-descarga">Responder</button>
-                </div>
+                {examenesPendientes}
 
                 <br></br>
                 

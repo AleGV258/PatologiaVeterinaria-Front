@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../../styles/GlobalStyle.css'
 
 /* 
@@ -12,10 +12,59 @@ import '../../styles/GlobalStyle.css'
 */
 
 function PetExam() {
-    const [usuario, setUsuario] = useState(localStorage.getItem("usuario"));
+    const Token = useState(localStorage.getItem("token"));
+    const [mascotaExamenes, setMascotaExamenes] = useState([]);
+
     const navigate = useNavigate();
+    const location = useLocation();
+    const mascotaSeleccionada = location.state?.mascotaSeleccionada || [];
 
     document.body.style.overflowY = "visible";
+
+    useEffect(() => {
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                token: Token[0]
+            },
+            redirect: 'follow'
+        };
+
+        var url = "https://api-arquitecturas-ti.vercel.app/api/examen/" + mascotaSeleccionada;
+        fetch(url, requestOptions)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('La solicitud Fetch no se realizó correctamente');
+            }
+        })
+        .then(result => {
+            // console.log("Resultado: " + JSON.stringify(result))
+            var examenNuevo = result.examen.map(examenMascota => {
+                if(examenMascota.estado == "Pendiente"){
+                    return (
+                        <div className="mascota-card">
+                            <label className="clinico-titulo-examen">{examenMascota.tipoExamen}</label>
+                            <label className='clinico-titulo-dato'>Estado: Pendiente<br></br><br></br>Más Datos... </label>
+                            <button className="clinico-button-proceso">En Proceso</button>
+                        </div>
+                    )
+                }else if(examenMascota.estado == "Completado"){
+                    return (
+                        <div className="mascota-card">
+                            <label className="clinico-titulo-examen">{examenMascota.tipoExamen}</label>
+                            <label className='clinico-titulo-dato'>Estado: Completado<br></br><br></br>Más Datos... </label>
+                            <button onClick={""} className="clinico-button-descarga">Descargar</button>
+                        </div>
+                    )
+                }
+            });
+            setMascotaExamenes(examenNuevo);
+        })
+        .catch(error => console.log('error', error));
+    }, []);
 
     const logoutUser = () =>{
         localStorage.clear();
@@ -51,17 +100,7 @@ function PetExam() {
             <div className="grid-home-3">
                 <label className="titulo-examen">Exámenes Clínicos:</label>
 
-                <div className="mascota-card">
-                    <label className="clinico-titulo-examen">Examen</label>
-                    <label className='clinico-titulo-dato'>Estado: Pendiente<br></br><br></br>Más Datos... </label>
-                    <button onClick={""} className="clinico-button-proceso">En Proceso</button>
-                </div>
-
-                <div className="mascota-card">
-                    <label className="clinico-titulo-examen">Examen</label>
-                    <label className='clinico-titulo-dato'>Estado: Completado<br></br><br></br>Más Datos... </label>
-                    <button onClick={""} className="clinico-button-descarga">Descargar</button>
-                </div>
+                {mascotaExamenes}
 
                 <br></br>
                 

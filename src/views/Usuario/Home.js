@@ -12,10 +12,48 @@ import '../../styles/GlobalStyle.css'
 */
 
 function Home() {
-    const [usuario, setUsuario] = useState(localStorage.getItem("usuario"));
+    const usuario = useState(localStorage.getItem("usuario"));
+    const Token = useState(localStorage.getItem("token"));
+    const [mascotasUsuario, setMascotasUsuarios] = useState([]);
     const navigate = useNavigate();
 
     document.body.style.overflowY = "visible";
+
+    useEffect(() => {
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                token: Token[0]
+            },
+            redirect: 'follow'
+        };
+
+        fetch("https://api-arquitecturas-ti.vercel.app/api/mascota/Usuario/", requestOptions)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('La solicitud Fetch no se realizó correctamente');
+            }
+        })
+        .then(result => {
+            // console.log("Resultado: " + JSON.stringify(result))
+            var mascotasCards = result.mascotas.map(mascota => {
+                return (
+                    <div className="mascota-card" key={mascota._id}>
+                        <img src='../imgs/Mascota.png' className='mascota-image'></img>
+                        <label className='mascota-titulo-examen'>{mascota.nombre}</label>
+                        <label className='mascota-titulo-dato'>Raza: {mascota.raza}<br></br><br></br>Edad: {mascota.edad}</label>
+                        <button onClick={() => petSpecificDetails(mascota._id)} className="mascota-button-info">+ Info</button>
+                        <button onClick={() => petExamDetails(mascota._id)} className="mascota-button-examen">Examenes</button>
+                    </div>
+                )
+            })
+            setMascotasUsuarios(mascotasCards);
+        })
+        .catch(error => console.log('error', error));
+    }, []);
 
     const logoutUser = () => {
         localStorage.clear();
@@ -26,12 +64,12 @@ function Home() {
         navigate("/home");
     }
 
-    const petExamDetails = () => {
-        navigate("/pet-exam");
+    const petExamDetails = (mascotaSeleccionada) => {
+        navigate("/pet-exam", { state: {mascotaSeleccionada}});
     }
 
-    const petSpecificDetails = () => {
-        navigate("/pet-specific");
+    const petSpecificDetails = (mascotaSeleccionada) => {
+        navigate("/pet-specific", { state: {mascotaSeleccionada}});
     }
 
     const addNewExam = () => {
@@ -58,37 +96,7 @@ function Home() {
             <div className="grid-home-3">
                 <label className="titulo-examen">Mis Mascotas:</label>
 
-                <div className="mascota-card">
-                    <img src='../imgs/Mascota.png' className='mascota-image'></img>
-                    <label className='mascota-titulo-examen'>Mascota 1</label>
-                    <label className='mascota-titulo-dato'>Raza: <br></br><br></br>Edad: </label>
-                    <button onClick={petSpecificDetails} className="mascota-button-info">+ Info</button>
-                    <button onClick={petExamDetails} className="mascota-button-examen">Examenes</button>
-                </div>
-
-                <div className="mascota-card">
-                    <img src='../imgs/Mascota.png' className='mascota-image'></img>
-                    <label className='mascota-titulo-examen'>Mascota 2</label>
-                    <label className='mascota-titulo-dato'>Raza: <br></br><br></br>Edad: </label>
-                    <button onClick={petSpecificDetails} className="mascota-button-info">+ Info</button>
-                    <button onClick={petExamDetails} className="mascota-button-examen">Examenes</button>
-                </div>
-                
-                <div className="mascota-card">
-                    <img src='../imgs/Mascota.png' className='mascota-image'></img>
-                    <label className='mascota-titulo-examen'>Mascota 3</label>
-                    <label className='mascota-titulo-dato'>Raza: <br></br><br></br>Edad: </label>
-                    <button onClick={petSpecificDetails} className="mascota-button-info">+ Info</button>
-                    <button onClick={petExamDetails} className="mascota-button-examen">Examenes</button>
-                </div>
-                
-                <div className="mascota-card">
-                    <img src='../imgs/Mascota.png' className='mascota-image'></img>
-                    <label className='mascota-titulo-examen'>Mascota 4</label>
-                    <label className='mascota-titulo-dato'>Raza: <br></br><br></br>Edad: </label>
-                    <button onClick={petSpecificDetails} className="mascota-button-info">+ Info</button>
-                    <button onClick={petExamDetails} className="mascota-button-examen">Examenes</button>
-                </div>
+                {mascotasUsuario}
 
                 <br></br>
                 

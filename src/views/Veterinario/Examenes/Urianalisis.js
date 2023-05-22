@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 import '../../../styles/GlobalStyle.css'
 
 /* 
@@ -12,7 +12,8 @@ import '../../../styles/GlobalStyle.css'
 */
 
 function Urianalisis() {
-    const [usuario, setUsuario] = useState(localStorage.getItem("usuario"));
+    const [cargando, setCargando] = useState(false);
+    const Token = useState(localStorage.getItem("token"));
     // Examen General
     const [caso, setCaso] = useState("");
     const [propietario, setPropietario] = useState("");
@@ -54,8 +55,9 @@ function Urianalisis() {
     const [sangre, setSangre] = useState("");
     const [bilirrubina, setBilirrubina] = useState("");
 
-
     const navigate = useNavigate();
+    const location = useLocation();
+    const examenSeleccionado = location.state?.examenSeleccionado || [];
 
     document.body.style.overflowY = "visible";
 
@@ -81,6 +83,79 @@ function Urianalisis() {
     
         return `${horaFormateada}:${minutosFormateados}`;
     };
+
+    const handleSubmit = (event) => {
+        event.preventDefault(); // Evita que la página se recargue al enviar el formulario
+        setCargando(true);
+
+        const raw = {
+            datos: {
+                "Datos Generales": {
+                    "Caso": caso,
+                    "Propietario": propietario,
+                    "Dirección": direccion,
+                    "Teléfono": telefono,
+                    "Fecha": fecha,
+                    "Hora": hora,
+                    "Raza": raza,
+                    "Sexo": sexo,
+                    "MVZ": mvz
+                },
+                "Anamnesis": anamnesis,
+                "Tratamiento Previo": tratamiento,
+                "Metodo de Obtención": metodoObtencion,
+                "Examen Físico": {
+                    "Color": color,
+                    "Apariencia": apariencia,
+                    "Densidad": densidad
+                },
+                "Examen Químico": {
+                    "pH": pH,
+                    "Cetonas": cetonas,
+                    "Bilirrubina": bilirrubina
+                },
+                "Examen Microscópico": {
+                    "Eritrocitos": eritrocitos,
+                    "Leucocitos": leucocitos,
+                    "Escamosas": escamosas,
+                    "Transitorias": transitorias,
+                    "Cilindros": cilindros,
+                    "Renales": renales,
+                    "Cristales": cristales,
+                    "Lipidos": lipidos,
+                    "Bacterias": bacterias,
+                    "Otros": otros
+                },
+                "Interpretación": interpretacion
+            }
+        };
+
+        const requestOptions = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                token: Token[0]
+            },
+            body: JSON.stringify(raw),
+            redirect: 'follow'
+        };
+
+        var url = "https://api-arquitecturas-ti.vercel.app/api/examen/" + examenSeleccionado;
+        fetch(url, requestOptions)
+        .then(response => {
+            if (response.ok) {
+                setCargando(false);
+                alert("El examen se ha registrado con éxito.");
+                navigate("/home-vet");
+                return response.json();
+            } else {
+                setCargando(false);
+                alert("El examen no se ha registrado correctamente. ¡Intenta Nuevamente!");
+                throw new Error('La solicitud Fetch no se realizó correctamente');
+            }
+        })
+        .catch(error => console.log('error', error));
+    }
 
     // Rutas
     const logoutUser = () =>{
@@ -299,11 +374,14 @@ function Urianalisis() {
         setBilirrubina("");
     };
         
-
     return (
         <div className="grid-home">
-            <div className="grid-home-1" onClick={returnHome}>
-                <img src='../imgs/Regresar.png' className="regresar" onClick={returnHome}></img>
+            <div className="carga" style={ cargando ? { display: "grid"} : {display: "none"}}>
+                <div className="pulsar"></div>
+                <label className="carga-texto">Registrando...</label>
+            </div>
+            <div className="grid-home-1" onClick={seeExamPending}>
+                <img src='../imgs/Regresar.png' className="regresar" onClick={seeExamPending}></img>
                 <label className="titulo-usuario">Examen de Parasitología</label>
             </div>
             <div className="grid-home-2">
@@ -319,7 +397,7 @@ function Urianalisis() {
 
                 {/* <label className="titulo-examen"></label> */}
 
-                <form className="examen">
+                <form className="examen" on onSubmit={handleSubmit}>
                     <div className="examen-encabezado">
 
                         <div className="examen-encabezado-divisor"></div>

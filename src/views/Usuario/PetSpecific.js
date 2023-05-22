@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../../styles/GlobalStyle.css'
 
 /* 
@@ -12,10 +12,59 @@ import '../../styles/GlobalStyle.css'
 */
 
 function PetSpecific() {
-    const [usuario, setUsuario] = useState(localStorage.getItem("usuario"));
+    const Token = useState(localStorage.getItem("token"));
+    const [mascotaUsuario, setMascotaUsuario] = useState([]);
+
     const navigate = useNavigate();
+    const location = useLocation();
+    const mascotaSeleccionada = location.state?.mascotaSeleccionada || [];
 
     document.body.style.overflowY = "visible";
+
+    useEffect(() => {
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                token: Token[0]
+            },
+            redirect: 'follow'
+        };
+
+        fetch("https://api-arquitecturas-ti.vercel.app/api/mascota/Usuario/", requestOptions)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('La solicitud Fetch no se realizó correctamente');
+            }
+        })
+        .then(result => {
+            // console.log("Resultado: " + JSON.stringify(result))
+            let mascotaNueva = result.mascotas.filter(mascota => {
+                return mascota._id == mascotaSeleccionada
+            })
+            var mascotaUsuario = mascotaNueva.map(mascota => {
+                return (
+                    <div key={mascota._id}>
+                        <div>
+                            <img src="../imgs/Mascota.png" className="especifico-imagen"></img>
+                            <label className="especifico-titulo">{mascota.nombre}</label>
+                        </div>
+                        <div className="separador"></div>
+                        <div>
+                            <label className="especifico-datos"><b>Especie:</b> {mascota.especie}</label>
+                            <label className="especifico-datos"><b>Raza:</b> {mascota.raza}</label>
+                            <label className="especifico-datos"><b>Edad:</b> {mascota.edad}</label>
+                            <label className="especifico-datos"><b>Sexo:</b> {mascota.sexo}</label>
+                        </div>
+                    </div>
+                )
+            })
+            setMascotaUsuario(mascotaUsuario);
+        })
+        .catch(error => console.log('error', error));
+    }, []);
 
     const logoutUser = () =>{
         localStorage.clear();
@@ -49,22 +98,9 @@ function PetSpecific() {
                 <button onClick={logoutUser} className="logout-button">Cerrar <br className="break-point"></br>Sesión</button>
             </div>
             <div className="grid-home-3">
-                <label className="titulo-examen">Examen X</label>
+                <label className="titulo-examen">Mascota</label>
 
-                <div>
-                    <img src='../imgs/Perro-Prueba.png' className="especifico-imagen"></img>
-                    <label className="especifico-titulo">Mascota X</label>
-                </div>
-                <div className="separador"></div>
-                <div>
-                    <label className="especifico-datos">Especie: ...</label>
-                    <label className="especifico-datos">Raza: ...</label>
-                    <label className="especifico-datos">Edad: ...</label>
-                    <label className="especifico-datos">Color: ...</label>
-                </div>
-
-
-
+                {mascotaUsuario}
 
                 <div className="mascota-card">
                     <label className="clinico-titulo-examen">Examen</label>

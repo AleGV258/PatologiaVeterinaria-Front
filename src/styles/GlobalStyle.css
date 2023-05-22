@@ -8,7 +8,10 @@
         - García Vargas Michell Alejandro - 259663
 */
 
-/* Página Login y Registro */
+/* Página Login y Registro *
+/* *{
+    border: 1px solid red;
+} */
 body{
     font-family: 'Jost', sans-serif;
     overflow-y: hidden;
@@ -16,6 +19,7 @@ body{
 }
 ::-webkit-scrollbar{ 
     width: 1vw;
+    z-index: 20;
 }
 ::-webkit-scrollbar-track{ 
     background-color: #DDDDDD; 
@@ -600,6 +604,63 @@ input[type="submit"]:active{
     width: 85%;
     font-size: x-large;
 }
+.examenes-cards{
+    display: flex;
+    justify-content: space-evenly;
+}
+.examen-card{
+    background-color: #DDDDDD;
+    border-radius: 50px;
+    width: 25vw;
+}
+.examen-card-titulo{
+    text-align: center;
+    padding: 8% 0 5% 0;
+    font-weight: 600;
+    font-size: x-large;
+    width: 100%;
+}
+.examen-card-imagen{
+    width: 5vw;
+    height: 5vw;
+    background-color: #00939d;
+    border: 2px solid #000;
+    padding: 10%;
+    border-radius: 30px;
+}
+.examen-card-select{
+    width: 80%;
+    margin: 8% 0 4% 0;
+    padding: 3% 0;
+    border-radius: 50px;
+    border: none;
+    outline: none;
+    text-align: center;
+    font-size: large;
+}
+.examen-card-boton{
+    width: 80%;
+    margin: 5% 0 10% 0;
+    background-color: #37a943;
+    color: #fff;
+    padding: 3% 0;
+    border: none;
+    outline: none;
+    font-size: large;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 10px;
+}
+.examen-card-boton:hover{
+    background-color: #007034;
+    color: #fff;
+    cursor: pointer;
+}
+.examen-card-boton:active{
+    background-color: #000;
+    color: #fff;
+}
 
 /* Home Veterinario */
 .seccion-buscador{
@@ -734,6 +795,13 @@ input[type="submit"]:active{
     text-decoration: none;
     text-align: center;
     border-radius: 10px;
+}
+.report-button-examen:hover{
+    background-color: #007034;
+}
+.report-button-examen:active{
+    background-color: #000;
+    color: #fff;
 }
 
 /* Examenes Parasitología, Urianálisis, Hemograma */
@@ -1022,13 +1090,13 @@ tr:nth-child(even) {
     background-color: rgba(0.0, 0.0, 0.0, 0.6);
     width: 100vw;
     height: 100vh;
-    position: absolute;
-    z-index: 9;
+    position: fixed;
+    z-index: 100;
     display: none;
 }
 .carga-texto{
     color: #fff;
-    position: absolute;
+    position: fixed;
     font-size: x-large;
     left: 45.5vw;
     top: 65vh;

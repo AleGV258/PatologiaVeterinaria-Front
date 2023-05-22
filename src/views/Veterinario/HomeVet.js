@@ -72,37 +72,37 @@ function HomeVet() {
 
                 <div className="opcion-mascota-veterinario" onClick={para}>
                     <div className="nombre-mascota-veterinario">Mascota</div>
-                    <img src='../imgs/Perro-Prueba.png' className="imagen-mascota-veterinario"></img>
+                    <img src='../imgs/Mascota.png' className="imagen-mascota-veterinario"></img>
                     <label className="titulo-examen">Dueño Dueño</label>
                 </div>
 
                 <div className="opcion-mascota-veterinario" onClick={uri}>
                     <div className="nombre-mascota-veterinario">Mascota</div>
-                    <img src='../imgs/Perro-Prueba.png' className="imagen-mascota-veterinario"></img>
+                    <img src='../imgs/Mascota.png' className="imagen-mascota-veterinario"></img>
                     <label className="titulo-examen">Dueño Dueño</label>
                 </div>
 
                 <div className="opcion-mascota-veterinario" onClick={hemo}>
                     <div className="nombre-mascota-veterinario">Mascota</div>
-                    <img src='../imgs/Perro-Prueba.png' className="imagen-mascota-veterinario"></img>
+                    <img src='../imgs/Mascota.png' className="imagen-mascota-veterinario"></img>
                     <label className="titulo-examen">Dueño Dueño</label>
                 </div>
 
                 <div className="opcion-mascota-veterinario">
                     <div className="nombre-mascota-veterinario">Mascota</div>
-                    <img src='../imgs/Perro-Prueba.png' className="imagen-mascota-veterinario"></img>
+                    <img src='../imgs/Mascota.png' className="imagen-mascota-veterinario"></img>
                     <label className="titulo-examen">Dueño Dueño</label>
                 </div>
 
                 <div className="opcion-mascota-veterinario">
                     <div className="nombre-mascota-veterinario">Mascota</div>
-                    <img src='../imgs/Perro-Prueba.png' className="imagen-mascota-veterinario"></img>
+                    <img src='../imgs/Mascota.png' className="imagen-mascota-veterinario"></img>
                     <label className="titulo-examen">Dueño Dueño</label>
                 </div>
 
                 <div className="opcion-mascota-veterinario">
                     <div className="nombre-mascota-veterinario">Mascota</div>
-                    <img src='../imgs/Perro-Prueba.png' className="imagen-mascota-veterinario"></img>
+                    <img src='../imgs/Mascota.png' className="imagen-mascota-veterinario"></img>
                     <label className="titulo-examen">Dueño Dueño</label>
                 </div>
 

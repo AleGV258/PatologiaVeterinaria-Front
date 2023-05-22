@@ -59,14 +59,20 @@ function Login() {
             var data = [];
             var user = result.user.nombre;
             var rol = result.user.rol;
+            var id = result.user.uid;
+            var token = result.token;
             data.push(user);
             data.push(rol);
+            data.push(id);
+            data.push(token);
             setCorreo(result.user.correo);
             return data;
         }).then(data => {
             localStorage.setItem("autentificacion", autentificacion);
             localStorage.setItem("usuario", data[0]);
             localStorage.setItem("rol", data[1]);
+            localStorage.setItem("id", data[2]);
+            localStorage.setItem("token", data[3]);
             localStorage.setItem("correo", correo);
             return data;
         })

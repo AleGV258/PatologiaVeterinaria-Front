@@ -12,10 +12,51 @@ import '../../styles/GlobalStyle.css'
 */
 
 function Report() {
-    const [usuario, setUsuario] = useState(localStorage.getItem("usuario"));
+    const Token = useState(localStorage.getItem("token"));
+    const [cargando, setCargando] = useState(false);
+    var [reporte, setReporte] = useState([]);
     const navigate = useNavigate();
 
     document.body.style.overflowY = "visible";
+
+    useEffect(() => {
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                token: Token[0]
+            },
+            redirect: 'follow'
+        };
+
+        fetch("https://api-arquitecturas-ti.vercel.app/api/reporte/", requestOptions)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('La solicitud Fetch no se realizó correctamente');
+            }
+        })
+        .then(result => {
+            console.log("Resultado: " + JSON.stringify(result.examenes))
+            var reportes = result.examenes.filter(examen => {
+                return examen.estado == "Completado";
+            })
+            var reporteCard = reportes.map(data => {
+                return (
+                    <div className="report-card" key={data._id}>
+                        <label className='veterinario-titulo-examen'>{data.idMascota}</label>
+                        <label className='report-titulo-dato'>Más Datos... </label>
+                        <label className='report-titulo-dato'>Propietario: </label>
+                        <button onClick={""} className="report-button-examen">Ver PDF</button>
+                        <button onClick={() => notificarUsuario(data._id)} className="report-button-examen">Notificar</button>
+                    </div>
+                );
+            })
+            setReporte(reporteCard);
+        })
+        .catch(error => console.log('error', error));
+    }, []);
 
     const logoutUser = () =>{
         localStorage.clear();
@@ -38,8 +79,45 @@ function Report() {
         navigate("/report");
     }
 
+    const notificarUsuario = (idReporte) => {
+        setCargando(true);
+
+        const raw = {
+            correo: "ale.gv258@gmail.com",
+            id: idReporte
+        };
+
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                token: Token[0]
+            },
+            body: JSON.stringify(raw),
+            redirect: 'follow'
+        };
+
+        fetch("https://api-arquitecturas-ti.vercel.app/api/reporte/enviarCorreo", requestOptions)
+        .then(response => {
+            if (response.ok) {
+                alert("El correo ha sido notificado al propietario con éxito");
+                setCargando(false);
+                return response.json();
+            } else {
+                alert("El correo no se ha podido enviar, ¡Intente Nuevamente!");
+                setCargando(false);
+                throw new Error('La solicitud Fetch no se realizó correctamente');
+            }
+        })
+        .catch(error => console.log('error', error));
+    }
+
     return (
         <div className="grid-home">
+            <div className="carga" style={ cargando ? { display: "grid"} : {display: "none"}}>
+                <div className="pulsar"></div>
+                <label className="carga-texto">Notificando...</label>
+            </div>
             <div className="grid-home-1" onClick={returnHome}>
                 <label className="titulo-usuario">Revisa los Reportes</label>
             </div>
@@ -59,21 +137,7 @@ function Report() {
 
                     <form>
 
-                        <div className="report-card">
-                            <label className='veterinario-titulo-examen'>Mascota 1</label>
-                            <label className='report-titulo-dato'>Más Datos... </label>
-                            <label className='report-titulo-dato'>Propietario: </label>
-                            <button onClick={""} className="report-button-examen">Ver PDF</button>
-                            <button onClick={""} className="report-button-examen">Notificar</button>
-                        </div>
-
-                        <div className="report-card">
-                            <label className='veterinario-titulo-examen'>Mascota 1</label>
-                            <label className='report-titulo-dato'>Más Datos... </label>
-                            <label className='report-titulo-dato'>Propietario: </label>
-                            <button onClick={""} className="report-button-examen">Ver PDF</button>
-                            <button onClick={""} className="report-button-examen">Notificar</button>
-                        </div>
+                        {reporte}
 
                         <div className="option-section">
                             <button className="option-button-cancel" onClick={""}>Cancelar</button>

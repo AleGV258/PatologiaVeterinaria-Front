@@ -12,10 +12,66 @@ import '../../styles/GlobalStyle.css'
 */
 
 function ExamPending() {
-    const [usuario, setUsuario] = useState(localStorage.getItem("usuario"));
+    const Token = useState(localStorage.getItem("token"));
+    const [examenesCompletados, setExamenesCompletados] = useState([]);
     const navigate = useNavigate();
 
     document.body.style.overflowY = "visible";
+
+    useEffect(() => {
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                token: Token[0]
+            },
+            redirect: 'follow'
+        };
+
+        fetch("https://api-arquitecturas-ti.vercel.app/api/examen/listado/Completado", requestOptions)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('La solicitud Fetch no se realizó correctamente');
+            }
+        })
+        .then(result => {
+            // console.log("Resultado: " + JSON.stringify(result.examenes))
+            var Completados = result.examenes.map(examen => {
+                if(examen.tipoExamen == "Parasitologia"){
+                    return (
+                        <div className="mascota-card" key={examen._id}>
+                            <label className="veterinario-titulo-examen">{examen.tipoExamen}</label>
+                            <label className='veterinario-titulo-dato'>Estado: Completado<br></br><br></br>Más Datos... </label>
+                            <label className='veterinario-titulo-dato'>Propietario: ...</label>
+                            <button onClick={""} className="clinico-button-descarga">Ver</button>
+                        </div>
+                    );
+                }else if(examen.tipoExamen == "Urianalisis"){
+                    return (
+                        <div className="mascota-card" key={examen._id}>
+                            <label className="veterinario-titulo-examen">{examen.tipoExamen}</label>
+                            <label className='veterinario-titulo-dato'>Estado: Completado<br></br><br></br>Más Datos... </label>
+                            <label className='veterinario-titulo-dato'>Propietario: ...</label>
+                            <button onClick={""} className="clinico-button-descarga">Ver</button>
+                        </div>
+                    );
+                }else if(examen.tipoExamen == "Hematologia"){
+                    return (
+                        <div className="mascota-card" key={examen._id}>
+                            <label className="veterinario-titulo-examen">{examen.tipoExamen}</label>
+                            <label className='veterinario-titulo-dato'>Estado: Completado<br></br><br></br>Más Datos... </label>
+                            <label className='veterinario-titulo-dato'>Propietario: ...</label>
+                            <button onClick={""} className="clinico-button-descarga">Ver</button>
+                        </div>
+                    );
+                }
+            })
+            setExamenesCompletados(Completados);
+        })
+        .catch(error => console.log('error', error));
+    }, []);
 
     const logoutUser = () =>{
         localStorage.clear();
@@ -46,7 +102,7 @@ function ExamPending() {
             <div className="grid-home-2">
                 <div>
                     <button onClick={returnHome} className="moreOption-button" title="Regresar Página Principal"><img src='../imgs/Home.png' className="moreOption-image"></img></button><br></br>
-                    <button onClick={seeExamPending} className="moreOption-button" title="Exámenes Pendientes"><img src='../imgs/Examen-Pendiente.png' className="moreOption-image"></img></button><br></br>
+                    <button onClick={seeExamPending} className="moreOption-button" title="Exámenes Completados"><img src='../imgs/Examen-Pendiente.png' className="moreOption-image"></img></button><br></br>
                     <button onClick={seeExamComplete} className="moreOption-button-selected" title="Exámenes Completados"><img src='../imgs/Examen-Completado.png' className="moreOption-image"></img></button><br></br>
                     <button onClick={seeReport} className="moreOption-button" title="Informes"><img src='../imgs/Informe.png' className="moreOption-image"></img></button>
                 </div>
@@ -55,7 +111,7 @@ function ExamPending() {
             <div className="grid-home-3">
                 <label className="titulo-examen">Exámenes Completos:</label>
 
-                <div className="mascota-card">
+                {/* <div className="mascota-card">
                     <label className="veterinario-titulo-examen">Examen</label>
                     <label className='veterinario-titulo-dato'>Estado: Completado<br></br><br></br>Más Datos... </label>
                     <label className='veterinario-titulo-dato'>Propietario: ...</label>
@@ -74,7 +130,9 @@ function ExamPending() {
                     <label className='veterinario-titulo-dato'>Estado: Completado<br></br><br></br>Más Datos... </label>
                     <label className='veterinario-titulo-dato'>Propietario: ...</label>
                     <button onClick={""} className="clinico-button-descarga">Ver</button>
-                </div>
+                </div> */}
+
+                {examenesCompletados}
 
                 <br></br>
                 
