@@ -530,12 +530,12 @@ input[type="submit"]:active{
 
 /* Página Agregar Mascota y Solicitar Examen */
 .option-big-card{
-    width: 82%;
+    width: 80%;
     background-color: #DDDDDD;
     color: #000;
     box-shadow: 10px 10px 10px rgba(0.0, 0.0, 0.0, 0.2);
     padding: 2% 4%;
-    margin: 0 5% 3% 5%;
+    margin: 0 6% 3% 6%;
     display: grid;
     align-items: center;
     text-decoration: none;
@@ -922,6 +922,38 @@ tr:nth-child(even) {
     justify-content: space-between;
     align-items: center;
     padding: 4% 0 0 0;
+}
+.option-select-section{
+    width: 100%;
+    margin: 1% 0;
+    display: flex;
+    justify-content: space-around;
+}
+.option-select-title{
+    width: 40%;
+    font-size: xx-large;
+    font-weight: 600;
+    padding: 2.5% 0 1.5% 0;
+}
+.option-select-exam{
+    display: inline-block;
+    border-radius: 50px;
+    background-color: #fff;
+    color: black;
+    outline: none;
+    text-align: center;
+    font-size: large;
+    padding: 2vh 2%;
+    margin: 2% 0;
+    font-size: x-large;
+}
+.mascota-card-imagen{
+    width: 4vw;
+    margin: 0 -5% 0 0;
+}
+.veterinario-registro{
+    width: 70%;
+    margin: -3% auto 0 auto;
 }
 
 /* Media Queries */

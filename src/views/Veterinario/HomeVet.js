@@ -18,6 +18,42 @@ function HomeVet() {
 
     document.body.style.overflowY = "visible";
 
+    // useEffect(() => {
+    //     const requestOptions = {
+    //         method: 'GET',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             token: Token[0]
+    //         },
+    //         redirect: 'follow'
+    //     };
+
+    //     fetch("https://api-arquitecturas-ti.vercel.app/api/mascota/Usuario/", requestOptions)
+    //     .then(response => {
+    //         if (response.ok) {
+    //             return response.json();
+    //         } else {
+    //             throw new Error('La solicitud Fetch no se realizó correctamente');
+    //         }
+    //     })
+    //     .then(result => {
+    //         // console.log("Resultado: " + JSON.stringify(result))
+    //         var mascotasCards = result.mascotas.map(mascota => {
+    //             return (
+    //                 <div className="mascota-card" key={mascota._id}>
+    //                     <img src='../imgs/Mascota.png' className='mascota-image'></img>
+    //                     <label className='mascota-titulo-examen'>{mascota.nombre}</label>
+    //                     <label className='mascota-titulo-dato'>Raza: {mascota.raza}<br></br><br></br>Edad: {mascota.edad}</label>
+    //                     <button onClick={() => petSpecificDetails(mascota._id)} className="mascota-button-info">+ Info</button>
+    //                     <button onClick={() => petExamDetails(mascota._id)} className="mascota-button-examen">Examenes</button>
+    //                 </div>
+    //             )
+    //         })
+    //         setMascotasUsuarios(mascotasCards);
+    //     })
+    //     .catch(error => console.log('error', error));
+    // }, []);
+
     const logoutUser = () => {
         localStorage.clear();
         navigate("/login");
@@ -27,12 +63,12 @@ function HomeVet() {
         navigate("/home-vet");
     }
 
-    const seeExamPending = () => {
-        navigate("/pend-exam");
+    const seeExams = () => {
+        navigate("/exams");
     }
 
-    const seeExamComplete = () => {
-        navigate("/comp-exam");
+    const seeRegisterVet = () => {
+        navigate("/register-vet");
     }
 
     const seeReport = () => {
@@ -43,11 +79,6 @@ function HomeVet() {
         setBusqueda(event.target.value);
     };
 
-
-    // --------------------------------------------- PRUEBA
-    const para=()=>{navigate("/parasitologia");};const uri=()=>{navigate("/urianalisis");};const hemo=()=>{navigate("/hematologia");};
-    // --------------------------------------------- PRUEBA
-
     return (
         <div className="grid-home">
             <div className="grid-home-1">
@@ -56,9 +87,9 @@ function HomeVet() {
             <div className="grid-home-2">
                 <div>
                     <button onClick={returnHome} className="moreOption-button-selected" title="Regresar Página Principal"><img src='../imgs/Home.png' className="moreOption-image"></img></button><br></br>
-                    <button onClick={seeExamPending} className="moreOption-button" title="Exámenes Pendientes"><img src='../imgs/Examen-Pendiente.png' className="moreOption-image"></img></button><br></br>
-                    <button onClick={seeExamComplete} className="moreOption-button" title="Exámenes Completados"><img src='../imgs/Examen-Completado.png' className="moreOption-image"></img></button><br></br>
-                    <button onClick={seeReport} className="moreOption-button" title="Informes"><img src='../imgs/Informe.png' className="moreOption-image"></img></button>
+                    <button onClick={seeExams} className="moreOption-button" title="Exámenes Pendientes/Completados"><img src='../imgs/Examen.png' className="moreOption-image"></img></button><br></br>
+                    <button onClick={seeReport} className="moreOption-button" title="Informes"><img src='../imgs/Informe.png' className="moreOption-image"></img></button><br></br>
+                    <button onClick={seeRegisterVet} className="moreOption-button" title="Agregar Nuevos Veterinarios"><img src='../imgs/Agregar-Veterinario.png' className="moreOption-image"></img></button>
                 </div>
                 <button onClick={logoutUser} className="logout-button logout-button-veterinario">Cerrar <br className="break-point"></br>Sesión</button>
             </div>
@@ -70,19 +101,19 @@ function HomeVet() {
                     <button onClick={""} className="boton-buscador">Buscar</button>
                 </div>
 
-                <div className="opcion-mascota-veterinario" onClick={para}>
+                <div className="opcion-mascota-veterinario">
                     <div className="nombre-mascota-veterinario">Mascota</div>
                     <img src='../imgs/Mascota.png' className="imagen-mascota-veterinario"></img>
                     <label className="titulo-examen">Dueño Dueño</label>
                 </div>
 
-                <div className="opcion-mascota-veterinario" onClick={uri}>
+                <div className="opcion-mascota-veterinario">
                     <div className="nombre-mascota-veterinario">Mascota</div>
                     <img src='../imgs/Mascota.png' className="imagen-mascota-veterinario"></img>
                     <label className="titulo-examen">Dueño Dueño</label>
                 </div>
 
-                <div className="opcion-mascota-veterinario" onClick={hemo}>
+                <div className="opcion-mascota-veterinario">
                     <div className="nombre-mascota-veterinario">Mascota</div>
                     <img src='../imgs/Mascota.png' className="imagen-mascota-veterinario"></img>
                     <label className="titulo-examen">Dueño Dueño</label>

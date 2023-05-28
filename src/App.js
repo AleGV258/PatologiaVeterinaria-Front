@@ -12,12 +12,15 @@ import AddExam from './views/Usuario/AddExam.js';
 import AddPet from './views/Usuario/AddPet.js';
 // Veterinarios
 import HomeVet from './views/Veterinario/HomeVet.js';
-import ExamPending from './views/Veterinario/ExamPending.js';
-import ExamComplete from './views/Veterinario/ExamComplete.js';
+import RegisterVet from './views/Veterinario/RegisterVet.js'
+import Exams from './views/Veterinario/Exams.js';
 import Report from './views/Veterinario/Report.js';
 import Parasitologia from './views/Veterinario/Examenes/Parasitologia.js';
 import Urianalisis from './views/Veterinario/Examenes/Urianalisis.js';
 import Hematologia from './views/Veterinario/Examenes/Hematologia.js';
+import ParasitologiaView from './views/Veterinario/Examenes/ParasitologiaView.js';
+import UrianalisisView from './views/Veterinario/Examenes/UrianalisisView.js';
+import HematologiaView from './views/Veterinario/Examenes/HematologiaView.js';
 
 function App() {
   const [autentificacion, setAutentificacion] = useState(false);
@@ -48,12 +51,15 @@ function App() {
             <Route path="add-pet" element={<AddPet />} />
             {/* Veterinario */}
             <Route path="home-vet" element={<HomeVet />} />
-            <Route path="pend-exam" element={<ExamPending />} />
-            <Route path="comp-exam" element={<ExamComplete />} />
+            <Route path="register-vet" element={<RegisterVet />} />
+            <Route path="exams" element={<Exams />} />
             <Route path="report" element={<Report />} />
             <Route path="parasitologia" element={<Parasitologia />} />
             <Route path="urianalisis" element={<Urianalisis />} />
             <Route path="hematologia" element={<Hematologia />} />
+            <Route path="parasitologia-view" element={<ParasitologiaView />} />
+            <Route path="urianalisis-view" element={<UrianalisisView />} />
+            <Route path="hematologia-view" element={<HematologiaView />} />
           </Routes>
         </div>
       );
@@ -72,12 +78,15 @@ function App() {
             <Route path="add-pet" element={<AddPet />} />
             {/* Veterinario */}
             <Route path="home-vet" element={<HomeVet />} />
-            <Route path="pend-exam" element={<ExamPending />} />
-            <Route path="comp-exam" element={<ExamComplete />} />
+            <Route path="register-vet" element={<RegisterVet />} />
+            <Route path="exams" element={<Exams />} />
             <Route path="report" element={<Report />} />
             <Route path="parasitologia" element={<Parasitologia />} />
             <Route path="urianalisis" element={<Urianalisis />} />
             <Route path="hematologia" element={<Hematologia />} />
+            <Route path="parasitologia-view" element={<ParasitologiaView />} />
+            <Route path="urianalisis-view" element={<UrianalisisView />} />
+            <Route path="hematologia-view" element={<HematologiaView />} />
           </Routes>
         </div>
       );
@@ -98,12 +107,15 @@ function App() {
         <Route path="add-pet" element={<AddPet />} />
         {/* Veterinario */}
         <Route path="home-vet" element={<HomeVet />} />
-        <Route path="pend-exam" element={<ExamPending />} />
-        <Route path="comp-exam" element={<ExamComplete />} />
+        <Route path="register-vet" element={<RegisterVet />} />
+        <Route path="exams" element={<Exams />} />
         <Route path="report" element={<Report />} />
         <Route path="parasitologia" element={<Parasitologia />} />
         <Route path="urianalisis" element={<Urianalisis />} />
         <Route path="hematologia" element={<Hematologia />} />
+        <Route path="parasitologia-view" element={<ParasitologiaView />} />
+        <Route path="urianalisis-view" element={<UrianalisisView />} />
+        <Route path="hematologia-view" element={<HematologiaView />} />
       </Routes>
     </div>
   );

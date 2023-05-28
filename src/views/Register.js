@@ -47,6 +47,9 @@ function Register() {
                         alert("Usuario registrado correctamente, ¡Inicia Sesión!")
                         navigate("/login");
                         return response.text();
+                    } else if(contrasena.length < 6){
+                        setCargando(false);
+                        alert("La contraseña es demasiado corta, deben ser al menos seis caracteres. ¡Intenta Nuevamente!");
                     } else {
                         setCargando(false);
                         alert("Usuario no registrado. ¡Intenta Nuevamente!")

@@ -14,49 +14,89 @@ import '../../styles/GlobalStyle.css'
 function Report() {
     const Token = useState(localStorage.getItem("token"));
     const [cargando, setCargando] = useState(false);
+    const [realizado, setRealizado] = useState(true);
     var [reporte, setReporte] = useState([]);
     const navigate = useNavigate();
+    var fechaCompleta = "";
+    var fecha = new Date();
+    var hora = new Date();
 
     document.body.style.overflowY = "visible";
 
     useEffect(() => {
-        const requestOptions = {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                token: Token[0]
-            },
-            redirect: 'follow'
-        };
+        const fetchData = async () => {
+            try {
+                const requestOptions = {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        token: Token[0]
+                    },
+                    redirect: 'follow'
+                };
+    
+                const reporteResponse = await fetch("https://api-arquitecturas-ti.vercel.app/api/reporte/", requestOptions);
+                if (!reporteResponse.ok) {
+                    throw new Error('La solicitud Fetch no se realizó correctamente');
+                }
+                const reporteResult = await reporteResponse.json();
 
-        fetch("https://api-arquitecturas-ti.vercel.app/api/reporte/", requestOptions)
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('La solicitud Fetch no se realizó correctamente');
+                const examenesPromises = reporteResult.examenes.map(examen => {
+                    const examenUrl = `https://api-arquitecturas-ti.vercel.app/api/examen/informacion/${examen._id}`;
+                    return fetch(examenUrl, requestOptions)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('La solicitud Fetch no se realizó correctamente');
+                            }
+                            return response.json();
+                        });
+                });
+                const examenesData = await Promise.all(examenesPromises);
+                const dataMascotas = examenesData;
+
+                const reporteResponse2 = await fetch("https://api-arquitecturas-ti.vercel.app/api/reporte/", requestOptions);
+                if (!reporteResponse2.ok) {
+                    throw new Error('La solicitud Fetch no se realizó correctamente');
+                }
+                const reporteResult2 = await reporteResponse2.json();
+    
+                if (realizado) {
+                    const reporte = reporteResult2.examenes.filter(examen => {
+                        return examen.estado === "Completado";
+                    });
+    
+                    const mascotas = dataMascotas.filter(mascota => {
+                        return reporte.some(examen => {
+                            return mascota.examen._id === examen._id;
+                        });
+                    });
+    
+                    const reporteCard = mascotas.map(data => {
+                        fechaCompleta = data.examen.fechaSolicitud;
+                        fecha = new Date(fechaCompleta).toLocaleDateString();
+                        hora = new Date(fechaCompleta).toLocaleTimeString();
+                        return (
+                            <div className="report-card" key={data.examen._id}>
+                                <label className='veterinario-titulo-examen'>{data.mascota.nombre}</label>
+                                <label className='report-titulo-dato'><b>Propietario: </b>{data.usuario.nombre}<br></br><b>Especie: </b>{data.mascota.especie}<br></br><b>Sexo: </b>{data.mascota.sexo}</label>
+                                <label className='report-titulo-dato'><b>Examen: </b>{data.examen.tipoExamen}<br></br><b>Fecha: </b>{fecha}<br></br><b>Hora: </b>{hora}</label>
+                                <button onClick={""} className="report-button-examen">Ver PDF</button>
+                                <button onClick={() => notificarUsuario(data.examen._id)} className="report-button-examen">Notificar</button>
+                            </div>
+                        );
+                    });
+
+                    setRealizado(false);
+                    setReporte(reporteCard);
+                }
+            } catch (error) {
+                console.log('error', error);
             }
-        })
-        .then(result => {
-            console.log("Resultado: " + JSON.stringify(result.examenes))
-            var reportes = result.examenes.filter(examen => {
-                return examen.estado == "Completado";
-            })
-            var reporteCard = reportes.map(data => {
-                return (
-                    <div className="report-card" key={data._id}>
-                        <label className='veterinario-titulo-examen'>{data.idMascota}</label>
-                        <label className='report-titulo-dato'>Más Datos... </label>
-                        <label className='report-titulo-dato'>Propietario: </label>
-                        <button onClick={""} className="report-button-examen">Ver PDF</button>
-                        <button onClick={() => notificarUsuario(data._id)} className="report-button-examen">Notificar</button>
-                    </div>
-                );
-            })
-            setReporte(reporteCard);
-        })
-        .catch(error => console.log('error', error));
+        };
+    
+        fetchData();
     }, []);
+    
 
     const logoutUser = () =>{
         localStorage.clear();
@@ -67,12 +107,12 @@ function Report() {
         navigate("/home-vet");
     }
 
-    const seeExamPending = () => {
-        navigate("/pend-exam");
+    const seeExams = () => {
+        navigate("/exams");
     }
 
-    const seeExamComplete = () => {
-        navigate("/comp-exam");
+    const seeRegisterVet = () => {
+        navigate("/register-vet");
     }
 
     const seeReport = () => {
@@ -82,22 +122,17 @@ function Report() {
     const notificarUsuario = (idReporte) => {
         setCargando(true);
 
-        const raw = {
-            correo: "ale.gv258@gmail.com",
-            id: idReporte
-        };
-
         const requestOptions = {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 token: Token[0]
             },
-            body: JSON.stringify(raw),
             redirect: 'follow'
         };
 
-        fetch("https://api-arquitecturas-ti.vercel.app/api/reporte/enviarCorreo", requestOptions)
+        const examenUrl = `https://api-arquitecturas-ti.vercel.app/api/reporte/enviarCorreo/${idReporte}`;
+        fetch(examenUrl, requestOptions)
         .then(response => {
             if (response.ok) {
                 alert("El correo ha sido notificado al propietario con éxito");
@@ -124,9 +159,9 @@ function Report() {
             <div className="grid-home-2">
                 <div>
                     <button onClick={returnHome} className="moreOption-button" title="Regresar Página Principal"><img src='../imgs/Home.png' className="moreOption-image"></img></button><br></br>
-                    <button onClick={seeExamPending} className="moreOption-button" title="Exámenes Pendientes"><img src='../imgs/Examen-Pendiente.png' className="moreOption-image"></img></button><br></br>
-                    <button onClick={seeExamComplete} className="moreOption-button" title="Exámenes Completados"><img src='../imgs/Examen-Completado.png' className="moreOption-image"></img></button><br></br>
-                    <button onClick={seeReport} className="moreOption-button-selected" title="Informes"><img src='../imgs/Informe.png' className="moreOption-image"></img></button>
+                    <button onClick={seeExams} className="moreOption-button" title="Exámenes Pendientes/Completados"><img src='../imgs/Examen.png' className="moreOption-image"></img></button><br></br>
+                    <button onClick={seeReport} className="moreOption-button-selected" title="Informes"><img src='../imgs/Informe.png' className="moreOption-image"></img></button><br></br>
+                    <button onClick={seeRegisterVet} className="moreOption-button" title="Agregar Nuevos Veterinarios"><img src='../imgs/Agregar-Veterinario.png' className="moreOption-image"></img></button>
                 </div>
                 <button onClick={logoutUser} className="logout-button logout-button-veterinario">Cerrar <br className="break-point"></br>Sesión</button>
             </div>
@@ -135,16 +170,7 @@ function Report() {
 
                 <div className="veterinario-big-card">
 
-                    <form>
-
-                        {reporte}
-
-                        <div className="option-section">
-                            <button className="option-button-cancel" onClick={""}>Cancelar</button>
-                            <input type="submit" value="Guardar" className="option-button-save"></input>
-                        </div>
-
-                    </form>
+                    {reporte}
                     
                 </div>
 

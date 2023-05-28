@@ -11,9 +11,11 @@ import '../../../styles/GlobalStyle.css'
         - García Vargas Michell Alejandro - 259663
 */
 
-function Parasitologia() {
-    const [cargando, setCargando] = useState(false);
+function ParasitologiaView() {
     const Token = useState(localStorage.getItem("token"));
+    var fechaCompleta = "";
+    var fechaReporte = new Date();
+    var horaReporte = new Date();
     // Examen General
     const [caso, setCaso] = useState("");
     const [propietario, setPropietario] = useState("");
@@ -47,91 +49,64 @@ function Parasitologia() {
         const requestOptions = {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
-                token: Token[0]
+            'Content-Type': 'application/json',
+            token: Token[0]
             },
             redirect: 'follow'
         };
-    
-        const urlData = `https://api-arquitecturas-ti.vercel.app/api/examen/informacion/${examenSeleccionado}`;    
-        fetch(urlData, requestOptions)
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('La solicitud Fetch no se realizó correctamente');
+        
+        const fetchData = async () => {
+            try {
+                const response = await fetch("https://api-arquitecturas-ti.vercel.app/api/reporte/", requestOptions);
+                if (!response.ok) {
+                    throw new Error('La solicitud Fetch no se realizó correctamente');
+                }
+                const result = await response.json();
+            
+                const urlData = `https://api-arquitecturas-ti.vercel.app/api/examen/informacion/${examenSeleccionado}`;
+                const secondResponse = await fetch(urlData, requestOptions);
+                if (!secondResponse.ok) {
+                    throw new Error('La solicitud Fetch no se realizó correctamente');
+                }
+                const secondResult = await secondResponse.json();
+                setPropietario(secondResult.usuario.nombre);
+                setEspecie(secondResult.mascota.especie);
+                setRaza(secondResult.mascota.raza);
+                setSexo(secondResult.mascota.sexo);
+                setNombre(secondResult.mascota.nombre);
+                setEdad(secondResult.mascota.edad);
+                setCastrado(secondResult.mascota.castrado);
+                setMVZ(secondResult.mascota.MVZ);
+                const dataExamen = result.examenes.filter(data => {
+                    return data._id === examenSeleccionado
+                });
+
+                fechaCompleta = dataExamen[0].fechaRealizado;
+                fechaReporte = new Date(fechaCompleta).toLocaleDateString();
+                horaReporte = new Date(fechaCompleta).toLocaleTimeString();
+                const fechaReporteNueva = formatearFecha(new Date(fechaCompleta));
+                setFecha(fechaReporteNueva);
+                setHora(horaReporte);
+                setAnamnesis(dataExamen[0].datos.Anamnesis);
+                setTratamiento(dataExamen[0].datos["Tratamiento Previo"]);
+
+                setMuestra(dataExamen[0].datos["Tipo de Muestra"]);
+                setTecnica(dataExamen[0].datos["Examen Microscópico"]["Técnica"]);
+                setResultado(dataExamen[0].datos["Examen Microscópico"]["Resultado"]);
+
+                setObservaciones(dataExamen[0].datos.Observaciones);
+                setCaso("");
+                setDireccion("");
+                setExpediente("");
+                setTelefono("");
+            } catch (error) {
+                console.log('error', error);
             }
-        })
-        .then(result => {
-            // console.log("Resultado: " + JSON.stringify(result))
-            setPropietario(result.usuario.nombre);
-            setEspecie(result.mascota.especie);
-            setRaza(result.mascota.raza);
-            setSexo(result.mascota.sexo);
-            setNombre(result.mascota.nombre);
-            setEdad(result.mascota.edad);
-            setCastrado(result.mascota.castrado);
-            setMVZ(result.mascota.MVZ);
-        })
-        .catch(error => console.log('error', error));
+        };
+        
+        fetchData();
     }, []);
 
-    const handleSubmit = (event) => {
-        event.preventDefault(); // Evita que la página se recargue al enviar el formulario
-        setCargando(true);
-
-        const raw = {
-            datos: {
-                "Datos Generales": {
-                    "Caso": caso,
-                    "Propietario": propietario,
-                    "Dirección": direccion,
-                    "Teléfono": telefono,
-                    "Fecha": fecha,
-                    "Hora": hora,
-                    "Raza": raza,
-                    "Sexo": sexo,
-                    "MVZ": mvz
-                },
-                "Anamnesis": anamnesis,
-                "Tratamiento Previo": tratamiento,
-                "Tipo de Muestra": muestra,
-                "Examen Microscópico": {
-                    "Técnica": tecnica,
-                    "Resultado": resultado
-                },
-                "Observaciones": observaciones
-            }
-        };
-
-        const requestOptions = {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                token: Token[0]
-            },
-            body: JSON.stringify(raw),
-            redirect: 'follow'
-        };
-
-        var url = "https://api-arquitecturas-ti.vercel.app/api/examen/" + examenSeleccionado;
-        fetch(url, requestOptions)
-        .then(response => {
-            if (response.ok) {
-                setCargando(false);
-                alert("El examen se ha registrado con éxito.");
-                navigate("/home-vet");
-                return response.json();
-            } else {
-                setCargando(false);
-                alert("El examen no se ha registrado correctamente. ¡Intenta Nuevamente!");
-                throw new Error('La solicitud Fetch no se realizó correctamente');
-            }
-        })
-        .catch(error => console.log('error', error));
-    }
-
-    // Función para formatear la fecha en el formato deseado (YYYY-MM-DD)
     const formatearFecha = (fecha) => {
         const dia = fecha.getDate();
         const mes = fecha.getMonth() + 1;
@@ -142,16 +117,6 @@ function Parasitologia() {
         const mesFormateado = mes < 10 ? '0' + mes : mes;
 
         return `${año}-${mesFormateado}-${diaFormateado}`;
-    };
-
-    const formatearHora = (hora) => {
-        const horas = fecha.getHours();
-        const minutos = fecha.getMinutes();
-    
-        const horaFormateada = horas < 10 ? '0' + horas : horas;
-        const minutosFormateados = minutos < 10 ? '0' + minutos : minutos;
-    
-        return `${horaFormateada}:${minutosFormateados}`;
     };
 
     // Rutas
@@ -176,119 +141,8 @@ function Parasitologia() {
         navigate("/report");
     }
 
-    // Examen General
-    const handleCasoChange = (event) => {
-        setCaso(event.target.value);
-    };
-    
-    const handlePropietarioChange = (event) => {
-        setPropietario(event.target.value);
-    };
-    
-    const handleDireccionChange = (event) => {
-        setDireccion(event.target.value);
-    };
-    
-    const handleTelefonoChange = (event) => {
-        setTelefono(event.target.value);
-    };
-    
-    const handleFechaChange = (event) => {
-        const fechaSeleccionada = new Date(event.target.value);
-        setFecha(fechaSeleccionada);
-    };
-    
-    const handleHoraChange = (event) => {
-        const horaSeleccionada = new Date(event.target.value);
-        setHora(horaSeleccionada);
-    };
-    
-    const handleEspecieChange = (event) => {
-        setEspecie(event.target.value);
-    };
-    
-    const handleNombreChange = (event) => {
-        setNombre(event.target.value);
-    };
-    
-    const handleRazaChange = (event) => {
-        setRaza(event.target.value);
-    };
-    
-    const handleEdadChange = (event) => {
-        setEdad(event.target.value);
-    };
-    
-    const handleSexoChange = (event) => {
-        setSexo(event.target.value);
-    };
-    
-    const handleCastradoChange = (event) => {
-        setCastrado(event.target.value);
-    };
-    
-    const handleMVZChange = (event) => {
-        setMVZ(event.target.value);
-    };
-    
-    const handleExpedienteChange = (event) => {
-        setExpediente(event.target.value);
-    };
-    
-    const handleAnamnesisChange = (event) => {
-        setAnamnesis(event.target.value);
-    };
-    
-    const handleTratamientoChange = (event) => {
-        setTratamiento(event.target.value);
-    };
-    
-    const handleObservacionesChange = (event) => {
-        setObservaciones(event.target.value);
-    };
-
-    // Examen Específico
-    const handleMuestraChange = (event) => {
-        setMuestra(event.target.value);
-    };
-
-    const handleTecnicaChange = (event) => {
-        setTecnica(event.target.value);
-    };
-
-    const handleResultadoChange = (event) => {
-        setResultado(event.target.value);
-    };
-
-    const cancelarForm = () => {
-        setCaso("");
-        setPropietario("");
-        setDireccion("");
-        setTelefono("");
-        setFecha(new Date());
-        setHora(new Date());
-        setEspecie("");
-        setNombre("");
-        setRaza("");
-        setEdad("");
-        setSexo("");
-        setCastrado("");
-        setMVZ("");
-        setExpediente("");
-        setAnamnesis("");
-        setTratamiento("");
-        setObservaciones("");
-        setMuestra("");
-        setTecnica("");
-        setResultado("");
-      };
-
     return (
         <div className="grid-home">
-            <div className="carga" style={ cargando ? { display: "grid"} : {display: "none"}}>
-                <div className="pulsar"></div>
-                <label className="carga-texto">Registrando...</label>
-            </div>
             <div className="grid-home-1" onClick={seeExams}>
                 <img src='../imgs/Regresar.png' className="regresar" onClick={seeExams}></img>
                 <label className="titulo-usuario">Examen de Parasitología</label>
@@ -306,7 +160,7 @@ function Parasitologia() {
 
                 {/* <label className="titulo-examen"></label> */}
 
-                <form className="examen" onSubmit={handleSubmit}>
+                <form className="examen">
                     <div className="examen-encabezado">
 
                         <div className="examen-encabezado-divisor"></div>
@@ -333,33 +187,33 @@ function Parasitologia() {
                             <table className="examen-encabezado-tablaPropietario">
                                 <tr>
                                     <th>Caso:</th>
-                                    <td className="examen-tabla-continuacion">23-Para-<input type="text" required value={caso} onChange={handleCasoChange} className="examen-input-tabla examen-input-continuacion" placeholder="Ingrese número de caso"></input></td>
+                                    <td className="examen-tabla-continuacion">23-Para-<input type="text" required value={caso} disabled className="examen-input-tabla examen-input-continuacion" placeholder="Ingrese número de caso"></input></td>
                                 </tr>
                                 <tr>
                                     <th>Propietario:</th>
-                                    <td><input type="text" required value={propietario} onChange={handlePropietarioChange} className="examen-input-tabla" placeholder="Ingrese nombre propietario"></input></td>
+                                    <td><input type="text" required value={propietario} disabled className="examen-input-tabla" placeholder="Ingrese nombre propietario"></input></td>
                                 </tr>
                                 <tr>
                                     <th>Dirección:</th>
-                                    <td><input type="text" required value={direccion} onChange={handleDireccionChange} className="examen-input-tabla" placeholder="Ingrese dirección propietario"></input></td>
+                                    <td><input type="text" required value={direccion} disabled className="examen-input-tabla" placeholder="Ingrese dirección propietario"></input></td>
                                 </tr>
                                 <tr>
                                     <th>Teléfono:</th>
-                                    <td><input type="text" required value={telefono} onChange={handleTelefonoChange} className="examen-input-tabla" placeholder="Ingrese teléfono propietario"></input></td>
+                                    <td><input type="text" required value={telefono} disabled className="examen-input-tabla" placeholder="Ingrese teléfono propietario"></input></td>
                                 </tr>
                             </table>
 
                             <table className="examen-encabezado-tablaMascota">
                                 <tr>
                                     <th>Fecha:</th>
-                                    <td><input type="date" required value={formatearFecha(fecha)} onChange={handleFechaChange} className="examen-input-tabla" placeholder="Seleccione muestra"></input></td>
+                                    <td><input type="date" required value={fecha} disabled className="examen-input-tabla" placeholder="Seleccione muestra"></input></td>
                                     <th>Hora:</th>
-                                    <td><input type="time" required value={formatearHora(hora)} onChange={handleHoraChange} className="examen-input-tabla" placeholder="Seleccione muestra"></input></td>
+                                    <td><input type="time" required value={hora} disabled className="examen-input-tabla" placeholder="Seleccione muestra"></input></td>
                                 </tr>
                                 <tr>
                                     <th>Especie:</th>
                                     <td>
-                                        <select name="especie_examen" id="especie_examen" className="examen-input-tabla" value={especie} onChange={handleEspecieChange} required>
+                                        <select name="especie_examen" id="especie_examen" className="examen-input-tabla" value={especie} disabled required>
                                             <option value="" disabled selected>Seleccione especie</option>
                                             <option value="Canino">Canino</option>
                                             <option value="Felino">Felino</option>
@@ -368,18 +222,18 @@ function Parasitologia() {
                                         </select>
                                     </td>
                                     <th>Nombre:</th>
-                                    <td><input type="text" required value={nombre} onChange={handleNombreChange} className="examen-input-tabla" placeholder="Paciente"></input></td>
+                                    <td><input type="text" required value={nombre} disabled className="examen-input-tabla" placeholder="Paciente"></input></td>
                                 </tr>
                                 <tr>
                                     <th>Raza:</th>
-                                    <td><input type="text" required value={raza} onChange={handleRazaChange} className="examen-input-tabla" placeholder="Raza"></input></td>
+                                    <td><input type="text" required value={raza} disabled className="examen-input-tabla" placeholder="Raza"></input></td>
                                     <th>Edad:</th>
-                                    <td><input type="number" required value={edad} onChange={handleEdadChange} className="examen-input-tabla" placeholder="Edad"></input></td>
+                                    <td><input type="number" required value={edad} disabled className="examen-input-tabla" placeholder="Edad"></input></td>
                                 </tr>
                                 <tr>
                                     <th>Sexo:</th>
                                     <td>
-                                        <select name="sexo_examen" id="sexo_examen" className="examen-input-tabla" value={sexo} onChange={handleSexoChange} required>
+                                        <select name="sexo_examen" id="sexo_examen" className="examen-input-tabla" value={sexo} disabled required>
                                             <option value="" disabled selected>Seleccione sexo</option>
                                             <option value="Hembra">Hembra</option>
                                             <option value="Macho">Macho</option>
@@ -387,7 +241,7 @@ function Parasitologia() {
                                     </td>
                                     <th>Castrado:</th>
                                     <td>
-                                        <select name="castrado_examen" id="castrado_examen" className="examen-input-tabla" value={castrado} onChange={handleCastradoChange} required>
+                                        <select name="castrado_examen" id="castrado_examen" className="examen-input-tabla" value={castrado} disabled required>
                                             <option value="" disabled selected>Seleccione castrado</option>
                                             <option value="No">No</option>
                                             <option value="Si">Si</option>
@@ -396,9 +250,9 @@ function Parasitologia() {
                                 </tr>
                                 <tr>
                                     <th>MVZ:</th>
-                                    <td><input type="text" required value={mvz} onChange={handleMVZChange} className="examen-input-tabla" placeholder="Médico"></input></td>
+                                    <td><input type="text" required value={mvz} disabled className="examen-input-tabla" placeholder="Médico"></input></td>
                                     <th>Expediente:</th>
-                                    <td><input type="number" required value={expediente} onChange={handleExpedienteChange} className="examen-input-tabla" placeholder="Número"></input></td>
+                                    <td><input type="number" required value={expediente} disabled className="examen-input-tabla" placeholder="Número"></input></td>
                                 </tr>
                             </table>
                         </div>
@@ -407,11 +261,11 @@ function Parasitologia() {
                             <table className="examen-encabezado-tablaTratamiento">
                                 <tr>
                                     <th className="examen-segunda-version1">Anamnesis / Examen Fisico:</th>
-                                    <td><input type="text" required value={anamnesis} onChange={handleAnamnesisChange} className="examen-input-tabla" placeholder="Ingrese anamnesis y examen físico"></input></td>
+                                    <td><input type="text" required value={anamnesis} disabled className="examen-input-tabla" placeholder="Ingrese anamnesis y examen físico"></input></td>
                                 </tr>
                                 <tr>
                                     <th>Tratamiento previo:</th>
-                                    <td className="examen-segunda-version2"><input type="text" required value={tratamiento} onChange={handleTratamientoChange} className="examen-input-tabla" placeholder="Ingrese tratamiento hasta 3 días previos a la muestra"></input></td>
+                                    <td className="examen-segunda-version2"><input type="text" required value={tratamiento} disabled className="examen-input-tabla" placeholder="Ingrese tratamiento hasta 3 días previos a la muestra"></input></td>
                                 </tr>
                             </table>
                         </div>
@@ -421,7 +275,7 @@ function Parasitologia() {
                                 <tr>
                                     <th className="examen-segunda-version2">Tipo de muestra:</th>
                                     <td>
-                                        <select name="muestra_examen" id="muestra_examen" className="examen-input-tabla" value={muestra} onChange={handleMuestraChange} required>
+                                        <select name="muestra_examen" id="muestra_examen" className="examen-input-tabla" value={muestra} disabled required>
                                             <option value="" disabled selected>Seleccione muestra</option>
                                             <option value="Raspado">Raspado</option>
                                             <option value="Ejemplar de Parásito">Ejemplar de Parásito</option>
@@ -436,7 +290,7 @@ function Parasitologia() {
                                 <tr>
                                     <th className="examen-segunda-version2">Técnica:</th>
                                     <td>
-                                        <select name="tecnica_examen" id="tecnica_examen" className="examen-input-tabla" value={tecnica} onChange={handleTecnicaChange} required>
+                                        <select name="tecnica_examen" id="tecnica_examen" className="examen-input-tabla" value={tecnica} disabled required>
                                             <option value="" disabled selected>Seleccione técnica</option>
                                             <option value="Raspado Cutáneo">Raspado Cutáneo</option>
                                             <option value="Identificación Directa">Identificación Directa</option>
@@ -448,7 +302,7 @@ function Parasitologia() {
                                 </tr>
                                 <tr>
                                     <th className="examen-segunda-version2">Resultado:</th>
-                                    <td className="examen-segunda-version2"><input type="text" required value={resultado} onChange={handleResultadoChange} className="examen-input-tabla" placeholder="Resultado"></input></td>
+                                    <td className="examen-segunda-version2"><input type="text" required value={resultado} disabled className="examen-input-tabla" placeholder="Resultado"></input></td>
                                 </tr>
                             </table>
                         </div>
@@ -457,14 +311,9 @@ function Parasitologia() {
                             <table className="examen-encabezado-tablaTratamiento">
                                 <tr>
                                     <th className="examen-segunda-version1">Observaciones:</th>
-                                    <td><input type="text" required value={observaciones} onChange={handleObservacionesChange} className="examen-input-tabla" placeholder="Observaciones"></input></td>
+                                    <td><input type="text" required value={observaciones} disabled className="examen-input-tabla" placeholder="Observaciones"></input></td>
                                 </tr>
                             </table>
-                        </div>
-
-                        <div className="option-section-examen">
-                            <button className="option-button-cancel" onClick={cancelarForm}>Cancelar</button>
-                            <input type="submit" value="Guardar" className="option-button-save"></input>
                         </div>
                     </div>
 
@@ -477,4 +326,4 @@ function Parasitologia() {
     );
 }
  
-export default Parasitologia;
+export default ParasitologiaView;

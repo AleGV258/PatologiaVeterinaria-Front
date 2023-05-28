@@ -11,8 +11,7 @@ import '../../../styles/GlobalStyle.css'
         - García Vargas Michell Alejandro - 259663
 */
 
-function Urianalisis() {
-    const [cargando, setCargando] = useState(false);
+function UrianalisisView() {
     const Token = useState(localStorage.getItem("token"));
     // Examen General
     const [caso, setCaso] = useState("");
@@ -65,36 +64,82 @@ function Urianalisis() {
         const requestOptions = {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
-                token: Token[0]
+            'Content-Type': 'application/json',
+            token: Token[0]
             },
             redirect: 'follow'
         };
-    
-        const urlData = `https://api-arquitecturas-ti.vercel.app/api/examen/informacion/${examenSeleccionado}`;    
-        fetch(urlData, requestOptions)
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('La solicitud Fetch no se realizó correctamente');
+        
+        const fetchData = async () => {
+            try {
+                const response = await fetch("https://api-arquitecturas-ti.vercel.app/api/reporte/", requestOptions);
+                if (!response.ok) {
+                    throw new Error('La solicitud Fetch no se realizó correctamente');
+                }
+                const result = await response.json();
+            
+                const urlData = `https://api-arquitecturas-ti.vercel.app/api/examen/informacion/${examenSeleccionado}`;
+                const secondResponse = await fetch(urlData, requestOptions);
+                if (!secondResponse.ok) {
+                    throw new Error('La solicitud Fetch no se realizó correctamente');
+                }
+                const secondResult = await secondResponse.json();
+                setPropietario(secondResult.usuario.nombre);
+                setEspecie(secondResult.mascota.especie);
+                setRaza(secondResult.mascota.raza);
+                setSexo(secondResult.mascota.sexo);
+                setNombre(secondResult.mascota.nombre);
+                setEdad(secondResult.mascota.edad);
+                setCastrado(secondResult.mascota.castrado);
+                setMVZ(secondResult.mascota.MVZ);
+                const dataExamen = result.examenes.filter(data => {
+                    return data._id === examenSeleccionado
+                });
+
+                fechaCompleta = dataExamen[0].fechaRealizado;
+                fechaReporte = new Date(fechaCompleta).toLocaleDateString();
+                horaReporte = new Date(fechaCompleta).toLocaleTimeString();
+                const fechaReporteNueva = formatearFecha(new Date(fechaCompleta));
+                setFecha(fechaReporteNueva);
+                setHora(horaReporte);
+                setAnamnesis(dataExamen[0].datos.Anamnesis);
+                setTratamiento(dataExamen[0].datos["Tratamiento Previo"]);
+                
+                setInterpretacion(dataExamen[0].datos.Interpretacion);
+                setCaso("");
+                setDireccion("");
+                setExpediente("");
+                setTelefono("");
+
+                setEritrocitos("");
+                setRenales("");
+                setLeucocitos("");
+                setCristales("");
+                setEscamosas("");
+                setLipidos("");
+                setTransitorias("");
+                setBacterias("");
+                setCilindros("");
+                setOtros("");
+            
+                setMetodoObtencion("");
+                setColor("");
+                setProteinas("");
+                setPH("");
+                setApariencia("");
+                setGlucosa("");
+                setCetonas("");
+                setDensidad("");
+                setSangre("");
+                setBilirrubina("");
+            } catch (error) {
+                console.log('error', error);
             }
-        })
-        .then(result => {
-            // console.log("Resultado: " + JSON.stringify(result))
-            setPropietario(result.usuario.nombre);
-            setEspecie(result.mascota.especie);
-            setRaza(result.mascota.raza);
-            setSexo(result.mascota.sexo);
-            setNombre(result.mascota.nombre);
-            setEdad(result.mascota.edad);
-            setCastrado(result.mascota.castrado);
-            setMVZ(result.mascota.MVZ);
-        })
-        .catch(error => console.log('error', error));
+        };
+        
+        fetchData();
     }, []);
 
-    // Función para formatear la fecha en el formato deseado (YYYY-MM-DD)
     const formatearFecha = (fecha) => {
         const dia = fecha.getDate();
         const mes = fecha.getMonth() + 1;
@@ -106,89 +151,6 @@ function Urianalisis() {
 
         return `${año}-${mesFormateado}-${diaFormateado}`;
     };
-
-    const formatearHora = (hora) => {
-        const horas = fecha.getHours();
-        const minutos = fecha.getMinutes();
-    
-        const horaFormateada = horas < 10 ? '0' + horas : horas;
-        const minutosFormateados = minutos < 10 ? '0' + minutos : minutos;
-    
-        return `${horaFormateada}:${minutosFormateados}`;
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault(); // Evita que la página se recargue al enviar el formulario
-        setCargando(true);
-
-        const raw = {
-            datos: {
-                "Datos Generales": {
-                    "Caso": caso,
-                    "Propietario": propietario,
-                    "Dirección": direccion,
-                    "Teléfono": telefono,
-                    "Fecha": fecha,
-                    "Hora": hora,
-                    "Raza": raza,
-                    "Sexo": sexo,
-                    "MVZ": mvz
-                },
-                "Anamnesis": anamnesis,
-                "Tratamiento Previo": tratamiento,
-                "Metodo de Obtención": metodoObtencion,
-                "Examen Físico": {
-                    "Color": color,
-                    "Apariencia": apariencia,
-                    "Densidad": densidad
-                },
-                "Examen Químico": {
-                    "pH": pH,
-                    "Cetonas": cetonas,
-                    "Bilirrubina": bilirrubina
-                },
-                "Examen Microscópico": {
-                    "Eritrocitos": eritrocitos,
-                    "Leucocitos": leucocitos,
-                    "Escamosas": escamosas,
-                    "Transitorias": transitorias,
-                    "Cilindros": cilindros,
-                    "Renales": renales,
-                    "Cristales": cristales,
-                    "Lipidos": lipidos,
-                    "Bacterias": bacterias,
-                    "Otros": otros
-                },
-                "Interpretación": interpretacion
-            }
-        };
-
-        const requestOptions = {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                token: Token[0]
-            },
-            body: JSON.stringify(raw),
-            redirect: 'follow'
-        };
-
-        var url = "https://api-arquitecturas-ti.vercel.app/api/examen/" + examenSeleccionado;
-        fetch(url, requestOptions)
-        .then(response => {
-            if (response.ok) {
-                setCargando(false);
-                alert("El examen se ha registrado con éxito.");
-                navigate("/home-vet");
-                return response.json();
-            } else {
-                setCargando(false);
-                alert("El examen no se ha registrado correctamente. ¡Intenta Nuevamente!");
-                throw new Error('La solicitud Fetch no se realizó correctamente');
-            }
-        })
-        .catch(error => console.log('error', error));
-    }
 
     // Rutas
     const logoutUser = () =>{
@@ -211,208 +173,9 @@ function Urianalisis() {
     const seeReport = () => {
         navigate("/report");
     }
-
-    // Examen General
-    const handleCasoChange = (event) => {
-        setCaso(event.target.value);
-    };
-    
-    const handlePropietarioChange = (event) => {
-        setPropietario(event.target.value);
-    };
-    
-    const handleDireccionChange = (event) => {
-        setDireccion(event.target.value);
-    };
-    
-    const handleTelefonoChange = (event) => {
-        setTelefono(event.target.value);
-    };
-    
-    const handleFechaChange = (event) => {
-        const fechaSeleccionada = new Date(event.target.value);
-        setFecha(fechaSeleccionada);
-    };
-    
-    const handleHoraChange = (event) => {
-        const horaSeleccionada = new Date(event.target.value);
-        setHora(horaSeleccionada);
-    };
-    
-    const handleEspecieChange = (event) => {
-        setEspecie(event.target.value);
-    };
-    
-    const handleNombreChange = (event) => {
-        setNombre(event.target.value);
-    };
-    
-    const handleRazaChange = (event) => {
-        setRaza(event.target.value);
-    };
-    
-    const handleEdadChange = (event) => {
-        setEdad(event.target.value);
-    };
-    
-    const handleSexoChange = (event) => {
-        setSexo(event.target.value);
-    };
-    
-    const handleCastradoChange = (event) => {
-        setCastrado(event.target.value);
-    };
-    
-    const handleMVZChange = (event) => {
-        setMVZ(event.target.value);
-    };
-    
-    const handleExpedienteChange = (event) => {
-        setExpediente(event.target.value);
-    };
-    
-    const handleAnamnesisChange = (event) => {
-        setAnamnesis(event.target.value);
-    };
-    
-    const handleTratamientoChange = (event) => {
-        setTratamiento(event.target.value);
-    };
-    
-    const handleInterpretacionChange = (event) => {
-        setInterpretacion(event.target.value);
-    };
-
-    // Examen Específico
-    const handleEritrocitosChange = (event) => {
-        setEritrocitos(event.target.value);
-    };
-    
-    const handleRenalesChange = (event) => {
-        setRenales(event.target.value);
-    };
-    
-    const handleLeucocitosChange = (event) => {
-        setLeucocitos(event.target.value);
-    };
-    
-    const handleCristalesChange = (event) => {
-        setCristales(event.target.value);
-    };
-    
-    const handleEscamosasChange = (event) => {
-        setEscamosas(event.target.value);
-    };
-    
-    const handleLipidosChange = (event) => {
-        setLipidos(event.target.value);
-    };
-    
-    const handleTransitoriasChange = (event) => {
-        setTransitorias(event.target.value);
-    };
-    
-    const handleBacteriasChange = (event) => {
-        setBacterias(event.target.value);
-    };
-    
-    const handleCilindrosChange = (event) => {
-        setCilindros(event.target.value);
-    };
-    
-    const handleOtrosChange = (event) => {
-        setOtros(event.target.value);
-    };
-
-    const handleMetodoObtencionChange = (event) => {
-        setMetodoObtencion(event.target.value);
-    };
-    
-    const handleColorChange = (event) => {
-        setColor(event.target.value);
-    };
-    
-    const handleProteinasChange = (event) => {
-        setProteinas(event.target.value);
-    };
-    
-    const handlePHChange = (event) => {
-        setPH(event.target.value);
-    };
-    
-    const handleAparienciaChange = (event) => {
-        setApariencia(event.target.value);
-    };
-    
-    const handleGlucosaChange = (event) => {
-        setGlucosa(event.target.value);
-    };
-    
-    const handleCetonasChange = (event) => {
-        setCetonas(event.target.value);
-    };
-    
-    const handleDensidadChange = (event) => {
-        setDensidad(event.target.value);
-    };
-    
-    const handleSangreChange = (event) => {
-        setSangre(event.target.value);
-    };
-    
-    const handleBilirrubinaChange = (event) => {
-        setBilirrubina(event.target.value);
-    };    
-
-    const cancelarForm = () => {
-        // Examen General
-        setCaso("");
-        setPropietario("");
-        setDireccion("");
-        setTelefono("");
-        setFecha(new Date());
-        setHora(new Date());
-        setEspecie("");
-        setNombre("");
-        setRaza("");
-        setEdad("");
-        setSexo("");
-        setCastrado("");
-        setMVZ("");
-        setExpediente("");
-        setAnamnesis("");
-        setTratamiento("");
-        setInterpretacion("");
-        // Examen Específico
-        setEritrocitos("");
-        setRenales("");
-        setLeucocitos("");
-        setCristales("");
-        setEscamosas("");
-        setLipidos("");
-        setTransitorias("");
-        setBacterias("");
-        setCilindros("");
-        setOtros("");
-
-        setMetodoObtencion("");
-        setColor("");
-        setProteinas("");
-        setPH("");
-        setApariencia("");
-        setGlucosa("");
-        setCetonas("");
-        setDensidad("");
-        setSangre("");
-        setBilirrubina("");
-    };
         
     return (
         <div className="grid-home">
-            <div className="carga" style={ cargando ? { display: "grid"} : {display: "none"}}>
-                <div className="pulsar"></div>
-                <label className="carga-texto">Registrando...</label>
-            </div>
             <div className="grid-home-1" onClick={seeExams}>
                 <img src='../imgs/Regresar.png' className="regresar" onClick={seeExams}></img>
                 <label className="titulo-usuario">Examen de Parasitología</label>
@@ -430,7 +193,7 @@ function Urianalisis() {
 
                 {/* <label className="titulo-examen"></label> */}
 
-                <form className="examen" onSubmit={handleSubmit}>
+                <form className="examen">
                     <div className="examen-encabezado">
 
                         <div className="examen-encabezado-divisor"></div>
@@ -457,33 +220,33 @@ function Urianalisis() {
                             <table className="examen-encabezado-tablaPropietario">
                                 <tr>
                                     <th>Caso:</th>
-                                    <td className="examen-tabla-continuacion">23-UA-<input type="text" required value={caso} onChange={handleCasoChange} className="examen-input-tabla examen-input-continuacion" placeholder="Ingrese número de caso"></input></td>
+                                    <td className="examen-tabla-continuacion">23-UA-<input type="text" required value={caso} disabled className="examen-input-tabla examen-input-continuacion" placeholder="Ingrese número de caso"></input></td>
                                 </tr>
                                 <tr>
                                     <th>Propietario:</th>
-                                    <td><input type="text" required value={propietario} onChange={handlePropietarioChange} className="examen-input-tabla" placeholder="Ingrese nombre propietario"></input></td>
+                                    <td><input type="text" required value={propietario} disabled className="examen-input-tabla" placeholder="Ingrese nombre propietario"></input></td>
                                 </tr>
                                 <tr>
                                     <th>Dirección:</th>
-                                    <td><input type="text" required value={direccion} onChange={handleDireccionChange} className="examen-input-tabla" placeholder="Ingrese dirección propietario"></input></td>
+                                    <td><input type="text" required value={direccion} disabled className="examen-input-tabla" placeholder="Ingrese dirección propietario"></input></td>
                                 </tr>
                                 <tr>
                                     <th>Teléfono:</th>
-                                    <td><input type="text" required value={telefono} onChange={handleTelefonoChange} className="examen-input-tabla" placeholder="Ingrese teléfono propietario"></input></td>
+                                    <td><input type="text" required value={telefono} disabled className="examen-input-tabla" placeholder="Ingrese teléfono propietario"></input></td>
                                 </tr>
                             </table>
 
                             <table className="examen-encabezado-tablaMascota">
                                 <tr>
                                     <th>Fecha:</th>
-                                    <td><input type="date" required value={formatearFecha(fecha)} onChange={handleFechaChange} className="examen-input-tabla" placeholder="Seleccione muestra"></input></td>
+                                    <td><input type="date" required value={fecha} disabled className="examen-input-tabla" placeholder="Seleccione muestra"></input></td>
                                     <th>Hora:</th>
-                                    <td><input type="time" required value={formatearHora(hora)} onChange={handleHoraChange} className="examen-input-tabla" placeholder="Seleccione muestra"></input></td>
+                                    <td><input type="time" required value={hora} disabled className="examen-input-tabla" placeholder="Seleccione muestra"></input></td>
                                 </tr>
                                 <tr>
                                     <th>Especie:</th>
                                     <td>
-                                        <select name="especie_examen" id="especie_examen" className="examen-input-tabla" value={especie} onChange={handleEspecieChange} required>
+                                        <select name="especie_examen" id="especie_examen" className="examen-input-tabla" value={especie} disabled required>
                                             <option value="" disabled selected>Seleccione especie</option>
                                             <option value="Canino">Canino</option>
                                             <option value="Felino">Felino</option>
@@ -492,18 +255,18 @@ function Urianalisis() {
                                         </select>
                                     </td>
                                     <th>Nombre:</th>
-                                    <td><input type="text" required value={nombre} onChange={handleNombreChange} className="examen-input-tabla" placeholder="Paciente"></input></td>
+                                    <td><input type="text" required value={nombre} disabled className="examen-input-tabla" placeholder="Paciente"></input></td>
                                 </tr>
                                 <tr>
                                     <th>Raza:</th>
-                                    <td><input type="text" required value={raza} onChange={handleRazaChange} className="examen-input-tabla" placeholder="Raza"></input></td>
+                                    <td><input type="text" required value={raza} disabled className="examen-input-tabla" placeholder="Raza"></input></td>
                                     <th>Edad:</th>
-                                    <td><input type="number" required value={edad} onChange={handleEdadChange} className="examen-input-tabla" placeholder="Edad"></input></td>
+                                    <td><input type="number" required value={edad} disabled className="examen-input-tabla" placeholder="Edad"></input></td>
                                 </tr>
                                 <tr>
                                     <th>Sexo:</th>
                                     <td>
-                                        <select name="sexo_examen" id="sexo_examen" className="examen-input-tabla" value={sexo} onChange={handleSexoChange} required>
+                                        <select name="sexo_examen" id="sexo_examen" className="examen-input-tabla" value={sexo} disabled required>
                                             <option value="" disabled selected>Seleccione sexo</option>
                                             <option value="Hembra">Hembra</option>
                                             <option value="Macho">Macho</option>
@@ -511,7 +274,7 @@ function Urianalisis() {
                                     </td>
                                     <th>Castrado:</th>
                                     <td>
-                                        <select name="castrado_examen" id="castrado_examen" className="examen-input-tabla" value={castrado} onChange={handleCastradoChange} required>
+                                        <select name="castrado_examen" id="castrado_examen" className="examen-input-tabla" value={castrado} disabled required>
                                             <option value="" disabled selected>Seleccione castrado</option>
                                             <option value="No">No</option>
                                             <option value="Si">Si</option>
@@ -520,9 +283,9 @@ function Urianalisis() {
                                 </tr>
                                 <tr>
                                     <th>MVZ:</th>
-                                    <td><input type="text" required value={mvz} onChange={handleMVZChange} className="examen-input-tabla" placeholder="Médico"></input></td>
+                                    <td><input type="text" required value={mvz} disabled className="examen-input-tabla" placeholder="Médico"></input></td>
                                     <th>Expediente:</th>
-                                    <td><input type="number" required value={expediente} onChange={handleExpedienteChange} className="examen-input-tabla" placeholder="Número"></input></td>
+                                    <td><input type="number" required value={expediente} disabled className="examen-input-tabla" placeholder="Número"></input></td>
                                 </tr>
                             </table>
                         </div>
@@ -531,11 +294,11 @@ function Urianalisis() {
                             <table className="examen-encabezado-tablaTratamiento">
                                 <tr>
                                     <th className="examen-segunda-version1">Anamnesis / Examen Fisico:</th>
-                                    <td><input type="text" required value={anamnesis} onChange={handleAnamnesisChange} className="examen-input-tabla" placeholder="Ingrese anamnesis y examen físico"></input></td>
+                                    <td><input type="text" required value={anamnesis} disabled className="examen-input-tabla" placeholder="Ingrese anamnesis y examen físico"></input></td>
                                 </tr>
                                 <tr>
                                     <th>Tratamiento previo:</th>
-                                    <td className="examen-segunda-version2"><input type="text" required value={tratamiento} onChange={handleTratamientoChange} className="examen-input-tabla" placeholder="Ingrese tratamiento hasta 3 días previos a la muestra"></input></td>
+                                    <td className="examen-segunda-version2"><input type="text" required value={tratamiento} disabled className="examen-input-tabla" placeholder="Ingrese tratamiento hasta 3 días previos a la muestra"></input></td>
                                 </tr>
                             </table>
                         </div>
@@ -545,7 +308,7 @@ function Urianalisis() {
                                 <tr>
                                     <th className="examen-segunda-version1">Metodo de obtención:</th>
                                     <td className="examen-segunda-version2">
-                                        <select name="metodo_obtencion" id="metodo_obtencion" className="examen-input-tabla" value={metodoObtencion} onChange={handleMetodoObtencionChange} required>
+                                        <select name="metodo_obtencion" id="metodo_obtencion" className="examen-input-tabla" value={metodoObtencion} disabled required>
                                             <option value="" disabled selected>No referido</option>
                                             <option value="Micción">Micción</option>
                                             <option value="Cateterismo">Cateterismo</option>
@@ -564,10 +327,10 @@ function Urianalisis() {
                                 </tr>
                                 <tr>
                                     <th className="examen-segunda-version2">Color:</th>
-                                    <td className="examen-segunda-version2"><input type="text" required value={color} onChange={handleColorChange} className="examen-input-tabla" placeholder="Ingrese color"></input></td>
+                                    <td className="examen-segunda-version2"><input type="text" required value={color} disabled className="examen-input-tabla" placeholder="Ingrese color"></input></td>
                                     <th className="examen-segunda-version2">Proteínas</th>
                                     <td className="examen-segunda-version2">
-                                        <select name="quimico_proteinas" id="quimico_proteinas" className="examen-input-tabla" value={proteinas} onChange={handleProteinasChange} required>
+                                        <select name="quimico_proteinas" id="quimico_proteinas" className="examen-input-tabla" value={proteinas} disabled required>
                                             <option value="0">0</option>
                                             <option value="Trazas">Trazas</option>
                                             <option value="0.15">0.15</option>
@@ -579,12 +342,12 @@ function Urianalisis() {
                                     </td>
                                     <td className="examen-segunda-version2">g/L</td>
                                     <th className="examen-segunda-version2">pH</th>
-                                    <td className="examen-segunda-version2"><input type="text" required value={pH} onChange={handlePHChange} className="examen-input-tabla" placeholder="Ingrese pH"></input></td>
+                                    <td className="examen-segunda-version2"><input type="text" required value={pH} disabled className="examen-input-tabla" placeholder="Ingrese pH"></input></td>
                                 </tr>
                                 <tr>
                                     <th className="examen-segunda-version2">Apariencia:</th>
                                     <td className="examen-segunda-version2">
-                                        <select name="fisico_apariencia" id="fisico_apariencia" className="examen-input-tabla" value={apariencia} onChange={handleAparienciaChange} required>
+                                        <select name="fisico_apariencia" id="fisico_apariencia" className="examen-input-tabla" value={apariencia} disabled required>
                                             <option value="" disabled selected>Elija una opción</option>
                                             <option value="Transparente">Transparente</option>
                                             <option value="Turbio 1+">Turbio 1+</option>
@@ -594,7 +357,7 @@ function Urianalisis() {
                                     </td>
                                     <th className="examen-segunda-version2">Glucosa</th>
                                     <td className="examen-segunda-version2">
-                                        <select name="quimico_glucosa" id="quimico_glucosa" className="examen-input-tabla" value={glucosa} onChange={handleGlucosaChange} required>
+                                        <select name="quimico_glucosa" id="quimico_glucosa" className="examen-input-tabla" value={glucosa} disabled required>
                                             <option value="0">0</option>
                                             <option value="5">5</option>
                                             <option value="15">15</option>
@@ -606,7 +369,7 @@ function Urianalisis() {
                                     <td className="examen-segunda-version2">mmol/L</td>
                                     <th className="examen-segunda-version2">Cetonas</th>
                                     <td className="examen-segunda-version2">
-                                        <select name="quimico_cetonas" id="quimico_cetonas" className="examen-input-tabla" value={cetonas} onChange={handleCetonasChange} required>
+                                        <select name="quimico_cetonas" id="quimico_cetonas" className="examen-input-tabla" value={cetonas} disabled required>
                                             <option value="Negativo">Negativo</option>
                                             <option value="1+">1+</option>
                                             <option value="2+">2+</option>
@@ -616,10 +379,10 @@ function Urianalisis() {
                                 </tr>
                                 <tr>
                                     <th className="examen-segunda-version2">Densidad:</th>
-                                    <td className="examen-segunda-version2"><input type="text" required value={densidad} onChange={handleDensidadChange} className="examen-input-tabla" placeholder="Ingrese DU"></input></td>
+                                    <td className="examen-segunda-version2"><input type="text" required value={densidad} disabled className="examen-input-tabla" placeholder="Ingrese DU"></input></td>
                                     <th className="examen-segunda-version2">Sangre / Hg</th>
                                     <td className="examen-segunda-version2">
-                                        <select name="quimico_sangre" id="quimico_sangre" className="examen-input-tabla" value={sangre} onChange={handleSangreChange} required>
+                                        <select name="quimico_sangre" id="quimico_sangre" className="examen-input-tabla" value={sangre} disabled required>
                                             <option value="0">0</option>
                                             <option value="5 - 10">5 - 10</option>
                                             <option value="50">50</option>
@@ -629,7 +392,7 @@ function Urianalisis() {
                                     <td className="examen-segunda-version2">Eri/µL</td>
                                     <th className="examen-segunda-version2">Bilirrubina</th>
                                     <td className="examen-segunda-version2">
-                                        <select name="quimico_bilirrubina" id="quimico_bilirrubina" className="examen-input-tabla" value={bilirrubina} onChange={handleBilirrubinaChange} required>
+                                        <select name="quimico_bilirrubina" id="quimico_bilirrubina" className="examen-input-tabla" value={bilirrubina} disabled required>
                                             <option value="Negativo">Negativo</option>
                                             <option value="1+">1+</option>
                                             <option value="2+">2+</option>
@@ -647,42 +410,42 @@ function Urianalisis() {
                                 </tr>
                                 <tr>
                                     <th className="examen-segunda-version2">Eritrocitos</th>
-                                    <td className="examen-segunda-version2"><input type="text" required value={eritrocitos} onChange={handleEritrocitosChange} className="examen-input-tabla" placeholder="-"></input></td>
+                                    <td className="examen-segunda-version2"><input type="text" required value={eritrocitos} disabled className="examen-input-tabla" placeholder="-"></input></td>
                                     <td className="examen-segunda-version2">Campo 400x</td>
                                     <th className="examen-segunda-version2">Renales</th>
-                                    <td className="examen-segunda-version2"><input type="text" required value={renales} onChange={handleRenalesChange} className="examen-input-tabla" placeholder="-"></input></td>
+                                    <td className="examen-segunda-version2"><input type="text" required value={renales} disabled className="examen-input-tabla" placeholder="-"></input></td>
                                     <td className="examen-segunda-version2">Campo 400x</td>
                                 </tr>
                                 <tr>
                                     <th className="examen-segunda-version2">Leucocitos</th>
-                                    <td className="examen-segunda-version2"><input type="text" required value={leucocitos} onChange={handleLeucocitosChange} className="examen-input-tabla" placeholder="-"></input></td>
+                                    <td className="examen-segunda-version2"><input type="text" required value={leucocitos} disabled className="examen-input-tabla" placeholder="-"></input></td>
                                     <td className="examen-segunda-version2">Campo 400x</td>
                                     <th className="examen-segunda-version2">Cristales</th>
-                                    <td className="examen-segunda-version2"><input type="text" required value={cristales} onChange={handleCristalesChange} className="examen-input-tabla" placeholder="-"></input></td>
+                                    <td className="examen-segunda-version2"><input type="text" required value={cristales} disabled className="examen-input-tabla" placeholder="-"></input></td>
                                     <td className="examen-segunda-version2">Campo 400x</td>
                                 </tr>
                                 <tr>
                                     <th className="examen-segunda-version2">Escamosas</th>
-                                    <td className="examen-segunda-version2"><input type="text" required value={escamosas} onChange={handleEscamosasChange} className="examen-input-tabla" placeholder="-"></input></td>
+                                    <td className="examen-segunda-version2"><input type="text" required value={escamosas} disabled className="examen-input-tabla" placeholder="-"></input></td>
                                     <td className="examen-segunda-version2">Campo 400x</td>
                                     <th className="examen-segunda-version2">Lipidos</th>
-                                    <td className="examen-segunda-version2"><input type="text" required value={lipidos} onChange={handleLipidosChange} className="examen-input-tabla" placeholder="-"></input></td>
+                                    <td className="examen-segunda-version2"><input type="text" required value={lipidos} disabled className="examen-input-tabla" placeholder="-"></input></td>
                                     <td className="examen-segunda-version2">Campo 400x</td>
                                 </tr>
                                 <tr>
                                     <th className="examen-segunda-version2">Transitorias</th>
-                                    <td className="examen-segunda-version2"><input type="text" required value={transitorias} onChange={handleTransitoriasChange} className="examen-input-tabla" placeholder="-"></input></td>
+                                    <td className="examen-segunda-version2"><input type="text" required value={transitorias} disabled className="examen-input-tabla" placeholder="-"></input></td>
                                     <td className="examen-segunda-version2">Campo 400x</td>
                                     <th className="examen-segunda-version2">Bacterias</th>
-                                    <td className="examen-segunda-version2"><input type="text" required value={bacterias} onChange={handleBacteriasChange} className="examen-input-tabla" placeholder="-"></input></td>
+                                    <td className="examen-segunda-version2"><input type="text" required value={bacterias} disabled className="examen-input-tabla" placeholder="-"></input></td>
                                     <td className="examen-segunda-version2">Campo 400x</td>
                                 </tr>
                                 <tr>
                                     <th className="examen-segunda-version2">Cilindros</th>
-                                    <td className="examen-segunda-version2"><input type="text" required value={cilindros} onChange={handleCilindrosChange} className="examen-input-tabla" placeholder="-"></input></td>
+                                    <td className="examen-segunda-version2"><input type="text" required value={cilindros} disabled className="examen-input-tabla" placeholder="-"></input></td>
                                     <td className="examen-segunda-version2">Campo 400x</td>
                                     <th className="examen-segunda-version2">Otros:</th>
-                                    <td className="examen-segunda-version2"><input type="text" required value={otros} onChange={handleOtrosChange} className="examen-input-tabla" placeholder="-"></input></td>
+                                    <td className="examen-segunda-version2"><input type="text" required value={otros} disabled className="examen-input-tabla" placeholder="-"></input></td>
                                     <td className="examen-segunda-version2">Campo 400x</td>
                                 </tr>
                             </table>
@@ -692,14 +455,9 @@ function Urianalisis() {
                             <table className="examen-encabezado-tablaTratamiento">
                                 <tr>
                                     <th className="examen-segunda-version1">Interpretación:</th>
-                                    <td><input type="text" required value={interpretacion} onChange={handleInterpretacionChange} className="examen-input-tabla" placeholder="Interpretacion"></input></td>
+                                    <td><input type="text" required value={interpretacion} disabled className="examen-input-tabla" placeholder="Interpretacion"></input></td>
                                 </tr>
                             </table>
-                        </div>
-
-                        <div className="option-section-examen">
-                            <button className="option-button-cancel" onClick={cancelarForm}>Cancelar</button>
-                            <input type="submit" value="Guardar" className="option-button-save"></input>
                         </div>
                     </div>
 
@@ -712,4 +470,4 @@ function Urianalisis() {
     );
 }
  
-export default Urianalisis;
+export default UrianalisisView;
