@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import html2pdf from 'html2pdf.js';
 import '../../../styles/GlobalStyle.css'
 
 /* 
@@ -13,6 +14,9 @@ import '../../../styles/GlobalStyle.css'
 
 function HematologiaView() {
     const Token = useState(localStorage.getItem("token"));
+    var fechaCompleta = "";
+    var fechaReporte = new Date();
+    var horaReporte = new Date();
     // Examen General
     const [caso, setCaso] = useState("");
     const [propietario, setPropietario] = useState("");
@@ -83,8 +87,25 @@ function HematologiaView() {
     const navigate = useNavigate();
     const location = useLocation();
     const examenSeleccionado = location.state?.examenSeleccionado || [];
+    const generarPDF = location.state?.generarPDF || false;
 
     document.body.style.overflowY = "visible";
+
+    const generarPDFHematologia = (propietario, nombre, especie, fecha) => {
+        const element = document.getElementById('pdf-content-hematologia');
+        const nombreArchivo = 'Hematología-' + propietario + '-' + nombre + '-' + especie.split(' ')[0] + '-(' + fecha + ').pdf';
+    
+        // Configuración de html2pdf.js
+        const options = {
+          margin: 5,
+          filename: nombreArchivo,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 4 },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+        };
+    
+        html2pdf().from(element).set(options).save();
+    };
 
     useEffect(() => {
         const requestOptions = {
@@ -131,59 +152,66 @@ function HematologiaView() {
                 setAnamnesis(dataExamen[0].datos.Anamnesis);
                 setTratamiento(dataExamen[0].datos["Tratamiento Previo"]);
 
-                setInterpretacion(dataExamen[0].datos.Interpretacion);
-                setCaso("");
-                setDireccion("");
-                setExpediente("");
-                setTelefono("");
+                setInterpretacion(dataExamen[0].datos["Interpretación"]);
+                setCaso(" ");
+                setDireccion(" ");
+                setExpediente(" ");
+                setTelefono(" ");
 
-                setValorHematocrito("");
-                setValorHemoglobina("");
-                setValorEritrocitos("");
-                setValorVGM("");
-                setValorCGMH("");
-                setValorReticulocitos("");
-                setValorPlaquetas("");
-                setValorSolidos("");
-                setValorLeucocitos("");
-                setValorNeutrofilos("");
-                setValorBandas("");
-                setValorLinfocitos("");
-                setValorMonocitos("");
-                setValorEosinofilos("");
-                setValorBasofilos("");
-                setValorArtefactos("");
+                setValorHematocrito(dataExamen[0].datos["Hematocrito"]["Valor"]);
+                setValorHemoglobina(dataExamen[0].datos["Hemoglobina"]["Valor"]);
+                setValorEritrocitos(dataExamen[0].datos["Eritrocitos"]["Valor"]);
+                setValorVGM(dataExamen[0].datos["VGM"]["Valor"]);
+                setValorCGMH(dataExamen[0].datos["CGMH"]["Valor"]);
+                setValorReticulocitos(dataExamen[0].datos["Reticulocitos"]["Valor"]);
+                setValorPlaquetas(dataExamen[0].datos["Plaquetas"]["Valor"]);
+                setValorSolidos(dataExamen[0].datos["Sólidos Totales"]["Valor"]);
+                setValorLeucocitos(dataExamen[0].datos["Leucocitos Totales"]["Valor"]);
+                setValorNeutrofilos(dataExamen[0].datos["Neutrófilos"]["Valor"]);
+                setValorBandas(dataExamen[0].datos["Bandas"]["Valor"]);
+                setValorLinfocitos(dataExamen[0].datos["Linfocitos"]["Valor"]);
+                setValorMonocitos(dataExamen[0].datos["Monocitos"]["Valor"]);
+                setValorEosinofilos(dataExamen[0].datos["Eosinófilos"]["Valor"]);
+                setValorBasofilos(dataExamen[0].datos["Basófilos"]["Valor"]);
+                setValorArtefactos(dataExamen[0].datos["Artefactos"]["Valor"]);
             
-                setVariacionHematocrito("");
-                setVariacionHemoglobina("");
-                setVariacionEritrocitos("");
-                setVariacionVGM("");
-                setVariacionCGMH("");
-                setVariacionReticulocitos("");
-                setVariacionPlaquetas("");
-                setVariacionSolidos("");
-                setVariacionLeucocitos("");
-                setVariacionNeutrofilos("");
-                setVariacionBandas("");
-                setVariacionLinfocitos("");
-                setVariacionMonocitos("");
-                setVariacionEosinofilos("");
-                setVariacionBasofilos("");
+                setVariacionHematocrito(dataExamen[0].datos["Hematocrito"]["Variación"]);
+                setVariacionHemoglobina(dataExamen[0].datos["Hemoglobina"]["Variación"]);
+                setVariacionEritrocitos(dataExamen[0].datos["Eritrocitos"]["Variación"]);
+                setVariacionVGM(dataExamen[0].datos["VGM"]["Variación"]);
+                setVariacionCGMH(dataExamen[0].datos["CGMH"]["Variación"]);
+                setVariacionReticulocitos(dataExamen[0].datos["Reticulocitos"]["Variación"]);
+                setVariacionPlaquetas(dataExamen[0].datos["Plaquetas"]["Variación"]);
+                setVariacionSolidos(dataExamen[0].datos["Sólidos Totales"]["Variación"]);
+                setVariacionLeucocitos(dataExamen[0].datos["Leucocitos Totales"]["Variación"]);
+                setVariacionNeutrofilos(dataExamen[0].datos["Neutrófilos"]["Variación"]);
+                setVariacionBandas(dataExamen[0].datos["Bandas"]["Variación"]);
+                setVariacionLinfocitos(dataExamen[0].datos["Linfocitos"]["Variación"]);
+                setVariacionMonocitos(dataExamen[0].datos["Monocitos"]["Variación"]);
+                setVariacionEosinofilos(dataExamen[0].datos["Eosinófilos"]["Variación"]);
+                setVariacionBasofilos(dataExamen[0].datos["Basófilos"]["Variación"]);
             
-                setMorfologiaHematocrito("");
-                setMorfologiaHemoglobina("");
-                setMorfologiaEritrocitos("");
-                setMorfologiaVGM("");
-                setMorfologiaCGMH("");
-                setMorfologiaReticulocitos("");
-                setMorfologiaTipo("");
-                setMorfologiaSolidos("");
-                setMorfologiaLeucocitos("");
-                setMorfologiaLinfocitos("");
-                setMorfologiaMonocitos("");
-                setMorfologiaEosinofilos("");
-                setMorfologiaBasofilos("");
-                setMorfologiaArtefactos("");
+                setMorfologiaHematocrito(dataExamen[0].datos["Hematocrito"]["Morfología Celular"]);
+                setMorfologiaHemoglobina(dataExamen[0].datos["Hemoglobina"]["Morfología Celular"]);
+                setMorfologiaEritrocitos(dataExamen[0].datos["Eritrocitos"]["Morfología Celular"]);
+                setMorfologiaVGM(dataExamen[0].datos["VGM"]["Morfología Celular"]);
+                setMorfologiaCGMH(dataExamen[0].datos["CGMH"]["Morfología Celular"]);
+                setMorfologiaReticulocitos(dataExamen[0].datos["Reticulocitos"]["Morfología Celular"]);
+                setMorfologiaTipo(dataExamen[0].datos["Plaquetas"]["Morfología Celular"]);
+                setMorfologiaSolidos(dataExamen[0].datos["Sólidos Totales"]["Morfología Celular"]);
+                setMorfologiaLeucocitos(dataExamen[0].datos["Leucocitos Totales"]["Morfología Celular"]);
+                setMorfologiaLinfocitos(dataExamen[0].datos["Linfocitos"]["Morfología Celular"]);
+                setMorfologiaMonocitos(dataExamen[0].datos["Monocitos"]["Morfología Celular"]);
+                setMorfologiaEosinofilos(dataExamen[0].datos["Eosinófilos"]["Morfología Celular"]);
+                setMorfologiaBasofilos(dataExamen[0].datos["Basófilos"]["Morfología Celular"]);
+                setMorfologiaArtefactos(dataExamen[0].datos["Artefactos"]["Morfología Celular"]);
+
+                if (generarPDF == true) {
+                    await setTimeout(() => {
+                      generarPDFHematologia(secondResult.usuario.nombre, secondResult.mascota.nombre, secondResult.mascota.especie, fechaReporteNueva);
+                      seeReport();
+                    }, 2000);
+                }
             } catch (error) {
                 console.log('error', error);
             }
@@ -241,7 +269,7 @@ function HematologiaView() {
                 </div>
                 <button onClick={logoutUser} className="logout-button logout-button-veterinario">Cerrar <br className="break-point"></br>Sesión</button>
             </div>
-            <div className="grid-home-3">
+            <div className="grid-home-3" id="pdf-content-hematologia">
 
                 {/* <label className="titulo-examen"></label> */}
 
@@ -560,7 +588,7 @@ function HematologiaView() {
                                     <td className="examen-segunda-version2" colspan="2" rowspan="3">Tipo:<input type="text" required value={morfologiaLeucocitos} disabled className="examen-input-tabla" placeholder="-"></input></td>
                                 </tr>
                                 <tr>
-                                    <th className="examen-segunda-version2">Neutrófilos</th>
+                                    <th className="examen-segunda-version2">Neutrófiloss</th>
                                     <td className="examen-segunda-version2"><input type="text" required value={valorNeutrofilos} disabled className="examen-input-tabla" placeholder="-"></input></td>
                                     <td className="examen-segunda-version2">
                                         <select name="variacion_neutrofilos_examen" id="variacion_neutrofilos_examen" className="examen-input-tabla" value={variacionNeutrofilos} disabled required>
@@ -649,29 +677,6 @@ function HematologiaView() {
                                     <td className="examen-segunda-version2">Mielo. Inmaduros</td>
                                     <td className="examen-segunda-version2">
                                         <select name="morfologia_eosinofilos_examen" id="morfologia_eosinofilos_examen" className="examen-input-tabla" value={morfologiaEosinofilos} disabled required>
-                                            <option value="-" selected>-</option>
-                                            <option value="1+">1+</option>
-                                            <option value="2+">2+</option>
-                                            <option value="3+">3+</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th className="examen-segunda-version2">Hematocrito</th>
-                                    <td className="examen-segunda-version2"><input type="text" required value={valorHematocrito} disabled className="examen-input-tabla" placeholder="-"></input></td>
-                                    <td className="examen-segunda-version2">
-                                        <select name="variacion_hematocrito_examen" id="variacion_hematocrito_examen" className="examen-input-tabla" value={variacionHematocrito} disabled required>
-                                            <option value="-" selected>-</option>
-                                            <option value="Alto">Alto</option>
-                                            <option value="Bajo">Bajo</option>
-                                            <option value="NC">NC</option>
-                                        </select>
-                                    </td>
-                                    <td className="examen-segunda-version2">0.37 - 0.55</td>
-                                    <td className="examen-segunda-version2">x10<sup>9</sup>/L</td>
-                                    <td className="examen-segunda-version2">Anisocitosis</td>
-                                    <td className="examen-segunda-version2">
-                                        <select name="morfologia_hematocrito_examen" id="morfologia_hematocrito_examen" className="examen-input-tabla" value={morfologiaHematocrito} disabled required>
                                             <option value="-" selected>-</option>
                                             <option value="1+">1+</option>
                                             <option value="2+">2+</option>

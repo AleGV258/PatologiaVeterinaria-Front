@@ -13,6 +13,7 @@ import AddPet from './views/Usuario/AddPet.js';
 // Veterinarios
 import HomeVet from './views/Veterinario/HomeVet.js';
 import RegisterVet from './views/Veterinario/RegisterVet.js'
+import ExamPet from './views/Veterinario/ExamPet.js';
 import Exams from './views/Veterinario/Exams.js';
 import Report from './views/Veterinario/Report.js';
 import Parasitologia from './views/Veterinario/Examenes/Parasitologia.js';
@@ -52,6 +53,7 @@ function App() {
             {/* Veterinario */}
             <Route path="home-vet" element={<HomeVet />} />
             <Route path="register-vet" element={<RegisterVet />} />
+            <Route path="exam-pet" element={<ExamPet />} />
             <Route path="exams" element={<Exams />} />
             <Route path="report" element={<Report />} />
             <Route path="parasitologia" element={<Parasitologia />} />
@@ -79,6 +81,7 @@ function App() {
             {/* Veterinario */}
             <Route path="home-vet" element={<HomeVet />} />
             <Route path="register-vet" element={<RegisterVet />} />
+            <Route path="exam-pet" element={<ExamPet />} />
             <Route path="exams" element={<Exams />} />
             <Route path="report" element={<Report />} />
             <Route path="parasitologia" element={<Parasitologia />} />
@@ -108,6 +111,7 @@ function App() {
         {/* Veterinario */}
         <Route path="home-vet" element={<HomeVet />} />
         <Route path="register-vet" element={<RegisterVet />} />
+        <Route path="exam-pet" element={<ExamPet />} />
         <Route path="exams" element={<Exams />} />
         <Route path="report" element={<Report />} />
         <Route path="parasitologia" element={<Parasitologia />} />

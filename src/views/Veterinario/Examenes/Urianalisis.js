@@ -81,7 +81,7 @@ function Urianalisis() {
             }
         })
         .then(result => {
-            // console.log("Resultado: " + JSON.stringify(result))
+            console.log("Resultado: " + JSON.stringify(result.mascota.especie))
             setPropietario(result.usuario.nombre);
             setEspecie(result.mascota.especie);
             setRaza(result.mascota.raza);
@@ -145,7 +145,10 @@ function Urianalisis() {
                 "Examen Químico": {
                     "pH": pH,
                     "Cetonas": cetonas,
-                    "Bilirrubina": bilirrubina
+                    "Bilirrubina": bilirrubina, 
+                    "Proteínas": proteinas,
+                    "Glucosa": glucosa,
+                    "Sangre": sangre
                 },
                 "Examen Microscópico": {
                     "Eritrocitos": eritrocitos,
@@ -484,11 +487,11 @@ function Urianalisis() {
                                     <th>Especie:</th>
                                     <td>
                                         <select name="especie_examen" id="especie_examen" className="examen-input-tabla" value={especie} onChange={handleEspecieChange} required>
-                                            <option value="" disabled selected>Seleccione especie</option>
-                                            <option value="Canino">Canino</option>
-                                            <option value="Felino">Felino</option>
-                                            <option value="Equino">Equino</option>
-                                            <option value="Bovino">Bovino</option>
+                                            <option value="" disabled selected>Seleccione Especie</option>
+                                            <option value="Perro (Canino)">Perro (Canino)</option>
+                                            <option value="Gato (Felino)">Gato (Felino)</option>
+                                            <option value="Caballo (Equino)">Caballo (Equino)</option>
+                                            <option value="Vaca (Bovino)">Vaca (Bovino)</option>
                                         </select>
                                     </td>
                                     <th>Nombre:</th>
@@ -504,7 +507,7 @@ function Urianalisis() {
                                     <th>Sexo:</th>
                                     <td>
                                         <select name="sexo_examen" id="sexo_examen" className="examen-input-tabla" value={sexo} onChange={handleSexoChange} required>
-                                            <option value="" disabled selected>Seleccione sexo</option>
+                                            <option value="" disabled selected>Seleccione Sexo</option>
                                             <option value="Hembra">Hembra</option>
                                             <option value="Macho">Macho</option>
                                         </select>
@@ -512,7 +515,7 @@ function Urianalisis() {
                                     <th>Castrado:</th>
                                     <td>
                                         <select name="castrado_examen" id="castrado_examen" className="examen-input-tabla" value={castrado} onChange={handleCastradoChange} required>
-                                            <option value="" disabled selected>Seleccione castrado</option>
+                                            <option value="" disabled selected>Seleccione Castrado</option>
                                             <option value="No">No</option>
                                             <option value="Si">Si</option>
                                         </select>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import html2pdf from 'html2pdf.js';
 import '../../styles/GlobalStyle.css'
 
 /* 
@@ -71,23 +72,59 @@ function Report() {
                         });
                     });
     
-                    const reporteCard = mascotas.map(data => {
-                        fechaCompleta = data.examen.fechaSolicitud;
-                        fecha = new Date(fechaCompleta).toLocaleDateString();
-                        hora = new Date(fechaCompleta).toLocaleTimeString();
-                        return (
-                            <div className="report-card" key={data.examen._id}>
-                                <label className='veterinario-titulo-examen'>{data.mascota.nombre}</label>
-                                <label className='report-titulo-dato'><b>Propietario: </b>{data.usuario.nombre}<br></br><b>Especie: </b>{data.mascota.especie}<br></br><b>Sexo: </b>{data.mascota.sexo}</label>
-                                <label className='report-titulo-dato'><b>Examen: </b>{data.examen.tipoExamen}<br></br><b>Fecha: </b>{fecha}<br></br><b>Hora: </b>{hora}</label>
-                                <button onClick={""} className="report-button-examen">Ver PDF</button>
-                                <button onClick={() => notificarUsuario(data.examen._id)} className="report-button-examen">Notificar</button>
-                            </div>
-                        );
-                    });
-
-                    setRealizado(false);
-                    setReporte(reporteCard);
+                    if(mascotas.length == 0){
+                        var inexistente = [""].map(vacio => {
+                            return (
+                                <label className="titulo-no-encontrado">Actualmente, no existen reportes de los exámenes completados</label>
+                            )
+                        })
+                        setReporte(inexistente);
+                    }else{
+                        const reporteCard = mascotas.map(data => {
+                            if(data.examen.tipoExamen == "Parasitologia"){
+                                fechaCompleta = data.examen.fechaSolicitud;
+                                fecha = new Date(fechaCompleta).toLocaleDateString();
+                                hora = new Date(fechaCompleta).toLocaleTimeString();
+                                return (
+                                    <div className="report-card" key={data.examen._id}>
+                                        <label className='veterinario-titulo-examen'>{data.mascota.nombre}</label>
+                                        <label className='report-titulo-dato'><b>Propietario: </b>{data.usuario.nombre}<br></br><b>Especie: </b>{data.mascota.especie}<br></br><b>Sexo: </b>{data.mascota.sexo}</label>
+                                        <label className='report-titulo-dato'><b>Examen: </b>{data.examen.tipoExamen}<br></br><b>Fecha: </b>{fecha}<br></br><b>Hora: </b>{hora}</label>
+                                        <button onClick={() => goParasitologiaView(data.examen._id, true)} className="report-button-examen">Ver PDF</button>
+                                        <button onClick={() => notificarUsuario(data.examen._id)} className="report-button-examen">Notificar</button>
+                                    </div>
+                                );
+                            }else if(data.examen.tipoExamen == "Urianalisis"){
+                                fechaCompleta = data.examen.fechaSolicitud;
+                                fecha = new Date(fechaCompleta).toLocaleDateString();
+                                hora = new Date(fechaCompleta).toLocaleTimeString();
+                                return (
+                                    <div className="report-card" key={data.examen._id}>
+                                        <label className='veterinario-titulo-examen'>{data.mascota.nombre}</label>
+                                        <label className='report-titulo-dato'><b>Propietario: </b>{data.usuario.nombre}<br></br><b>Especie: </b>{data.mascota.especie}<br></br><b>Sexo: </b>{data.mascota.sexo}</label>
+                                        <label className='report-titulo-dato'><b>Examen: </b>{data.examen.tipoExamen}<br></br><b>Fecha: </b>{fecha}<br></br><b>Hora: </b>{hora}</label>
+                                        <button onClick={() => goUrianalisisView(data.examen._id, true)} className="report-button-examen">Ver PDF</button>
+                                        <button onClick={() => notificarUsuario(data.examen._id)} className="report-button-examen">Notificar</button>
+                                    </div>
+                                );
+                            }else if(data.examen.tipoExamen == "Hematologia"){
+                                fechaCompleta = data.examen.fechaSolicitud;
+                                fecha = new Date(fechaCompleta).toLocaleDateString();
+                                hora = new Date(fechaCompleta).toLocaleTimeString();
+                                return (
+                                    <div className="report-card" key={data.examen._id}>
+                                        <label className='veterinario-titulo-examen'>{data.mascota.nombre}</label>
+                                        <label className='report-titulo-dato'><b>Propietario: </b>{data.usuario.nombre}<br></br><b>Especie: </b>{data.mascota.especie}<br></br><b>Sexo: </b>{data.mascota.sexo}</label>
+                                        <label className='report-titulo-dato'><b>Examen: </b>{data.examen.tipoExamen}<br></br><b>Fecha: </b>{fecha}<br></br><b>Hora: </b>{hora}</label>
+                                        <button onClick={() => goHematologiaView(data.examen._id, true)} className="report-button-examen">Ver PDF</button>
+                                        <button onClick={() => notificarUsuario(data.examen._id)} className="report-button-examen">Notificar</button>
+                                    </div>
+                                );
+                            }
+                        });
+                        setRealizado(false);
+                        setReporte(reporteCard);
+                    }
                 }
             } catch (error) {
                 console.log('error', error);
@@ -117,6 +154,18 @@ function Report() {
 
     const seeReport = () => {
         navigate("/report");
+    }
+
+    const goParasitologiaView = (examenSeleccionado, generarPDF) => {
+        navigate("/parasitologia-view", { state: {examenSeleccionado, generarPDF}});
+    }
+
+    const goHematologiaView = (examenSeleccionado, generarPDF) => {
+        navigate("/hematologia-view", { state: {examenSeleccionado, generarPDF}});
+    }
+
+    const goUrianalisisView = (examenSeleccionado, generarPDF) => {
+        navigate("/urianalisis-view", { state: {examenSeleccionado, generarPDF}});
     }
 
     const notificarUsuario = (idReporte) => {
@@ -170,7 +219,7 @@ function Report() {
 
                 <div className="veterinario-big-card">
 
-                    {reporte}
+                    {reporte.length == 0 ? <label className="titulo-no-encontrado">Cargando datos de los reportes...</label> : reporte}
                     
                 </div>
 

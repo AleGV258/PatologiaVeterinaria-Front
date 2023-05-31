@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import html2pdf from 'html2pdf.js';
 import '../../../styles/GlobalStyle.css'
 
 /* 
@@ -42,8 +43,25 @@ function ParasitologiaView() {
     const navigate = useNavigate();
     const location = useLocation();
     const examenSeleccionado = location.state?.examenSeleccionado || [];
+    const generarPDF = location.state?.generarPDF || false;
 
     document.body.style.overflowY = "visible";
+
+    const generarPDFParasitologia = (propietario, nombre, especie, fecha) => {
+        const element = document.getElementById('pdf-content-parasitologia');
+        const nombreArchivo = 'Parasitología-' + propietario + '-' + nombre + '-' + especie.split(' ')[0] + '-(' + fecha + ').pdf';
+    
+        // Configuración de html2pdf.js
+        const options = {
+          margin: 5,
+          filename: nombreArchivo,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 4 },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+        };
+    
+        html2pdf().from(element).set(options).save();
+    };
 
     useEffect(() => {
         const requestOptions = {
@@ -95,10 +113,17 @@ function ParasitologiaView() {
                 setResultado(dataExamen[0].datos["Examen Microscópico"]["Resultado"]);
 
                 setObservaciones(dataExamen[0].datos.Observaciones);
-                setCaso("");
-                setDireccion("");
-                setExpediente("");
-                setTelefono("");
+                setCaso(" ");
+                setDireccion(" ");
+                setExpediente(" ");
+                setTelefono(" ");
+
+                if (generarPDF == true) {
+                    await setTimeout(() => {
+                      generarPDFParasitologia(secondResult.usuario.nombre, secondResult.mascota.nombre, secondResult.mascota.especie, fechaReporteNueva);
+                      seeReport();
+                    }, 2000);
+                }
             } catch (error) {
                 console.log('error', error);
             }
@@ -156,7 +181,7 @@ function ParasitologiaView() {
                 </div>
                 <button onClick={logoutUser} className="logout-button logout-button-veterinario">Cerrar <br className="break-point"></br>Sesión</button>
             </div>
-            <div className="grid-home-3">
+            <div className="grid-home-3" id="pdf-content-parasitologia">
 
                 {/* <label className="titulo-examen"></label> */}
 

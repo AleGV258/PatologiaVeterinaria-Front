@@ -10,7 +10,6 @@ import '../../../styles/GlobalStyle.css'
         - León Paulín Daniel - 260541
         - García Vargas Michell Alejandro - 259663
 */
-
 function Hematologia() {
     const [cargando, setCargando] = useState(false);
     const Token = useState(localStorage.getItem("token"));
@@ -240,7 +239,7 @@ function Hematologia() {
                     "Valor": valorArtefactos,
                     "Morfología Celular": morfologiaArtefactos
                 },
-                "Interpretacion": interpretacion
+                "Interpretación": interpretacion
             }
         };
 
@@ -689,11 +688,11 @@ function Hematologia() {
                                     <th>Especie:</th>
                                     <td>
                                         <select name="especie_examen" id="especie_examen" className="examen-input-tabla" value={especie} onChange={handleEspecieChange} required>
-                                            {/* <option value="" disabled selected>Seleccione especie</option> */}
-                                            <option value="Canino" selected>Canino</option>
-                                            {/* <option value="Felino">Felino</option> */}
-                                            {/* <option value="Equino">Equino</option> */}
-                                            {/* <option value="Bovino">Bovino</option> */}
+                                            {/* <option value="" disabled selected>Seleccione Especie</option> */}
+                                            <option value="Perro (Canino)" selected>Perro (Canino)</option>
+                                            {/* <option value="Gato (Felino)">Gato (Felino)</option> */}
+                                            {/* <option value="Caballo (Equino)">Caballo (Equino)</option> */}
+                                            {/* <option value="Vaca (Bovino)">Vaca (Bovino)</option> */}
                                         </select>
                                     </td>
                                     <th>Nombre:</th>
@@ -709,7 +708,7 @@ function Hematologia() {
                                     <th>Sexo:</th>
                                     <td>
                                         <select name="sexo_examen" id="sexo_examen" className="examen-input-tabla" value={sexo} onChange={handleSexoChange} required>
-                                            <option value="" disabled selected>Seleccione sexo</option>
+                                            <option value="" disabled selected>Seleccione Sexo</option>
                                             <option value="Hembra">Hembra</option>
                                             <option value="Macho">Macho</option>
                                         </select>
@@ -717,7 +716,7 @@ function Hematologia() {
                                     <th>Castrado:</th>
                                     <td>
                                         <select name="castrado_examen" id="castrado_examen" className="examen-input-tabla" value={castrado} onChange={handleCastradoChange} required>
-                                            <option value="" disabled selected>Seleccione castrado</option>
+                                            <option value="" disabled selected>Seleccione Castrado</option>
                                             <option value="No">No</option>
                                             <option value="Si">Si</option>
                                         </select>
@@ -760,7 +759,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2"><input type="text" required value={valorHematocrito} onChange={handleValorHematocritoChange} className="examen-input-tabla" placeholder="-"></input></td>
                                     <td className="examen-segunda-version2">
                                         <select name="variacion_hematocrito_examen" id="variacion_hematocrito_examen" className="examen-input-tabla" value={variacionHematocrito} onChange={handleVariacionHematocritoChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="Alto">Alto</option>
                                             <option value="Bajo">Bajo</option>
                                             <option value="NC">NC</option>
@@ -771,7 +770,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2">Anisocitosis</td>
                                     <td className="examen-segunda-version2">
                                         <select name="morfologia_hematocrito_examen" id="morfologia_hematocrito_examen" className="examen-input-tabla" value={morfologiaHematocrito} onChange={handleMorfologiaHematocritoChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="1+">1+</option>
                                             <option value="2+">2+</option>
                                             <option value="3+">3+</option>
@@ -783,7 +782,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2"><input type="text" required value={valorHemoglobina} onChange={handleValorHemoglobinaChange} className="examen-input-tabla" placeholder="-"></input></td>
                                     <td className="examen-segunda-version2">
                                         <select name="variacion_hemoglobina_examen" id="variacion_hemoglobina_examen" className="examen-input-tabla" value={variacionHemoglobina} onChange={handleVariacionHemoglobinaChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="Alto">Alto</option>
                                             <option value="Bajo">Bajo</option>
                                             <option value="NC">NC</option>
@@ -794,7 +793,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2">Policromasia</td>
                                     <td className="examen-segunda-version2">
                                         <select name="morfologia_hemoglobina_examen" id="morfologia_hemoglobina_examen" className="examen-input-tabla" value={morfologiaHemoglobina} onChange={handleMorfologiaHemoglobinaChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="1+">1+</option>
                                             <option value="2+">2+</option>
                                             <option value="3+">3+</option>
@@ -806,7 +805,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2"><input type="text" required value={valorEritrocitos} onChange={handleValorEritrocitosChange} className="examen-input-tabla" placeholder="-"></input></td>
                                     <td className="examen-segunda-version2">
                                         <select name="variacion_eritrocitos_examen" id="variacion_eritrocitos_examen" className="examen-input-tabla" value={variacionEritrocitos} onChange={handleVariacionEritrocitosChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="Alto">Alto</option>
                                             <option value="Bajo">Bajo</option>
                                             <option value="NC">NC</option>
@@ -817,7 +816,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2">P. Basofílico</td>
                                     <td className="examen-segunda-version2">
                                         <select name="morfologia_eritrocitos_examen" id="morfologia_eritrocitos_examen" className="examen-input-tabla" value={morfologiaEritrocitos} onChange={handleMorfologiaEritrocitosChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="1+">1+</option>
                                             <option value="2+">2+</option>
                                             <option value="3+">3+</option>
@@ -829,7 +828,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2"><input type="text" required value={valorVGM} onChange={handleValorVGMChange} className="examen-input-tabla" placeholder="-"></input></td>
                                     <td className="examen-segunda-version2">
                                         <select name="variacion_vgm_examen" id="variacion_vgm_examen" className="examen-input-tabla" value={variacionVGM} onChange={handleVariacionVGMChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="Alto">Alto</option>
                                             <option value="Bajo">Bajo</option>
                                             <option value="NC">NC</option>
@@ -840,7 +839,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2">Hipocromía</td>
                                     <td className="examen-segunda-version2">
                                         <select name="morfologia_vgm_examen" id="morfologia_vgm_examen" className="examen-input-tabla" value={morfologiaVGM} onChange={handleMorfologiaVGMChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="1+">1+</option>
                                             <option value="2+">2+</option>
                                             <option value="3+">3+</option>
@@ -852,7 +851,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2"><input type="text" required value={valorCGMH} onChange={handleValorCGMHChange} className="examen-input-tabla" placeholder="-"></input></td>
                                     <td className="examen-segunda-version2">
                                         <select name="variacion_cgmh_examen" id="variacion_cgmh_examen" className="examen-input-tabla" value={variacionCGMH} onChange={handleVariacionCGMHChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="Alto">Alto</option>
                                             <option value="Bajo">Bajo</option>
                                             <option value="NC">NC</option>
@@ -863,7 +862,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2">Aglutinación</td>
                                     <td className="examen-segunda-version2">
                                         <select name="morfologia_cgmh_examen" id="morfologia_cgmh_examen" className="examen-input-tabla" value={morfologiaCGMH} onChange={handleMorfologiaCGMHChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="1+">1+</option>
                                             <option value="2+">2+</option>
                                             <option value="3+">3+</option>
@@ -875,7 +874,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2"><input type="text" required value={valorReticulocitos} onChange={handleValorReticulocitosChange} className="examen-input-tabla" placeholder="-"></input></td>
                                     <td className="examen-segunda-version2">
                                         <select name="variacion_reticulocitos_examen" id="variacion_reticulocitos_examen" className="examen-input-tabla" value={variacionReticulocitos} onChange={handleVariacionReticulocitosChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="Alto">Alto</option>
                                             <option value="Bajo">Bajo</option>
                                             <option value="NC">NC</option>
@@ -886,7 +885,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2">Rouleaux</td>
                                     <td className="examen-segunda-version2">
                                         <select name="morfologia_reticulocitos_examen" id="morfologia_reticulocitos_examen" className="examen-input-tabla" value={morfologiaReticulocitos} onChange={handleMorfologiaReticulocitosChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="1+">1+</option>
                                             <option value="2+">2+</option>
                                             <option value="3+">3+</option>
@@ -898,7 +897,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2"><input type="text" required value={valorPlaquetas} onChange={handleValorPlaquetasChange} className="examen-input-tabla" placeholder="-"></input></td>
                                     <td className="examen-segunda-version2">
                                         <select name="variacion_plaquetas_examen" id="variacion_plaquetas_examen" className="examen-input-tabla" value={variacionPlaquetas} onChange={handleVariacionPlaquetasChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="Alto">Alto</option>
                                             <option value="Bajo">Bajo</option>
                                             <option value="NC">NC</option>
@@ -916,7 +915,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2"><input type="text" required value={valorSolidos} onChange={handleValorSolidosChange} className="examen-input-tabla" placeholder="-"></input></td>
                                     <td className="examen-segunda-version2">
                                         <select name="variacion_solidos_examen" id="variacion_solidos_examen" className="examen-input-tabla" value={variacionSolidos} onChange={handleVariacionSolidosChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="Alto">Alto</option>
                                             <option value="Bajo">Bajo</option>
                                             <option value="NC">NC</option>
@@ -927,7 +926,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2">Poiquilocitosis</td>
                                     <td className="examen-segunda-version2">
                                         <select name="morfologia_solidos_examen" id="morfologia_solidos_examen" className="examen-input-tabla" value={morfologiaSolidos} onChange={handleMorfologiaSolidosChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="1+">1+</option>
                                             <option value="2+">2+</option>
                                             <option value="3+">3+</option>
@@ -939,7 +938,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2"><input type="text" required value={valorLeucocitos} onChange={handleValorLeucocitosChange} className="examen-input-tabla" placeholder="-"></input></td>
                                     <td className="examen-segunda-version2">
                                         <select name="variacion_leucocitos_examen" id="variacion_leucocitos_examen" className="examen-input-tabla" value={variacionLeucocitos} onChange={handleVariacionLeucocitosChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="Alto">Alto</option>
                                             <option value="Bajo">Bajo</option>
                                             <option value="NC">NC</option>
@@ -954,7 +953,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2"><input type="text" required value={valorNeutrofilos} onChange={handleValorNeutrofilosChange} className="examen-input-tabla" placeholder="-"></input></td>
                                     <td className="examen-segunda-version2">
                                         <select name="variacion_neutrofilos_examen" id="variacion_neutrofilos_examen" className="examen-input-tabla" value={variacionNeutrofilos} onChange={handleVariacionNeutrofilosChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="Alto">Alto</option>
                                             <option value="Bajo">Bajo</option>
                                             <option value="NC">NC</option>
@@ -968,7 +967,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2"><input type="text" required value={valorBandas} onChange={handleValorBandasChange} className="examen-input-tabla" placeholder="-"></input></td>
                                     <td className="examen-segunda-version2">
                                         <select name="variacion_bandas_examen" id="variacion_bandas_examen" className="examen-input-tabla" value={variacionBandas} onChange={handleVariacionBandasChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="Alto">Alto</option>
                                             <option value="Bajo">Bajo</option>
                                             <option value="NC">NC</option>
@@ -982,7 +981,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2"><input type="text" required value={valorLinfocitos} onChange={handleValorLinfocitosChange} className="examen-input-tabla" placeholder="-"></input></td>
                                     <td className="examen-segunda-version2">
                                         <select name="variacion_linfocitos_examen" id="variacion_linfocitos_examen" className="examen-input-tabla" value={variacionLinfocitos} onChange={handleVariacionLinfocitosChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="Alto">Alto</option>
                                             <option value="Bajo">Bajo</option>
                                             <option value="NC">NC</option>
@@ -993,7 +992,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2">Neutrófilos tóxicos</td>
                                     <td className="examen-segunda-version2">
                                         <select name="morfologia_linfocitos_examen" id="morfologia_linfocitos_examen" className="examen-input-tabla" value={morfologiaLinfocitos} onChange={handleMorfologiaLinfocitosChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="1+">1+</option>
                                             <option value="2+">2+</option>
                                             <option value="3+">3+</option>
@@ -1005,7 +1004,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2"><input type="text" required value={valorMonocitos} onChange={handleValorMonocitosChange} className="examen-input-tabla" placeholder="-"></input></td>
                                     <td className="examen-segunda-version2">
                                         <select name="variacion_monocitos_examen" id="variacion_monocitos_examen" className="examen-input-tabla" value={variacionMonocitos} onChange={handleVariacionMonocitosChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="Alto">Alto</option>
                                             <option value="Bajo">Bajo</option>
                                             <option value="NC">NC</option>
@@ -1016,7 +1015,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2">Linfocitos reactivos</td>
                                     <td className="examen-segunda-version2">
                                         <select name="morfologia_monocitos_examen" id="morfologia_monocitos_examen" className="examen-input-tabla" value={morfologiaMonocitos} onChange={handleMorfologiaMonocitosChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="1+">1+</option>
                                             <option value="2+">2+</option>
                                             <option value="3+">3+</option>
@@ -1028,7 +1027,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2"><input type="text" required value={valorEosinofilos} onChange={handleValorEosinofilosChange} className="examen-input-tabla" placeholder="-"></input></td>
                                     <td className="examen-segunda-version2">
                                         <select name="variacion_eosinofilos_examen" id="variacion_eosinofilos_examen" className="examen-input-tabla" value={variacionEosinofilos} onChange={handleVariacionEosinofilosChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="Alto">Alto</option>
                                             <option value="Bajo">Bajo</option>
                                             <option value="NC">NC</option>
@@ -1039,30 +1038,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2">Mielo. Inmaduros</td>
                                     <td className="examen-segunda-version2">
                                         <select name="morfologia_eosinofilos_examen" id="morfologia_eosinofilos_examen" className="examen-input-tabla" value={morfologiaEosinofilos} onChange={handleMorfologiaEosinofilosChange} required>
-                                            <option value="-" selected>-</option>
-                                            <option value="1+">1+</option>
-                                            <option value="2+">2+</option>
-                                            <option value="3+">3+</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th className="examen-segunda-version2">Hematocrito</th>
-                                    <td className="examen-segunda-version2"><input type="text" required value={valorHematocrito} onChange={handleValorHematocritoChange} className="examen-input-tabla" placeholder="-"></input></td>
-                                    <td className="examen-segunda-version2">
-                                        <select name="variacion_hematocrito_examen" id="variacion_hematocrito_examen" className="examen-input-tabla" value={variacionHematocrito} onChange={handleVariacionHematocritoChange} required>
-                                            <option value="-" selected>-</option>
-                                            <option value="Alto">Alto</option>
-                                            <option value="Bajo">Bajo</option>
-                                            <option value="NC">NC</option>
-                                        </select>
-                                    </td>
-                                    <td className="examen-segunda-version2">0.37 - 0.55</td>
-                                    <td className="examen-segunda-version2">x10<sup>9</sup>/L</td>
-                                    <td className="examen-segunda-version2">Anisocitosis</td>
-                                    <td className="examen-segunda-version2">
-                                        <select name="morfologia_hematocrito_examen" id="morfologia_hematocrito_examen" className="examen-input-tabla" value={morfologiaHematocrito} onChange={handleMorfologiaHematocritoChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="1+">1+</option>
                                             <option value="2+">2+</option>
                                             <option value="3+">3+</option>
@@ -1074,7 +1050,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2"><input type="text" required value={valorBasofilos} onChange={handleValorBasofilosChange} className="examen-input-tabla" placeholder="-"></input></td>
                                     <td className="examen-segunda-version2">
                                         <select name="variacion_basofilos_examen" id="variacion_basofilos_examen" className="examen-input-tabla" value={variacionBasofilos} onChange={handleVariacionBasofilosChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="Alto">Alto</option>
                                             <option value="Bajo">Bajo</option>
                                             <option value="NC">NC</option>
@@ -1085,7 +1061,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2">Microfilarias</td>
                                     <td className="examen-segunda-version2">
                                         <select name="morfologia_basofilos_examen" id="morfologia_basofilos_examen" className="examen-input-tabla" value={morfologiaBasofilos} onChange={handleMorfologiaBasofilosChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="1+">1+</option>
                                             <option value="2+">2+</option>
                                             <option value="3+">3+</option>
@@ -1098,7 +1074,7 @@ function Hematologia() {
                                     <td className="examen-segunda-version2">Macroplaquetas</td>
                                     <td className="examen-segunda-version2">
                                         <select name="morfologia_artefactos_examen" id="morfologia_artefactos_examen" className="examen-input-tabla" value={morfologiaArtefactos} onChange={handleMorfologiaArtefactosChange} required>
-                                            <option value="-" selected>-</option>
+                                            <option value="" disabled selected>-</option>
                                             <option value="1+">1+</option>
                                             <option value="2+">2+</option>
                                             <option value="3+">3+</option>

@@ -120,7 +120,6 @@ function AddPet() {
 
         const raw = {
             nombre: nombreMascota,
-            idUsuario: IdUsuario[0],
             especie: especieMascota, 
             raza: razaMascota, 
             sexo: sexoMascota, 
@@ -139,8 +138,9 @@ function AddPet() {
             redirect: 'follow'
         };
 
-        fetch("https://api-arquitecturas-ti.vercel.app/api/users/veterinarios", requestOptions)
+        fetch("https://api-arquitecturas-ti.vercel.app/api/mascota/", requestOptions)
         .then(response => {
+            console.log(response)
             if (response.ok) {
                 setCargando(false);
                 alert("Su mascota ha sido registrada correctamente ♥");

@@ -477,7 +477,7 @@ input[type="submit"]:active{
     border-radius: 10px;
 }
 .clinico-button-descarga{
-    width: 25%;
+    width: 20%;
     background-color: #37a943;
     color: #fff;
     padding: 1.5% 0;
@@ -496,6 +496,30 @@ input[type="submit"]:active{
     cursor: pointer;
 }
 .clinico-button-descarga:active{
+    background-color: #DDDDDD;
+    color: #000;
+}
+
+.clinico-button-eliminar{
+    width: 20%;
+    background-color: #ff0000;
+    color: #fff;
+    padding: 1.5% 0;
+    margin: auto 0;
+    border: none;
+    outline: none;
+    font-size: large;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 10px;
+}
+.clinico-button-eliminar:hover{
+    background-color: #c23616;
+    color: #fff;
+    cursor: pointer;
+}
+.clinico-button-eliminar:active{
     background-color: #DDDDDD;
     color: #000;
 }
@@ -603,6 +627,14 @@ input[type="submit"]:active{
     margin: 2% 0;
     width: 85%;
     font-size: x-large;
+}
+select{
+    text-align: center;
+}
+select[disabled] { 
+    color: #000; 
+    font-weight: 600;
+    text-align: center;
 }
 .examenes-cards{
     display: flex;
@@ -737,6 +769,13 @@ input[type="submit"]:active{
     filter: opacity(1);
     cursor: pointer;
 }
+.titulo-no-encontrado{
+    width: 100%;
+    color: #3B4D79;
+    font-size: xx-large;
+    padding: 4% 0;
+
+}
 
 /* Exámenes Veterinario */
 .veterinario-titulo-dato{
@@ -745,7 +784,7 @@ input[type="submit"]:active{
     text-align: start;
 }
 .veterinario-titulo-examen{
-    margin: auto 3%;
+    margin: auto 2% auto 6%;
     font-size: x-large;
 }
 

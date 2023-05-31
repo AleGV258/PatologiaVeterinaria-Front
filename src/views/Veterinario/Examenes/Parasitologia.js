@@ -360,11 +360,11 @@ function Parasitologia() {
                                     <th>Especie:</th>
                                     <td>
                                         <select name="especie_examen" id="especie_examen" className="examen-input-tabla" value={especie} onChange={handleEspecieChange} required>
-                                            <option value="" disabled selected>Seleccione especie</option>
-                                            <option value="Canino">Canino</option>
-                                            <option value="Felino">Felino</option>
-                                            <option value="Equino">Equino</option>
-                                            <option value="Bovino">Bovino</option>
+                                            <option value="" disabled selected>Seleccione Especie</option>
+                                            <option value="Perro (Canino)">Perro (Canino)</option>
+                                            <option value="Gato (Felino)">Gato (Felino)</option>
+                                            <option value="Caballo (Equino)">Caballo (Equino)</option>
+                                            <option value="Vaca (Bovino)">Vaca (Bovino)</option>
                                         </select>
                                     </td>
                                     <th>Nombre:</th>
@@ -380,7 +380,7 @@ function Parasitologia() {
                                     <th>Sexo:</th>
                                     <td>
                                         <select name="sexo_examen" id="sexo_examen" className="examen-input-tabla" value={sexo} onChange={handleSexoChange} required>
-                                            <option value="" disabled selected>Seleccione sexo</option>
+                                            <option value="" disabled selected>Seleccione Sexo</option>
                                             <option value="Hembra">Hembra</option>
                                             <option value="Macho">Macho</option>
                                         </select>
@@ -388,7 +388,7 @@ function Parasitologia() {
                                     <th>Castrado:</th>
                                     <td>
                                         <select name="castrado_examen" id="castrado_examen" className="examen-input-tabla" value={castrado} onChange={handleCastradoChange} required>
-                                            <option value="" disabled selected>Seleccione castrado</option>
+                                            <option value="" disabled selected>Seleccione Castrado</option>
                                             <option value="No">No</option>
                                             <option value="Si">Si</option>
                                         </select>
@@ -422,7 +422,7 @@ function Parasitologia() {
                                     <th className="examen-segunda-version2">Tipo de muestra:</th>
                                     <td>
                                         <select name="muestra_examen" id="muestra_examen" className="examen-input-tabla" value={muestra} onChange={handleMuestraChange} required>
-                                            <option value="" disabled selected>Seleccione muestra</option>
+                                            <option value="" disabled selected>Seleccione Muestra</option>
                                             <option value="Raspado">Raspado</option>
                                             <option value="Ejemplar de Parásito">Ejemplar de Parásito</option>
                                             <option value="Heces">Heces</option>
@@ -437,7 +437,7 @@ function Parasitologia() {
                                     <th className="examen-segunda-version2">Técnica:</th>
                                     <td>
                                         <select name="tecnica_examen" id="tecnica_examen" className="examen-input-tabla" value={tecnica} onChange={handleTecnicaChange} required>
-                                            <option value="" disabled selected>Seleccione técnica</option>
+                                            <option value="" disabled selected>Seleccione Técnica</option>
                                             <option value="Raspado Cutáneo">Raspado Cutáneo</option>
                                             <option value="Identificación Directa">Identificación Directa</option>
                                             <option value="Flotación">Flotación</option>

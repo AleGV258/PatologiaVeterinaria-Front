@@ -12,47 +12,102 @@ import '../../styles/GlobalStyle.css'
 */
 
 function HomeVet() {
+    const Token = useState(localStorage.getItem("token"));
     const [usuario, setUsuario] = useState(localStorage.getItem("usuario"));
     const [busqueda, setBusqueda] = useState("");
+    var [mascotasUsuarios, setMascotasUsuarios] = useState([]);
     const navigate = useNavigate();
 
     document.body.style.overflowY = "visible";
 
-    // useEffect(() => {
-    //     const requestOptions = {
-    //         method: 'GET',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             token: Token[0]
-    //         },
-    //         redirect: 'follow'
-    //     };
+    useEffect(() => {
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                token: Token[0]
+            },
+            redirect: 'follow'
+        };
 
-    //     fetch("https://api-arquitecturas-ti.vercel.app/api/mascota/Usuario/", requestOptions)
-    //     .then(response => {
-    //         if (response.ok) {
-    //             return response.json();
-    //         } else {
-    //             throw new Error('La solicitud Fetch no se realizó correctamente');
-    //         }
-    //     })
-    //     .then(result => {
-    //         // console.log("Resultado: " + JSON.stringify(result))
-    //         var mascotasCards = result.mascotas.map(mascota => {
-    //             return (
-    //                 <div className="mascota-card" key={mascota._id}>
-    //                     <img src='../imgs/Mascota.png' className='mascota-image'></img>
-    //                     <label className='mascota-titulo-examen'>{mascota.nombre}</label>
-    //                     <label className='mascota-titulo-dato'>Raza: {mascota.raza}<br></br><br></br>Edad: {mascota.edad}</label>
-    //                     <button onClick={() => petSpecificDetails(mascota._id)} className="mascota-button-info">+ Info</button>
-    //                     <button onClick={() => petExamDetails(mascota._id)} className="mascota-button-examen">Examenes</button>
-    //                 </div>
-    //             )
-    //         })
-    //         setMascotasUsuarios(mascotasCards);
-    //     })
-    //     .catch(error => console.log('error', error));
-    // }, []);
+        fetch("https://api-arquitecturas-ti.vercel.app/api/mascota/", requestOptions)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('La solicitud Fetch no se realizó correctamente');
+            }
+        })
+        .then(result => {
+            // console.log("Resultado: " + JSON.stringify(result))
+            if(result.total == 0){
+                var inexistente = [""].map(vacio => {
+                    return (
+                        <label className="titulo-no-encontrado">¡Lo sentimos! No existen mascotas registradas</label>
+                    )
+                })
+                setMascotasUsuarios(inexistente);
+            }else{
+                var mascotasCards = result.mascotas.map(mascota => {
+                    return (
+                        <div className="opcion-mascota-veterinario" key={mascota._id} onClick={() => goMascotaExams(mascota._id)}>
+                            <div className="nombre-mascota-veterinario">{mascota.especie.split(' ')[0]}<br></br>{mascota.raza}</div>
+                            <img src='../imgs/Mascota.png' className="imagen-mascota-veterinario"></img>
+                            <label className="titulo-examen">{mascota.nombre.split(' ')[0]}</label>
+                        </div>
+                    )
+                })
+                setMascotasUsuarios(mascotasCards);
+            }
+        })
+        .catch(error => console.log('error', error));
+    }, []);
+
+    const busquedaMascota = () => {
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                token: Token[0]
+            },
+            redirect: 'follow'
+        };
+
+        fetch("https://api-arquitecturas-ti.vercel.app/api/mascota/", requestOptions)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('La solicitud Fetch no se realizó correctamente');
+            }
+        })
+        .then(result => {
+            // console.log("Resultado: " + JSON.stringify(result))
+            const mascotaFiltrada = result.mascotas.filter(mascota => {
+                return (mascota.nombre.toUpperCase().includes(busqueda.toUpperCase()) || mascota.especie.toUpperCase().includes(busqueda.toUpperCase()) || mascota.raza.toUpperCase().includes(busqueda.toUpperCase()) || mascota.sexo.toUpperCase().includes(busqueda.toUpperCase()))
+            })
+            if(mascotaFiltrada.length == 0){
+                var inexistente = [""].map(vacio => {
+                    return (
+                        <label className="titulo-no-encontrado">¡Lo sentimos! No existen mascotas relacionadas con su búsqueda</label>
+                    )
+                })
+                setMascotasUsuarios(inexistente);
+            }else{
+                var mascotasCards = mascotaFiltrada.map(mascota => {
+                    return (
+                        <div className="opcion-mascota-veterinario" key={mascota._id} onClick={() => goMascotaExams(mascota._id)}>
+                            <div className="nombre-mascota-veterinario">{mascota.especie.split(' ')[0]}<br></br>{mascota.raza}</div>
+                            <img src='../imgs/Mascota.png' className="imagen-mascota-veterinario"></img>
+                            <label className="titulo-examen">{mascota.nombre.split(' ')[0]}</label>
+                        </div>
+                    )
+                })
+                setMascotasUsuarios(mascotasCards);
+            }
+        })
+        .catch(error => console.log('error', error));
+    }
 
     const logoutUser = () => {
         localStorage.clear();
@@ -73,6 +128,10 @@ function HomeVet() {
 
     const seeReport = () => {
         navigate("/report");
+    }
+
+    const goMascotaExams = (mascotaSeleccionada) => {
+        navigate("/exam-pet", { state: {mascotaSeleccionada}});
     }
 
     const handleBusquedaChange = (event) => {
@@ -98,79 +157,12 @@ function HomeVet() {
 
                 <div className="seccion-buscador">
                     <input type="text" id="buscador-veterinario" name="buscador-veterinario" placeholder="Buscar Mascota" className="input-buscador" required value={busqueda} onChange={handleBusquedaChange} ></input>
-                    <button onClick={""} className="boton-buscador">Buscar</button>
+                    <button onClick={busquedaMascota} className="boton-buscador">Buscar</button>
                 </div>
 
-                <div className="opcion-mascota-veterinario">
-                    <div className="nombre-mascota-veterinario">Mascota</div>
-                    <img src='../imgs/Mascota.png' className="imagen-mascota-veterinario"></img>
-                    <label className="titulo-examen">Dueño Dueño</label>
-                </div>
-
-                <div className="opcion-mascota-veterinario">
-                    <div className="nombre-mascota-veterinario">Mascota</div>
-                    <img src='../imgs/Mascota.png' className="imagen-mascota-veterinario"></img>
-                    <label className="titulo-examen">Dueño Dueño</label>
-                </div>
-
-                <div className="opcion-mascota-veterinario">
-                    <div className="nombre-mascota-veterinario">Mascota</div>
-                    <img src='../imgs/Mascota.png' className="imagen-mascota-veterinario"></img>
-                    <label className="titulo-examen">Dueño Dueño</label>
-                </div>
-
-                <div className="opcion-mascota-veterinario">
-                    <div className="nombre-mascota-veterinario">Mascota</div>
-                    <img src='../imgs/Mascota.png' className="imagen-mascota-veterinario"></img>
-                    <label className="titulo-examen">Dueño Dueño</label>
-                </div>
-
-                <div className="opcion-mascota-veterinario">
-                    <div className="nombre-mascota-veterinario">Mascota</div>
-                    <img src='../imgs/Mascota.png' className="imagen-mascota-veterinario"></img>
-                    <label className="titulo-examen">Dueño Dueño</label>
-                </div>
-
-                <div className="opcion-mascota-veterinario">
-                    <div className="nombre-mascota-veterinario">Mascota</div>
-                    <img src='../imgs/Mascota.png' className="imagen-mascota-veterinario"></img>
-                    <label className="titulo-examen">Dueño Dueño</label>
-                </div>
+                {mascotasUsuarios.length == 0 ? <label className="titulo-no-encontrado">Cargando datos de las mascotas...</label> : mascotasUsuarios}
 
                 <br></br>
-
-{/* 
-                <div className="mascota-card">
-                    <img src='../imgs/Mascota.png' className='mascota-image'></img>
-                    <label className='mascota-titulo-examen'>Mascota 1</label>
-                    <label className='mascota-titulo-dato'>Raza: <br></br><br></br>Edad: </label>
-                    <button onClick={petSpecificDetails} className="mascota-button-info">+ Info</button>
-                    <button onClick={petExamDetails} className="mascota-button-examen">Examenes</button>
-                </div>
-
-                <div className="mascota-card">
-                    <img src='../imgs/Mascota.png' className='mascota-image'></img>
-                    <label className='mascota-titulo-examen'>Mascota 2</label>
-                    <label className='mascota-titulo-dato'>Raza: <br></br><br></br>Edad: </label>
-                    <button onClick={petSpecificDetails} className="mascota-button-info">+ Info</button>
-                    <button onClick={petExamDetails} className="mascota-button-examen">Examenes</button>
-                </div>
-                
-                <div className="mascota-card">
-                    <img src='../imgs/Mascota.png' className='mascota-image'></img>
-                    <label className='mascota-titulo-examen'>Mascota 3</label>
-                    <label className='mascota-titulo-dato'>Raza: <br></br><br></br>Edad: </label>
-                    <button onClick={petSpecificDetails} className="mascota-button-info">+ Info</button>
-                    <button onClick={petExamDetails} className="mascota-button-examen">Examenes</button>
-                </div>
-                
-                <div className="mascota-card">
-                    <img src='../imgs/Mascota.png' className='mascota-image'></img>
-                    <label className='mascota-titulo-examen'>Mascota 4</label>
-                    <label className='mascota-titulo-dato'>Raza: <br></br><br></br>Edad: </label>
-                    <button onClick={petSpecificDetails} className="mascota-button-info">+ Info</button>
-                    <button onClick={petExamDetails} className="mascota-button-examen">Examenes</button>
-                </div> */}
                 
             </div>
         </div>

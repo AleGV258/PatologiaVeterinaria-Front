@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate,useLocation } from 'react-router-dom';
+import html2pdf from 'html2pdf.js';
 import '../../../styles/GlobalStyle.css'
 
 /* 
@@ -13,6 +14,9 @@ import '../../../styles/GlobalStyle.css'
 
 function UrianalisisView() {
     const Token = useState(localStorage.getItem("token"));
+    var fechaCompleta = "";
+    var fechaReporte = new Date();
+    var horaReporte = new Date();
     // Examen General
     const [caso, setCaso] = useState("");
     const [propietario, setPropietario] = useState("");
@@ -57,8 +61,25 @@ function UrianalisisView() {
     const navigate = useNavigate();
     const location = useLocation();
     const examenSeleccionado = location.state?.examenSeleccionado || [];
+    const generarPDF = location.state?.generarPDF || false;
 
     document.body.style.overflowY = "visible";
+
+    const generarPDFUrianalisis = (propietario, nombre, especie, fecha) => {
+        const element = document.getElementById('pdf-content-urianalisis');
+        const nombreArchivo = 'Urianálsiis-' + propietario + '-' + nombre + '-' + especie.split(' ')[0] + '-(' + fecha + ').pdf';
+    
+        // Configuración de html2pdf.js
+        const options = {
+          margin: 5,
+          filename: nombreArchivo,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 4 },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+        };
+    
+        html2pdf().from(element).set(options).save();
+    };
 
     useEffect(() => {
         const requestOptions = {
@@ -105,33 +126,40 @@ function UrianalisisView() {
                 setAnamnesis(dataExamen[0].datos.Anamnesis);
                 setTratamiento(dataExamen[0].datos["Tratamiento Previo"]);
                 
-                setInterpretacion(dataExamen[0].datos.Interpretacion);
-                setCaso("");
-                setDireccion("");
-                setExpediente("");
-                setTelefono("");
+                setInterpretacion(dataExamen[0].datos["Interpretación"]);
+                setCaso(" ");
+                setDireccion(" ");
+                setExpediente(" ");
+                setTelefono(" ");
 
-                setEritrocitos("");
-                setRenales("");
-                setLeucocitos("");
-                setCristales("");
-                setEscamosas("");
-                setLipidos("");
-                setTransitorias("");
-                setBacterias("");
-                setCilindros("");
-                setOtros("");
+                setEritrocitos(dataExamen[0].datos["Examen Microscópico"]["Eritrocitos"]);
+                setRenales(dataExamen[0].datos["Examen Microscópico"]["Renales"]);
+                setLeucocitos(dataExamen[0].datos["Examen Microscópico"]["Leucocitos"]);
+                setCristales(dataExamen[0].datos["Examen Microscópico"]["Cristales"]);
+                setEscamosas(dataExamen[0].datos["Examen Microscópico"]["Escamosas"]);
+                setLipidos(dataExamen[0].datos["Examen Microscópico"]["Lipidos"]);
+                setTransitorias(dataExamen[0].datos["Examen Microscópico"]["Transitorias"]);
+                setBacterias(dataExamen[0].datos["Examen Microscópico"]["Bacterias"]);
+                setCilindros(dataExamen[0].datos["Examen Microscópico"]["Cilindros"]);
+                setOtros(dataExamen[0].datos["Examen Microscópico"]["Otros"]);
             
-                setMetodoObtencion("");
-                setColor("");
-                setProteinas("");
-                setPH("");
-                setApariencia("");
-                setGlucosa("");
-                setCetonas("");
-                setDensidad("");
-                setSangre("");
-                setBilirrubina("");
+                setMetodoObtencion(dataExamen[0].datos["Metodo de Obtención"]);
+                setColor(dataExamen[0].datos["Examen Físico"]["Color"]);
+                setProteinas(dataExamen[0].datos["Examen Químico"]["Proteínas"]);
+                setPH(dataExamen[0].datos["Examen Químico"]["pH"]);
+                setApariencia(dataExamen[0].datos["Examen Físico"]["Apariencia"]);
+                setGlucosa(dataExamen[0].datos["Examen Químico"]["Glucosa"]);
+                setCetonas(dataExamen[0].datos["Examen Químico"]["Cetonas"]);
+                setDensidad(dataExamen[0].datos["Examen Físico"]["Densidad"]);
+                setSangre(dataExamen[0].datos["Examen Químico"]["Sangre"]);
+                setBilirrubina(dataExamen[0].datos["Examen Químico"]["Bilirrubina"]);
+
+                if (generarPDF == true) {
+                    await setTimeout(() => {
+                      generarPDFUrianalisis(secondResult.usuario.nombre, secondResult.mascota.nombre, secondResult.mascota.especie, fechaReporteNueva);
+                      seeReport();
+                    }, 2000);
+                }
             } catch (error) {
                 console.log('error', error);
             }
@@ -189,7 +217,7 @@ function UrianalisisView() {
                 </div>
                 <button onClick={logoutUser} className="logout-button logout-button-veterinario">Cerrar <br className="break-point"></br>Sesión</button>
             </div>
-            <div className="grid-home-3">
+            <div className="grid-home-3" id="pdf-content-urianalisis">
 
                 {/* <label className="titulo-examen"></label> */}
 

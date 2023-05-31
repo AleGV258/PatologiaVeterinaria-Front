@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import '../../styles/GlobalStyle.css'
 
 /* 
@@ -11,12 +11,14 @@ import '../../styles/GlobalStyle.css'
         - García Vargas Michell Alejandro - 259663
 */
 
-function Exams() {
+function ExamPet() {
     const Token = useState(localStorage.getItem("token"));
     const [examenesPendientes, setExamenesPendientes] = useState([]);
     const [examenesCompletados, setExamenesCompletados] = useState([]);
-    const [examenSeleccionado, setExamenSeleccionado] = useState("pendientes");
+    const [nombreMascota, setnombreMascota] = useState("");
     const navigate = useNavigate();
+    const location = useLocation();
+    const mascotaSeleccionada = location.state?.mascotaSeleccionada || [];
     var fechaCompleta = "";
     var fecha = new Date();
     var hora = new Date();
@@ -42,16 +44,21 @@ function Exams() {
             }
         })
         .then(result => {
-            // console.log("Resultado: " + JSON.stringify(result))
+            console.log("Resultado: " + JSON.stringify(result))
             if(result.total == 0){
                 var inexistente = [""].map(vacio => {
                     return (
-                        <label className="titulo-no-encontrado">¡Hurra :D! No existen exámenes pendientes por el momento</label>
+                        <label className="titulo-no-encontrado">Cargando exámenes pendientes de la mascota...</label>
                     )
                 })
                 setExamenesPendientes(inexistente);
             }else{
-                var pendientes = result.examenes.map(resultado => {
+                const filtradoMascotas = result.examenes.filter(examen => {
+                    return examen.mascota._id == mascotaSeleccionada;
+                })
+
+                var pendientes = filtradoMascotas.map(resultado => {
+                    setnombreMascota(resultado.mascota.nombre);
                     if(resultado.examen.tipoExamen == "Parasitologia"){
                         fechaCompleta = resultado.examen.fechaSolicitud;
                         fecha = new Date(fechaCompleta).toLocaleDateString();
@@ -60,8 +67,8 @@ function Exams() {
                             <div className="mascota-card" key={resultado.examen._id}>
                                 <img src='../imgs/Parasito.png' className="mascota-card-imagen"></img>
                                 <label className="veterinario-titulo-examen">{resultado.examen.tipoExamen}</label>
-                                <label className='veterinario-titulo-dato'><b>Estado: </b>Pendiente<br></br><b>Fecha Solicitud: </b>{fecha}<br></br><b>Hora Solicitud: </b>{hora}</label>
-                                <label className='veterinario-titulo-dato'><b>Propietario: </b>{resultado.usuario.nombre}<br></br><b>Mascota: </b>{resultado.mascota.nombre}<br></br><b>Especie: </b>{resultado.mascota.especie}</label>
+                                <label className='veterinario-titulo-dato'><b>Propietario: </b>{resultado.usuario.nombre}<br></br><b>Especie: </b>{resultado.mascota.especie}<br></br><b>Fecha Solicitud: </b>{fecha}<br></br></label>
+                                <button onClick={""} className="clinico-button-eliminar">Eliminar</button>
                                 <button onClick={() => goParasitologia(resultado.examen._id)} className="clinico-button-descarga">Responder</button>
                             </div>
                         );
@@ -73,8 +80,8 @@ function Exams() {
                             <div className="mascota-card" key={resultado.examen._id}>
                                 <img src='../imgs/Orina.png' className="mascota-card-imagen"></img>
                                 <label className="veterinario-titulo-examen">{resultado.examen.tipoExamen}</label>
-                                <label className='veterinario-titulo-dato'><b>Estado: </b>Pendiente<br></br><b>Fecha Solicitud: </b>{fecha}<br></br><b>Hora Solicitud: </b>{hora}</label>
-                                <label className='veterinario-titulo-dato'><b>Propietario: </b>{resultado.usuario.nombre}<br></br><b>Mascota: </b>{resultado.mascota.nombre}<br></br><b>Especie: </b>{resultado.mascota.especie}</label>
+                                <label className='veterinario-titulo-dato'><b>Propietario: </b>{resultado.usuario.nombre}<br></br><b>Especie: </b>{resultado.mascota.especie}<br></br><b>Fecha Solicitud: </b>{fecha}<br></br></label>
+                                <button onClick={""} className="clinico-button-eliminar">Eliminar</button>
                                 <button onClick={() => goUrianalisis(resultado.examen._id)} className="clinico-button-descarga">Responder</button>
                             </div>
                         );
@@ -86,8 +93,8 @@ function Exams() {
                             <div className="mascota-card" key={resultado.examen._id}>
                                 <img src='../imgs/Sangre.png' className="mascota-card-imagen"></img>
                                 <label className="veterinario-titulo-examen">{resultado.examen.tipoExamen}</label>
-                                <label className='veterinario-titulo-dato'><b>Estado: </b>Pendiente<br></br><b>Fecha Solicitud: </b>{fecha}<br></br><b>Hora Solicitud: </b>{hora}</label>
-                                <label className='veterinario-titulo-dato'><b>Propietario: </b>{resultado.usuario.nombre}<br></br><b>Mascota: </b>{resultado.mascota.nombre}<br></br><b>Especie: </b>{resultado.mascota.especie}</label>
+                                <label className='veterinario-titulo-dato'><b>Propietario: </b>{resultado.usuario.nombre}<br></br><b>Especie: </b>{resultado.mascota.especie}<br></br><b>Fecha Solicitud: </b>{fecha}<br></br></label>
+                                <button onClick={""} className="clinico-button-eliminar">Eliminar</button>
                                 <button onClick={() => goHematologia(resultado.examen._id)} className="clinico-button-descarga">Responder</button>
                             </div>
                         );
@@ -111,12 +118,17 @@ function Exams() {
             if(result.total == 0){
                 var inexistente = [""].map(vacio => {
                     return (
-                        <label className="titulo-no-encontrado">No existen exámenes completados por el momento</label>
+                        <label className="titulo-no-encontrado">Cargando exámenes completados de la mascota...</label>
                     )
                 })
                 setExamenesCompletados(inexistente);
             }else{
-                var completados = result.examenes.map(resultado => {
+                const filtradoMascotas = result.examenes.filter(examen => {
+                    return examen.mascota._id == mascotaSeleccionada;
+                })
+
+                var completados = filtradoMascotas.map(resultado => {
+                    setnombreMascota(resultado.mascota.nombre);
                     if(resultado.examen.tipoExamen == "Parasitologia"){
                         fechaCompleta = resultado.examen.fechaSolicitud;
                         fecha = new Date(fechaCompleta).toLocaleDateString();
@@ -125,9 +137,9 @@ function Exams() {
                             <div className="mascota-card" key={resultado.examen._id}>
                                 <img src='../imgs/Parasito.png' className="mascota-card-imagen"></img>
                                 <label className="veterinario-titulo-examen">{resultado.examen.tipoExamen}</label>
-                                <label className='veterinario-titulo-dato'><b>Estado: </b>Completado<br></br><b>Fecha Solicitud: </b>{fecha}<br></br><b>Hora Solicitud: </b>{hora}</label>
-                                <label className='veterinario-titulo-dato'><b>Propietario: </b>{resultado.usuario.nombre}<br></br><b>Mascota: </b>{resultado.mascota.nombre}<br></br><b>Especie: </b>{resultado.mascota.especie}</label>
-                                <button onClick={() => goParasitologiaView(resultado.examen._id, false)} className="clinico-button-descarga">Ver</button>
+                                <label className='veterinario-titulo-dato'><b>Propietario: </b>{resultado.usuario.nombre}<br></br><b>Especie: </b>{resultado.mascota.especie}<br></br><b>Fecha Solicitud: </b>{fecha}<br></br></label>
+                                <button onClick={""} className="clinico-button-eliminar">Eliminar</button>
+                                <button onClick={() => goParasitologiaView(resultado.examen._id)} className="clinico-button-descarga">Ver</button>
                             </div>
                         );
                     }else if(resultado.examen.tipoExamen == "Urianalisis"){
@@ -138,9 +150,9 @@ function Exams() {
                             <div className="mascota-card" key={resultado.examen._id}>
                                 <img src='../imgs/Orina.png' className="mascota-card-imagen"></img>
                                 <label className="veterinario-titulo-examen">{resultado.examen.tipoExamen}</label>
-                                <label className='veterinario-titulo-dato'><b>Estado: </b>Completado<br></br><b>Fecha Solicitud: </b>{fecha}<br></br><b>Hora Solicitud: </b>{hora}</label>
-                                <label className='veterinario-titulo-dato'><b>Propietario: </b>{resultado.usuario.nombre}<br></br><b>Mascota: </b>{resultado.mascota.nombre}<br></br><b>Especie: </b>{resultado.mascota.especie}</label>
-                                <button onClick={() => goUrianalisisView(resultado.examen._id, false)} className="clinico-button-descarga">Ver</button>
+                                <label className='veterinario-titulo-dato'><b>Propietario: </b>{resultado.usuario.nombre}<br></br><b>Especie: </b>{resultado.mascota.especie}<br></br><b>Fecha Solicitud: </b>{fecha}<br></br></label>
+                                <button onClick={""} className="clinico-button-eliminar">Eliminar</button>
+                                <button onClick={() => goUrianalisisView(resultado.examen._id)} className="clinico-button-descarga">Ver</button>
                             </div>
                         );
                     }else if(resultado.examen.tipoExamen == "Hematologia"){
@@ -151,9 +163,9 @@ function Exams() {
                             <div className="mascota-card" key={resultado.examen._id}>
                                 <img src='../imgs/Sangre.png' className="mascota-card-imagen"></img>
                                 <label className="veterinario-titulo-examen">{resultado.examen.tipoExamen}</label>
-                                <label className='veterinario-titulo-dato'><b>Estado: </b>Completado<br></br><b>Fecha Solicitud: </b>{fecha}<br></br><b>Hora Solicitud: </b>{hora}</label>
-                                <label className='veterinario-titulo-dato'><b>Propietario: </b>{resultado.usuario.nombre}<br></br><b>Mascota: </b>{resultado.mascota.nombre}<br></br><b>Especie: </b>{resultado.mascota.especie}</label>
-                                <button onClick={() => goHematologiaView(resultado.examen._id, false)} className="clinico-button-descarga">Ver</button>
+                                <label className='veterinario-titulo-dato'><b>Propietario: </b>{resultado.usuario.nombre}<br></br><b>Especie: </b>{resultado.mascota.especie}<br></br><b>Fecha Solicitud: </b>{fecha}<br></br></label>
+                                <button onClick={""} className="clinico-button-eliminar">Eliminar</button>
+                                <button onClick={() => goHematologiaView(resultado.examen._id)} className="clinico-button-descarga">Ver</button>
                             </div>
                         );
                     }
@@ -197,31 +209,28 @@ function Exams() {
         navigate("/urianalisis", { state: {examenSeleccionado}});
     }
 
-    const goParasitologiaView = (examenSeleccionado, generarPDF) => {
-        navigate("/parasitologia-view", { state: {examenSeleccionado, generarPDF}});
+    const goParasitologiaView = (examenSeleccionado) => {
+        navigate("/parasitologia-view", { state: {examenSeleccionado}});
     }
 
-    const goHematologiaView = (examenSeleccionado, generarPDF) => {
-        navigate("/hematologia-view", { state: {examenSeleccionado, generarPDF}});
+    const goHematologiaView = (examenSeleccionado) => {
+        navigate("/hematologia-view", { state: {examenSeleccionado}});
     }
 
-    const goUrianalisisView = (examenSeleccionado, generarPDF) => {
-        navigate("/urianalisis-view", { state: {examenSeleccionado, generarPDF}});
+    const goUrianalisisView = (examenSeleccionado) => {
+        navigate("/urianalisis-view", { state: {examenSeleccionado}});
     }
-
-    const handleExamenSeleccionadoChange = (event) => {
-        setExamenSeleccionado(event.target.value);
-    };
 
     return (
         <div className="grid-home">
             <div className="grid-home-1" onClick={returnHome}>
-                <label className="titulo-usuario">Revisa los Exámenes</label>
+                <img src='../imgs/Regresar.png' className="regresar" onClick={returnHome}></img>
+                <label className="titulo-usuario">Examen de Parasitología</label>
             </div>
             <div className="grid-home-2">
                 <div>
                     <button onClick={returnHome} className="moreOption-button" title="Regresar Página Principal"><img src='../imgs/Home.png' className="moreOption-image"></img></button><br></br>
-                    <button onClick={seeExams} className="moreOption-button-selected" title="Exámenes Pendientes/Completados"><img src='../imgs/Examen.png' className="moreOption-image"></img></button><br></br>
+                    <button onClick={seeExams} className="moreOption-button" title="Exámenes Pendientes/Completados"><img src='../imgs/Examen.png' className="moreOption-image"></img></button><br></br>
                     <button onClick={seeReport} className="moreOption-button" title="Informes"><img src='../imgs/Informe.png' className="moreOption-image"></img></button><br></br>
                     <button onClick={seeRegisterVet} className="moreOption-button" title="Agregar Nuevos Veterinarios"><img src='../imgs/Agregar-Veterinario.png' className="moreOption-image"></img></button>
                 </div>
@@ -229,16 +238,13 @@ function Exams() {
             </div>
             <div className="grid-home-3">
 
-                <div className="option-select-section">
-                    {examenSeleccionado == "pendientes" ? <label className="option-select-title">Exámenes Pendientes:</label> : <label className="option-select-title">Exámenes Completados:</label>}
+                <label className="titulo-examen">Exámenes Pendientes de {nombreMascota}:</label>
 
-                    <select name="examen_seleccionado" id="examen_seleccionado" className="option-select-exam" value={examenSeleccionado} onChange={handleExamenSeleccionadoChange} required>
-                        <option value="pendientes">Pendientes</option>
-                        <option value="completados">Completados</option>
-                    </select>
-                </div>
+                {examenesPendientes.length == 0 ? <label className="titulo-no-encontrado">No existen examenes pendientes de {nombreMascota}...</label> : examenesPendientes}
 
-                {examenSeleccionado == "pendientes" ? [examenesPendientes.length == 0 ? <label className="titulo-no-encontrado">Cargando datos de los exámenes pendientes...</label> : examenesPendientes] : [examenesCompletados.length == 0 ? <label className="titulo-no-encontrado">Cargando datos de los exámenes completados...</label> : examenesCompletados]}
+                <label className="titulo-examen">Exámenes Completados de {nombreMascota}:</label>
+
+                {examenesCompletados.length == 0 ? <label className="titulo-no-encontrado">No existen examenes completados de {nombreMascota}...</label> : examenesCompletados}
 
                 <br></br>
                 
@@ -247,4 +253,4 @@ function Exams() {
     );
 }
  
-export default Exams;
+export default ExamPet;
