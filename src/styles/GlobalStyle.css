@@ -499,7 +499,6 @@ input[type="submit"]:active{
     background-color: #DDDDDD;
     color: #000;
 }
-
 .clinico-button-eliminar{
     width: 20%;
     background-color: #ff0000;
@@ -520,6 +519,29 @@ input[type="submit"]:active{
     cursor: pointer;
 }
 .clinico-button-eliminar:active{
+    background-color: #DDDDDD;
+    color: #000;
+}
+.veterinario-button-eliminar{
+    width: 60%;
+    background-color: #ff0000;
+    color: #fff;
+    padding: 1.5% 0;
+    margin: auto 0;
+    border: none;
+    outline: none;
+    font-size: large;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 10px;
+}
+.veterinario-button-eliminar:hover{
+    background-color: #c23616;
+    color: #fff;
+    cursor: pointer;
+}
+.veterinario-button-eliminar:active{
     background-color: #DDDDDD;
     color: #000;
 }
@@ -784,7 +806,7 @@ select[disabled] {
     text-align: start;
 }
 .veterinario-titulo-examen{
-    margin: auto 2% auto 6%;
+    margin: auto 2% auto 3%;
     font-size: x-large;
 }
 

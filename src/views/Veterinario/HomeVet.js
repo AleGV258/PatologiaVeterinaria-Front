@@ -43,7 +43,7 @@ function HomeVet() {
             if(result.total == 0){
                 var inexistente = [""].map(vacio => {
                     return (
-                        <label className="titulo-no-encontrado">¡Lo sentimos! No existen mascotas registradas</label>
+                        <label key="0" className="titulo-no-encontrado">¡Lo sentimos! No existen mascotas registradas</label>
                     )
                 })
                 setMascotasUsuarios(inexistente);

@@ -12,7 +12,11 @@ import '../../styles/GlobalStyle.css'
 */
 
 function RegisterVet() {
+    const Token = useState(localStorage.getItem("token"));
     const [cargando, setCargando] = useState(false);
+    const [borrando, setBorrando] = useState(false);
+    const usuarioActual = useState(localStorage.getItem("usuario"));
+    const IDActual = useState(localStorage.getItem("id"));
     const [usuario, setUsuario] = useState("");
     const [correo, setCorreo] = useState("");
     const [contrasena, setContrasena] = useState("");
@@ -56,17 +60,48 @@ function RegisterVet() {
                         throw new Error('La solicitud Fetch no se realizó correctamente');
                     }
                 })
-                .then(result => console.log("Resultado: " + result))
                 .catch(error => console.log('error', error));
         } else {    
             setCargando(false);
             alert("Las contraseñas no coinciden. ¡Intenta Nuevamente!");
         }
     }
-    
+
     const logoutUser = () =>{
         localStorage.clear();
         navigate("/login");
+    }
+    
+    const borrarUsuario = (usuarioSeleccionado) => {
+        var confirmacion = window.confirm("Está segura/o de que desea eliminar tu cuenta de veterinario (en la que está trabajando actualmente), esta acción será irreversible.");
+        setBorrando(true);
+
+        const requestOptions = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                token: Token[0]
+            },
+            redirect: 'follow'
+        };
+        
+        if(confirmacion){
+            const urlUsuario = "https://api-arquitecturas-ti.vercel.app/api/users/" + usuarioSeleccionado[0];
+            fetch(urlUsuario, requestOptions)
+            .then(response => {
+                console.log(response)
+                if (response.ok) {
+                    setBorrando(false);
+                    alert("Tu cuenta ha sido eliminada correctamente");
+                    logoutUser();
+                    return response.json();
+                } else {
+                    setBorrando(false);
+                    alert("Ha habido un error eliminando tu cuenta. ¡Intenta Nuevamente!");
+                    throw new Error('La solicitud Fetch no se realizó correctamente');
+                }
+            })
+        }
     }
 
     const returnHome = () =>{
@@ -107,6 +142,10 @@ function RegisterVet() {
                 <div className="pulsar"></div>
                 <label className="carga-texto">Registrando...</label>
             </div>
+            <div className="carga" style={ borrando ? { display: "grid"} : {display: "none"}}>
+                <div className="pulsar"></div>
+                <label className="carga-texto">Eliminando...</label>
+            </div>
             <div className="grid-home-1" onClick={returnHome}>
                 <label className="titulo-usuario">Registra un Nuevo Veterinario</label>
             </div>
@@ -139,7 +178,9 @@ function RegisterVet() {
                         <input type="password" id="contrasena_repetir" name="contrasena_repetir" placeholder="Repetir Contraseña" className="form-register-input" required value={contrasenaRepetir} onChange={handleContrasenaRepetirChange} ></input><br></br><br></br>
 
                         <input type="submit" value="Registrar"></input><br></br>
-                    </form>                 
+                    </form>
+
+                    <button onClick={() => borrarUsuario(IDActual)} className="veterinario-button-eliminar">Elimina tu cuenta de {usuarioActual}</button>
                 </div>
 
                 <br></br>

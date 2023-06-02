@@ -56,7 +56,6 @@ function Register() {
                         throw new Error('La solicitud Fetch no se realizó correctamente');
                     }
                 })
-                .then(result => console.log("Resultado: " + result))
                 .catch(error => console.log('error', error));
         }else{
             setCargando(false);

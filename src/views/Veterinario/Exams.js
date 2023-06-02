@@ -42,11 +42,11 @@ function Exams() {
             }
         })
         .then(result => {
-            // console.log("Resultado: " + JSON.stringify(result))
+            console.log("Resultado: " + JSON.stringify(result))
             if(result.total == 0){
                 var inexistente = [""].map(vacio => {
                     return (
-                        <label className="titulo-no-encontrado">¡Hurra :D! No existen exámenes pendientes por el momento</label>
+                        <label key="0" className="titulo-no-encontrado">¡Hurra :D! No existen exámenes pendientes por el momento</label>
                     )
                 })
                 setExamenesPendientes(inexistente);
@@ -111,7 +111,7 @@ function Exams() {
             if(result.total == 0){
                 var inexistente = [""].map(vacio => {
                     return (
-                        <label className="titulo-no-encontrado">No existen exámenes completados por el momento</label>
+                        <label key="0" className="titulo-no-encontrado">No existen exámenes completados por el momento</label>
                     )
                 })
                 setExamenesCompletados(inexistente);

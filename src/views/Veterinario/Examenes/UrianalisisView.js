@@ -67,7 +67,7 @@ function UrianalisisView() {
 
     const generarPDFUrianalisis = (propietario, nombre, especie, fecha) => {
         const element = document.getElementById('pdf-content-urianalisis');
-        const nombreArchivo = 'Urianálsiis-' + propietario + '-' + nombre + '-' + especie.split(' ')[0] + '-(' + fecha + ').pdf';
+        const nombreArchivo = 'Urianálsis-' + propietario + '-' + nombre + '-' + especie.split(' ')[0] + '-(' + fecha + ').pdf';
     
         // Configuración de html2pdf.js
         const options = {

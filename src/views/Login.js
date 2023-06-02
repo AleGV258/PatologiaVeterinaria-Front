@@ -95,10 +95,6 @@ function Login() {
         setContrasena(event.target.value);
     };
 
-    // useEffect(() => {
-    //     console.log("autentificacion actualizada:", autentificacion);
-    // }, [autentificacion]);
-
     return (
         <div className="grid">
             <div className="carga" style={ cargando ? { display: "grid"} : {display: "none"}}>

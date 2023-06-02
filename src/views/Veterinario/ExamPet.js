@@ -13,15 +13,16 @@ import '../../styles/GlobalStyle.css'
 
 function ExamPet() {
     const Token = useState(localStorage.getItem("token"));
+    const [cargando, setCargando] = useState(false);
     const [examenesPendientes, setExamenesPendientes] = useState([]);
     const [examenesCompletados, setExamenesCompletados] = useState([]);
-    const [nombreMascota, setnombreMascota] = useState("");
+    const [nombreMascota, setNombreMascota] = useState("");
+    const [IDMascota, setIDMascota] = useState("");
     const navigate = useNavigate();
     const location = useLocation();
     const mascotaSeleccionada = location.state?.mascotaSeleccionada || [];
     var fechaCompleta = "";
     var fecha = new Date();
-    var hora = new Date();
 
     document.body.style.overflowY = "visible";
 
@@ -44,11 +45,11 @@ function ExamPet() {
             }
         })
         .then(result => {
-            console.log("Resultado: " + JSON.stringify(result))
+            // console.log("Resultado: " + JSON.stringify(result))
             if(result.total == 0){
                 var inexistente = [""].map(vacio => {
                     return (
-                        <label className="titulo-no-encontrado">Cargando exámenes pendientes de la mascota...</label>
+                        <label key="0" className="titulo-no-encontrado">Cargando exámenes pendientes de la mascota...</label>
                     )
                 })
                 setExamenesPendientes(inexistente);
@@ -58,43 +59,41 @@ function ExamPet() {
                 })
 
                 var pendientes = filtradoMascotas.map(resultado => {
-                    setnombreMascota(resultado.mascota.nombre);
+                    setNombreMascota(resultado.mascota.nombre);
+                    setIDMascota(resultado.mascota._id);
                     if(resultado.examen.tipoExamen == "Parasitologia"){
                         fechaCompleta = resultado.examen.fechaSolicitud;
                         fecha = new Date(fechaCompleta).toLocaleDateString();
-                        hora = new Date(fechaCompleta).toLocaleTimeString();
                         return (
                             <div className="mascota-card" key={resultado.examen._id}>
                                 <img src='../imgs/Parasito.png' className="mascota-card-imagen"></img>
                                 <label className="veterinario-titulo-examen">{resultado.examen.tipoExamen}</label>
-                                <label className='veterinario-titulo-dato'><b>Propietario: </b>{resultado.usuario.nombre}<br></br><b>Especie: </b>{resultado.mascota.especie}<br></br><b>Fecha Solicitud: </b>{fecha}<br></br></label>
-                                <button onClick={""} className="clinico-button-eliminar">Eliminar</button>
+                                <label className='veterinario-titulo-dato'><b>Propietario: </b>{resultado.usuario.nombre}<br></br><b>Especie: </b>{resultado.mascota.especie}<br></br><b>Fecha Solicitud: </b>{fecha}<br></br><b>ID: </b>{resultado.examen._id}</label>
+                                <button onClick={() => borrarExamen(resultado.examen._id)} className="clinico-button-eliminar">Eliminar</button>
                                 <button onClick={() => goParasitologia(resultado.examen._id)} className="clinico-button-descarga">Responder</button>
                             </div>
                         );
                     }else if(resultado.examen.tipoExamen == "Urianalisis"){
                         fechaCompleta = resultado.examen.fechaSolicitud;
                         fecha = new Date(fechaCompleta).toLocaleDateString();
-                        hora = new Date(fechaCompleta).toLocaleTimeString();
                         return (
                             <div className="mascota-card" key={resultado.examen._id}>
                                 <img src='../imgs/Orina.png' className="mascota-card-imagen"></img>
                                 <label className="veterinario-titulo-examen">{resultado.examen.tipoExamen}</label>
-                                <label className='veterinario-titulo-dato'><b>Propietario: </b>{resultado.usuario.nombre}<br></br><b>Especie: </b>{resultado.mascota.especie}<br></br><b>Fecha Solicitud: </b>{fecha}<br></br></label>
-                                <button onClick={""} className="clinico-button-eliminar">Eliminar</button>
+                                <label className='veterinario-titulo-dato'><b>Propietario: </b>{resultado.usuario.nombre}<br></br><b>Especie: </b>{resultado.mascota.especie}<br></br><b>Fecha Solicitud: </b>{fecha}<br></br><b>ID: </b>{resultado.examen._id}</label>
+                                <button onClick={() => borrarExamen(resultado.examen._id)} className="clinico-button-eliminar">Eliminar</button>
                                 <button onClick={() => goUrianalisis(resultado.examen._id)} className="clinico-button-descarga">Responder</button>
                             </div>
                         );
                     }else if(resultado.examen.tipoExamen == "Hematologia"){
                         fechaCompleta = resultado.examen.fechaSolicitud;
                         fecha = new Date(fechaCompleta).toLocaleDateString();
-                        hora = new Date(fechaCompleta).toLocaleTimeString();
                         return (
                             <div className="mascota-card" key={resultado.examen._id}>
                                 <img src='../imgs/Sangre.png' className="mascota-card-imagen"></img>
                                 <label className="veterinario-titulo-examen">{resultado.examen.tipoExamen}</label>
-                                <label className='veterinario-titulo-dato'><b>Propietario: </b>{resultado.usuario.nombre}<br></br><b>Especie: </b>{resultado.mascota.especie}<br></br><b>Fecha Solicitud: </b>{fecha}<br></br></label>
-                                <button onClick={""} className="clinico-button-eliminar">Eliminar</button>
+                                <label className='veterinario-titulo-dato'><b>Propietario: </b>{resultado.usuario.nombre}<br></br><b>Especie: </b>{resultado.mascota.especie}<br></br><b>Fecha Solicitud: </b>{fecha}<br></br><b>ID: </b>{resultado.examen._id}</label>
+                                <button onClick={() => borrarExamen(resultado.examen._id)} className="clinico-button-eliminar">Eliminar</button>
                                 <button onClick={() => goHematologia(resultado.examen._id)} className="clinico-button-descarga">Responder</button>
                             </div>
                         );
@@ -118,7 +117,7 @@ function ExamPet() {
             if(result.total == 0){
                 var inexistente = [""].map(vacio => {
                     return (
-                        <label className="titulo-no-encontrado">Cargando exámenes completados de la mascota...</label>
+                        <label key="0" className="titulo-no-encontrado">Cargando exámenes completados de la mascota...</label>
                     )
                 })
                 setExamenesCompletados(inexistente);
@@ -128,43 +127,41 @@ function ExamPet() {
                 })
 
                 var completados = filtradoMascotas.map(resultado => {
-                    setnombreMascota(resultado.mascota.nombre);
+                    setNombreMascota(resultado.mascota.nombre);
+                    setIDMascota(resultado.mascota._id);
                     if(resultado.examen.tipoExamen == "Parasitologia"){
                         fechaCompleta = resultado.examen.fechaSolicitud;
                         fecha = new Date(fechaCompleta).toLocaleDateString();
-                        hora = new Date(fechaCompleta).toLocaleTimeString();
                         return (
                             <div className="mascota-card" key={resultado.examen._id}>
                                 <img src='../imgs/Parasito.png' className="mascota-card-imagen"></img>
                                 <label className="veterinario-titulo-examen">{resultado.examen.tipoExamen}</label>
-                                <label className='veterinario-titulo-dato'><b>Propietario: </b>{resultado.usuario.nombre}<br></br><b>Especie: </b>{resultado.mascota.especie}<br></br><b>Fecha Solicitud: </b>{fecha}<br></br></label>
-                                <button onClick={""} className="clinico-button-eliminar">Eliminar</button>
+                                <label className='veterinario-titulo-dato'><b>Propietario: </b>{resultado.usuario.nombre}<br></br><b>Especie: </b>{resultado.mascota.especie}<br></br><b>Fecha Solicitud: </b>{fecha}<br></br><b>ID: </b>{resultado.examen._id}</label>
+                                <button onClick={() => borrarExamen(resultado.examen._id)} className="clinico-button-eliminar">Eliminar</button>
                                 <button onClick={() => goParasitologiaView(resultado.examen._id)} className="clinico-button-descarga">Ver</button>
                             </div>
                         );
                     }else if(resultado.examen.tipoExamen == "Urianalisis"){
                         fechaCompleta = resultado.examen.fechaSolicitud;
                         fecha = new Date(fechaCompleta).toLocaleDateString();
-                        hora = new Date(fechaCompleta).toLocaleTimeString();
                         return (
                             <div className="mascota-card" key={resultado.examen._id}>
                                 <img src='../imgs/Orina.png' className="mascota-card-imagen"></img>
                                 <label className="veterinario-titulo-examen">{resultado.examen.tipoExamen}</label>
-                                <label className='veterinario-titulo-dato'><b>Propietario: </b>{resultado.usuario.nombre}<br></br><b>Especie: </b>{resultado.mascota.especie}<br></br><b>Fecha Solicitud: </b>{fecha}<br></br></label>
-                                <button onClick={""} className="clinico-button-eliminar">Eliminar</button>
+                                <label className='veterinario-titulo-dato'><b>Propietario: </b>{resultado.usuario.nombre}<br></br><b>Especie: </b>{resultado.mascota.especie}<br></br><b>Fecha Solicitud: </b>{fecha}<br></br><b>ID: </b>{resultado.examen._id}</label>
+                                <button onClick={() => borrarExamen(resultado.examen._id)} className="clinico-button-eliminar">Eliminar</button>
                                 <button onClick={() => goUrianalisisView(resultado.examen._id)} className="clinico-button-descarga">Ver</button>
                             </div>
                         );
                     }else if(resultado.examen.tipoExamen == "Hematologia"){
                         fechaCompleta = resultado.examen.fechaSolicitud;
                         fecha = new Date(fechaCompleta).toLocaleDateString();
-                        hora = new Date(fechaCompleta).toLocaleTimeString();
                         return (
                             <div className="mascota-card" key={resultado.examen._id}>
                                 <img src='../imgs/Sangre.png' className="mascota-card-imagen"></img>
                                 <label className="veterinario-titulo-examen">{resultado.examen.tipoExamen}</label>
-                                <label className='veterinario-titulo-dato'><b>Propietario: </b>{resultado.usuario.nombre}<br></br><b>Especie: </b>{resultado.mascota.especie}<br></br><b>Fecha Solicitud: </b>{fecha}<br></br></label>
-                                <button onClick={""} className="clinico-button-eliminar">Eliminar</button>
+                                <label className='veterinario-titulo-dato'><b>Propietario: </b>{resultado.usuario.nombre}<br></br><b>Especie: </b>{resultado.mascota.especie}<br></br><b>Fecha Solicitud: </b>{fecha}<br></br><b>ID: </b>{resultado.examen._id}</label>
+                                <button onClick={() => borrarExamen(resultado.examen._id)} className="clinico-button-eliminar">Eliminar</button>
                                 <button onClick={() => goHematologiaView(resultado.examen._id)} className="clinico-button-descarga">Ver</button>
                             </div>
                         );
@@ -176,12 +173,74 @@ function ExamPet() {
         .catch(error => console.log('error', error));
     }, []);
 
-    const logoutUser = () =>{
+    const borrarExamen = (examenSeleccionado) => {
+        var confirmacion = window.confirm("Está segura/o de que desea eliminar el examen de esta mascota, esta acción será irreversible.");
+        setCargando(true);
+
+        const requestOptions = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                token: Token[0]
+            },
+            redirect: 'follow'
+        };
+        
+        if(confirmacion){
+            const urlExamen = "https://api-arquitecturas-ti.vercel.app/api/examen/" + examenSeleccionado;
+            fetch(urlExamen, requestOptions)
+            .then(response => {
+                if (response.ok) {
+                    setCargando(false);
+                    alert("El examen ha sido eliminado correctamente.");
+                    window.location.reload();
+                    return response.json();
+                } else {
+                    setCargando(false);
+                    alert("Ha habido un error eliminando el examen seleccionado. ¡Intenta Nuevamente!");
+                    throw new Error('La solicitud Fetch no se realizó correctamente');
+                }
+            })
+        }
+    }
+
+    const borrarMascota = (mascotaSeleccionado) => {
+        var confirmacion = window.confirm("Está segura/o de que desea eliminar la mascota actual, esto eliminará la mascota y todos sus exámenes relacionados, esta acción será irreversible.");
+        setCargando(true);
+
+        const requestOptions = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                token: Token[0]
+            },
+            redirect: 'follow'
+        };
+        
+        if(confirmacion){
+            const urlMascota = "https://api-arquitecturas-ti.vercel.app/api/mascota/" + mascotaSeleccionado;
+            fetch(urlMascota, requestOptions)
+            .then(response => {
+                if (response.ok) {
+                    setCargando(false);
+                    alert("La mascota ha sido eliminada correctamente.");
+                    returnHome();
+                    return response.json();
+                } else {
+                    setCargando(false);
+                    alert("Ha habido un error eliminando la mascota seleccionada. ¡Intenta Nuevamente!");
+                    throw new Error('La solicitud Fetch no se realizó correctamente');
+                }
+            })
+        }
+    }
+
+    const logoutUser = () => {
         localStorage.clear();
         navigate("/login");
     }
 
-    const returnHome = () =>{
+    const returnHome = () => {
         navigate("/home-vet");
     }
 
@@ -223,9 +282,13 @@ function ExamPet() {
 
     return (
         <div className="grid-home">
+            <div className="carga" style={ cargando ? { display: "grid"} : {display: "none"}}>
+                <div className="pulsar"></div>
+                <label className="carga-texto">Eliminando...</label>
+            </div>
             <div className="grid-home-1" onClick={returnHome}>
                 <img src='../imgs/Regresar.png' className="regresar" onClick={returnHome}></img>
-                <label className="titulo-usuario">Examen de Parasitología</label>
+                <label className="titulo-usuario">Exámenes de {nombreMascota}</label>
             </div>
             <div className="grid-home-2">
                 <div>
@@ -247,6 +310,10 @@ function ExamPet() {
                 {examenesCompletados.length == 0 ? <label className="titulo-no-encontrado">No existen examenes completados de {nombreMascota}...</label> : examenesCompletados}
 
                 <br></br>
+
+                <button onClick={() => borrarMascota(IDMascota)} className="veterinario-button-eliminar">Eliminar a {nombreMascota}</button>
+
+                <br></br><br></br><br></br>
                 
             </div>
         </div>

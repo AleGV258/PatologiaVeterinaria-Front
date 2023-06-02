@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import html2pdf from 'html2pdf.js';
 import '../../styles/GlobalStyle.css'
 
 /* 
@@ -75,7 +74,7 @@ function Report() {
                     if(mascotas.length == 0){
                         var inexistente = [""].map(vacio => {
                             return (
-                                <label className="titulo-no-encontrado">Actualmente, no existen reportes de los exámenes completados</label>
+                                <label key="0" className="titulo-no-encontrado">Actualmente, no existen reportes de los exámenes completados</label>
                             )
                         })
                         setReporte(inexistente);
