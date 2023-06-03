@@ -15,6 +15,7 @@ function AddPet() {
     const IdUsuario = useState(localStorage.getItem("id"));
     const Token = useState(localStorage.getItem("token"));
     const [cargando, setCargando] = useState(false);
+    const [borrando, setBorrando] = useState(false);
     const [nombreMascota, setNombreMascota] = useState("");
     const [especieMascota, setEspecieMascota] = useState("");
     const [sexoMascota, setSexoMascota] = useState("");
@@ -114,6 +115,39 @@ function AddPet() {
         setCastradoMascota("");
     }
 
+    
+    const borrarUsuario = (usuarioSeleccionado) => {
+        var confirmacion = window.confirm("Está segura/o de que desea eliminar tu cuenta actual (en la que está trabajando actualmente), esta acción será irreversible.");
+        setBorrando(true);
+
+        const requestOptions = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                token: Token[0]
+            },
+            redirect: 'follow'
+        };
+        
+        if(confirmacion){
+            const urlUsuario = "https://api-arquitecturas-ti.vercel.app/api/users/" + usuarioSeleccionado[0];
+            fetch(urlUsuario, requestOptions)
+            .then(response => {
+                console.log(response)
+                if (response.ok) {
+                    setBorrando(false);
+                    alert("Tu cuenta ha sido eliminada correctamente");
+                    logoutUser();
+                    return response.json();
+                } else {
+                    setBorrando(false);
+                    alert("Ha habido un error eliminando tu cuenta. ¡Intenta Nuevamente!");
+                    throw new Error('La solicitud Fetch no se realizó correctamente');
+                }
+            })
+        }
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault(); // Evita que la página se recargue al enviar el formulario
         setCargando(true);
@@ -160,6 +194,10 @@ function AddPet() {
             <div className="carga" style={ cargando ? { display: "grid"} : {display: "none"}}>
                 <div className="pulsar"></div>
                 <label className="carga-texto">Registrando...</label>
+            </div>
+            <div className="carga" style={ borrando ? { display: "grid"} : {display: "none"}}>
+                <div className="pulsar"></div>
+                <label className="carga-texto">Eliminando...</label>
             </div>
             <div className="grid-home-1" onClick={returnHome}>
                 <label className="titulo-usuario">Agregar una Nueva Mascota</label>
@@ -246,6 +284,10 @@ function AddPet() {
                 </div>
 
                 <br></br>
+
+                <button onClick={() => borrarUsuario(IdUsuario)} className="veterinario-button-eliminar">Elimina tu Cuenta</button>
+
+                <br></br><br></br><br></br>
                 
             </div>
         </div>

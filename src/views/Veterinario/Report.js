@@ -71,7 +71,7 @@ function Report() {
                         });
                     });
     
-                    if(mascotas.length == 0){
+                    if(mascotas.length === 0){
                         var inexistente = [""].map(vacio => {
                             return (
                                 <label key="0" className="titulo-no-encontrado">Actualmente, no existen reportes de los exámenes completados</label>
@@ -80,7 +80,7 @@ function Report() {
                         setReporte(inexistente);
                     }else{
                         const reporteCard = mascotas.map(data => {
-                            if(data.examen.tipoExamen == "Parasitologia"){
+                            if(data.examen.tipoExamen === "Parasitologia"){
                                 fechaCompleta = data.examen.fechaSolicitud;
                                 fecha = new Date(fechaCompleta).toLocaleDateString();
                                 hora = new Date(fechaCompleta).toLocaleTimeString();
@@ -93,7 +93,7 @@ function Report() {
                                         <button onClick={() => notificarUsuario(data.examen._id)} className="report-button-examen">Notificar</button>
                                     </div>
                                 );
-                            }else if(data.examen.tipoExamen == "Urianalisis"){
+                            }else if(data.examen.tipoExamen === "Urianalisis"){
                                 fechaCompleta = data.examen.fechaSolicitud;
                                 fecha = new Date(fechaCompleta).toLocaleDateString();
                                 hora = new Date(fechaCompleta).toLocaleTimeString();
@@ -106,7 +106,7 @@ function Report() {
                                         <button onClick={() => notificarUsuario(data.examen._id)} className="report-button-examen">Notificar</button>
                                     </div>
                                 );
-                            }else if(data.examen.tipoExamen == "Hematologia"){
+                            }else if(data.examen.tipoExamen === "Hematologia"){
                                 fechaCompleta = data.examen.fechaSolicitud;
                                 fecha = new Date(fechaCompleta).toLocaleDateString();
                                 hora = new Date(fechaCompleta).toLocaleTimeString();

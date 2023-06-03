@@ -10,6 +10,9 @@ import PetExam from './views/Usuario/PetExam.js';
 import PetSpecific from './views/Usuario/PetSpecific.js';
 import AddExam from './views/Usuario/AddExam.js';
 import AddPet from './views/Usuario/AddPet.js';
+import ParasitologiaUser from './views/Usuario/Examenes/ParasitologiaUser';
+import UrianalisisUser from './views/Usuario/Examenes/UrianalisisUser';
+import HematologiaUser from './views/Usuario/Examenes/HematologiaUser';
 // Veterinarios
 import HomeVet from './views/Veterinario/HomeVet.js';
 import RegisterVet from './views/Veterinario/RegisterVet.js'
@@ -50,6 +53,9 @@ function App() {
             <Route path="pet-specific" element={<PetSpecific />} />
             <Route path="add-exam" element={<AddExam />} />
             <Route path="add-pet" element={<AddPet />} />
+            <Route path="parasitologia-user" element={<ParasitologiaUser />} />
+            <Route path="urianalisis-user" element={<UrianalisisUser />} />
+            <Route path="hematologia-user" element={<HematologiaUser />} />
             {/* Veterinario */}
             <Route path="home-vet" element={<HomeVet />} />
             <Route path="register-vet" element={<RegisterVet />} />
@@ -78,6 +84,9 @@ function App() {
             <Route path="pet-specific" element={<PetSpecific />} />
             <Route path="add-exam" element={<AddExam />} />
             <Route path="add-pet" element={<AddPet />} />
+            <Route path="parasitologia-user" element={<ParasitologiaUser />} />
+            <Route path="urianalisis-user" element={<UrianalisisUser />} />
+            <Route path="hematologia-user" element={<HematologiaUser />} />
             {/* Veterinario */}
             <Route path="home-vet" element={<HomeVet />} />
             <Route path="register-vet" element={<RegisterVet />} />
@@ -108,6 +117,9 @@ function App() {
         <Route path="pet-specific" element={<PetSpecific />} />
         <Route path="add-exam" element={<AddExam />} />
         <Route path="add-pet" element={<AddPet />} />
+        <Route path="parasitologia-user" element={<ParasitologiaUser />} />
+        <Route path="urianalisis-user" element={<UrianalisisUser />} />
+        <Route path="hematologia-user" element={<HematologiaUser />} />
         {/* Veterinario */}
         <Route path="home-vet" element={<HomeVet />} />
         <Route path="register-vet" element={<RegisterVet />} />

@@ -84,7 +84,7 @@ function HomeVet() {
         .then(result => {
             // console.log("Resultado: " + JSON.stringify(result))
             const mascotaFiltrada = result.mascotas.filter(mascota => {
-                return (mascota.nombre.toUpperCase().includes(busqueda.toUpperCase()) || mascota.especie.toUpperCase().includes(busqueda.toUpperCase()) || mascota.raza.toUpperCase().includes(busqueda.toUpperCase()) || mascota.sexo.toUpperCase().includes(busqueda.toUpperCase()))
+                return (mascota.nombre.toUpperCase().includes(busqueda.toUpperCase()) || mascota.especie.toUpperCase().includes(busqueda.toUpperCase()) || mascota.raza.toUpperCase().includes(busqueda.toUpperCase()) || mascota.sexo.toUpperCase().includes(busqueda.toUpperCase()) || mascota._id.toUpperCase().includes(busqueda.toUpperCase()) || mascota.edad.toUpperCase().includes(busqueda.toUpperCase()))
             })
             if(mascotaFiltrada.length == 0){
                 var inexistente = [""].map(vacio => {

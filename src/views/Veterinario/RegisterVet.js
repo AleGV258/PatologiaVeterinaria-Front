@@ -13,10 +13,10 @@ import '../../styles/GlobalStyle.css'
 
 function RegisterVet() {
     const Token = useState(localStorage.getItem("token"));
+    const IDActual = useState(localStorage.getItem("id"));
     const [cargando, setCargando] = useState(false);
     const [borrando, setBorrando] = useState(false);
     const usuarioActual = useState(localStorage.getItem("usuario"));
-    const IDActual = useState(localStorage.getItem("id"));
     const [usuario, setUsuario] = useState("");
     const [correo, setCorreo] = useState("");
     const [contrasena, setContrasena] = useState("");

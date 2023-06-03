@@ -14,6 +14,10 @@ import '../../styles/GlobalStyle.css'
 function PetExam() {
     const Token = useState(localStorage.getItem("token"));
     const [mascotaExamenes, setMascotaExamenes] = useState([]);
+    const [mascotaNombre, setMascotaNombre] = useState([]);
+    var fechaCompleta = "";
+    var fecha = new Date();
+    var hora = new Date();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -31,8 +35,23 @@ function PetExam() {
             redirect: 'follow'
         };
 
-        var url = "https://api-arquitecturas-ti.vercel.app/api/examen/" + mascotaSeleccionada;
-        fetch(url, requestOptions)
+        const mascotaUser = "https://api-arquitecturas-ti.vercel.app/api/mascota/id/" + mascotaSeleccionada;
+        fetch(mascotaUser, requestOptions)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('La solicitud Fetch no se realizó correctamente');
+            }
+        })
+        .then(result => {
+            // console.log("Resultado: " + JSON.stringify(result.mascota))
+            setMascotaNombre(result.mascota.nombre);
+        })
+        .catch(error => console.log('error', error));
+
+        const mascotaUrl = "https://api-arquitecturas-ti.vercel.app/api/examen/" + mascotaSeleccionada;
+        fetch(mascotaUrl, requestOptions)
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -42,26 +61,91 @@ function PetExam() {
         })
         .then(result => {
             // console.log("Resultado: " + JSON.stringify(result))
-            var examenNuevo = result.examen.map(examenMascota => {
-                if(examenMascota.estado == "Pendiente"){
+            if(result.total == 0){
+                var inexistente = [""].map(vacio => {
                     return (
-                        <div className="mascota-card">
-                            <label className="clinico-titulo-examen">{examenMascota.tipoExamen}</label>
-                            <label className='clinico-titulo-dato'>Estado: Pendiente<br></br><br></br>Más Datos... </label>
-                            <button className="clinico-button-proceso">En Proceso</button>
-                        </div>
+                        <label key="0" className="titulo-no-encontrado">No existen exámenes clínicos por el momento</label>
                     )
-                }else if(examenMascota.estado == "Completado"){
-                    return (
-                        <div className="mascota-card">
-                            <label className="clinico-titulo-examen">{examenMascota.tipoExamen}</label>
-                            <label className='clinico-titulo-dato'>Estado: Completado<br></br><br></br>Más Datos... </label>
-                            <button onClick={""} className="clinico-button-descarga">Descargar</button>
-                        </div>
-                    )
-                }
-            });
-            setMascotaExamenes(examenNuevo);
+                })
+                setMascotaExamenes(inexistente);
+            }else{
+                var examenesUsuario = result.examen.map(resultado => {
+                    if(resultado.tipoExamen == "Parasitologia" && resultado.estado == "Completado"){
+                        fechaCompleta = resultado.fechaSolicitud;
+                        fecha = new Date(fechaCompleta).toLocaleDateString();
+                        hora = new Date(fechaCompleta).toLocaleTimeString();
+                        return (
+                            <div className="mascota-card" key={resultado._id}>
+                                <img src='../imgs/Parasito.png' className="mascota-card-imagen"></img>
+                                <label className="veterinario-titulo-examen">{resultado.tipoExamen}</label>
+                                <label className='veterinario-titulo-dato'><b>ID Seguimiento: <br></br></b>{resultado._id}<br></br><b>Fecha Solicitud: </b>{fecha}<br></br><b>Hora Solicitud: </b>{hora}</label>
+                                <button onClick={() => goParasitologiaUser(resultado._id)} className="clinico-button-descarga">Ver Resultado</button>
+                            </div>
+                        );
+                    }else if(resultado.tipoExamen == "Urianalisis" && resultado.estado == "Completado"){
+                        fechaCompleta = resultado.fechaSolicitud;
+                        fecha = new Date(fechaCompleta).toLocaleDateString();
+                        hora = new Date(fechaCompleta).toLocaleTimeString();
+                        return (
+                            <div className="mascota-card" key={resultado._id}>
+                                <img src='../imgs/Orina.png' className="mascota-card-imagen"></img>
+                                <label className="veterinario-titulo-examen">{resultado.tipoExamen}</label>
+                                <label className='veterinario-titulo-dato'><b>ID Seguimiento: <br></br></b>{resultado._id}<br></br><b>Fecha Solicitud: </b>{fecha}<br></br><b>Hora Solicitud: </b>{hora}</label>
+                                <button onClick={() => goUrianalisisUser(resultado._id)} className="clinico-button-descarga">Ver Resultado</button>
+                            </div>
+                        );
+                    }else if(resultado.tipoExamen == "Hematologia" && resultado.estado == "Completado"){
+                        fechaCompleta = resultado.fechaSolicitud;
+                        fecha = new Date(fechaCompleta).toLocaleDateString();
+                        hora = new Date(fechaCompleta).toLocaleTimeString();
+                        return (
+                            <div className="mascota-card" key={resultado._id}>
+                                <img src='../imgs/Sangre.png' className="mascota-card-imagen"></img>
+                                <label className="veterinario-titulo-examen">{resultado.tipoExamen}</label>
+                                <label className='veterinario-titulo-dato'><b>ID Seguimiento: <br></br></b>{resultado._id}<br></br><b>Fecha Solicitud: </b>{fecha}<br></br><b>Hora Solicitud: </b>{hora}</label>
+                                <button onClick={() => goHematologiaUser(resultado._id)} className="clinico-button-descarga">Ver Resultado</button>
+                            </div>
+                        );
+                    }else if(resultado.tipoExamen == "Parasitologia" && resultado.estado == "Pendiente"){
+                        fechaCompleta = resultado.fechaSolicitud;
+                        fecha = new Date(fechaCompleta).toLocaleDateString();
+                        hora = new Date(fechaCompleta).toLocaleTimeString();
+                        return (
+                            <div className="mascota-card" key={resultado._id}>
+                                <img src='../imgs/Parasito.png' className="mascota-card-imagen"></img>
+                                <label className="veterinario-titulo-examen">{resultado.tipoExamen}</label>
+                                <label className='veterinario-titulo-dato'><b>ID Seguimiento: <br></br></b>{resultado._id}<br></br><b>Fecha Solicitud: </b>{fecha}<br></br><b>Hora Solicitud: </b>{hora}</label>
+                                <button className="clinico-button-proceso">En Proceso...</button>
+                            </div>
+                        );
+                    }else if(resultado.tipoExamen == "Urianalisis" && resultado.estado == "Pendiente"){
+                        fechaCompleta = resultado.fechaSolicitud;
+                        fecha = new Date(fechaCompleta).toLocaleDateString();
+                        hora = new Date(fechaCompleta).toLocaleTimeString();
+                        return (
+                            <div className="mascota-card" key={resultado._id}>
+                                <img src='../imgs/Orina.png' className="mascota-card-imagen"></img>
+                                <label className="veterinario-titulo-examen">{resultado.tipoExamen}</label>
+                                <label className='veterinario-titulo-dato'><b>ID Seguimiento: <br></br></b>{resultado._id}<br></br><b>Fecha Solicitud: </b>{fecha}<br></br><b>Hora Solicitud: </b>{hora}</label>
+                                <button className="clinico-button-proceso">En Proceso...</button>
+                            </div>
+                        );
+                    }else if(resultado.tipoExamen == "Hematologia" && resultado.estado == "Pendiente"){
+                        fechaCompleta = resultado.fechaSolicitud;
+                        fecha = new Date(fechaCompleta).toLocaleDateString();
+                        hora = new Date(fechaCompleta).toLocaleTimeString();
+                        return (
+                            <div className="mascota-card" key={resultado._id}>
+                                <img src='../imgs/Sangre.png' className="mascota-card-imagen"></img>
+                                <label className="veterinario-titulo-examen">{resultado.tipoExamen}</label>
+                                <label className='veterinario-titulo-dato'><b>ID Seguimiento: <br></br></b>{resultado._id}<br></br><b>Fecha Solicitud: </b>{fecha}<br></br><b>Hora Solicitud: </b>{hora}</label>
+                                <button className="clinico-button-proceso">En Proceso...</button>
+                            </div>
+                        );
+                    }
+                })
+                setMascotaExamenes(examenesUsuario);
+            }
         })
         .catch(error => console.log('error', error));
     }, []);
@@ -83,11 +167,23 @@ function PetExam() {
         navigate("/add-pet");
     }
 
+    const goParasitologiaUser = (examenSeleccionado) => {
+        navigate("/parasitologia-user", { state: {examenSeleccionado}});
+    }
+
+    const goHematologiaUser = (examenSeleccionado) => {
+        navigate("/hematologia-user", { state: {examenSeleccionado}});
+    }
+
+    const goUrianalisisUser = (examenSeleccionado) => {
+        navigate("/urianalisis-user", { state: {examenSeleccionado}});
+    }
+
     return (
         <div className="grid-home">
             <div className="grid-home-1" onClick={returnHome}>
                 <img src='../imgs/Regresar.png' className="regresar" onClick={returnHome}></img>
-                <label className="titulo-usuario">Examen Clínico</label>
+                <label className="titulo-usuario">Examen de la Mascota</label>
             </div>
             <div className="grid-home-2">
                 <div>
@@ -98,9 +194,9 @@ function PetExam() {
                 <button onClick={logoutUser} className="logout-button">Cerrar <br className="break-point"></br>Sesión</button>
             </div>
             <div className="grid-home-3">
-                <label className="titulo-examen">Exámenes Clínicos:</label>
+                <label className="titulo-examen">Exámenes Clínicos de {mascotaNombre}:</label>
 
-                {mascotaExamenes}
+                {mascotaExamenes.length == 0 ? <label className="titulo-no-encontrado">Cargando datos de los exámenes...</label> : mascotaExamenes}
 
                 <br></br>
                 

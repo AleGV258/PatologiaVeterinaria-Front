@@ -39,18 +39,27 @@ function Home() {
         })
         .then(result => {
             // console.log("Resultado: " + JSON.stringify(result))
-            var mascotasCards = result.mascotas.map(mascota => {
-                return (
-                    <div className="mascota-card" key={mascota._id}>
-                        <img src='../imgs/Mascota.png' className='mascota-image'></img>
-                        <label className='mascota-titulo-examen'>{mascota.nombre}</label>
-                        <label className='mascota-titulo-dato'>Raza: {mascota.raza}<br></br><br></br>Edad: {mascota.edad}</label>
-                        <button onClick={() => petSpecificDetails(mascota._id)} className="mascota-button-info">+ Info</button>
-                        <button onClick={() => petExamDetails(mascota._id)} className="mascota-button-examen">Examenes</button>
-                    </div>
-                )
-            })
-            setMascotasUsuarios(mascotasCards);
+            if(result.total == 0){
+                var inexistente = [""].map(vacio => {
+                    return (
+                        <label key="0" className="titulo-no-encontrado">No existen mascotas, intenta registrar una nueva mascota.</label>
+                    )
+                })
+                setMascotasUsuarios(inexistente);
+            }else{
+                var mascotasCards = result.mascotas.map(mascota => {
+                    return (
+                        <div className="mascota-card" key={mascota._id}>
+                            <img src='../imgs/Mascota.png' className='mascota-image'></img>
+                            <label className='mascota-titulo-examen'>{mascota.nombre}</label>
+                            <label className='mascota-titulo-dato'><b>Especie: </b>{mascota.especie}<br></br><b>Raza: </b>{mascota.raza}<br></br><b>Sexo: </b>{mascota.sexo}</label>
+                            <button onClick={() => petSpecificDetails(mascota._id)} className="mascota-button-info">+ Info</button>
+                            <button onClick={() => petExamDetails(mascota._id)} className="mascota-button-examen">Examenes</button>
+                        </div>
+                    )
+                })
+                setMascotasUsuarios(mascotasCards);
+            }
         })
         .catch(error => console.log('error', error));
     }, []);
@@ -96,7 +105,7 @@ function Home() {
             <div className="grid-home-3">
                 <label className="titulo-examen">Mis Mascotas:</label>
 
-                {mascotasUsuario}
+                {mascotasUsuario.length == 0 ? <label className="titulo-no-encontrado">Cargando datos de las mascotas...</label> : mascotasUsuario}
 
                 <br></br>
                 

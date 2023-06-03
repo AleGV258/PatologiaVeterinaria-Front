@@ -42,7 +42,7 @@ function Exams() {
             }
         })
         .then(result => {
-            console.log("Resultado: " + JSON.stringify(result))
+            // console.log("Resultado: " + JSON.stringify(result))
             if(result.total == 0){
                 var inexistente = [""].map(vacio => {
                     return (
