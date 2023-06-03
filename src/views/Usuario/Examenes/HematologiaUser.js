@@ -12,6 +12,7 @@ import '../../../styles/GlobalStyle.css'
 */
 
 function HematologiaUser() {
+    const API = process.env.REACT_APP_API_URL;
     const Token = useState(localStorage.getItem("token"));
     var fechaCompleta = "";
     var fechaReporte = new Date();
@@ -99,7 +100,7 @@ function HematologiaUser() {
             redirect: 'follow'
         };
 
-        const examenUrl= "https://api-arquitecturas-ti.vercel.app/api/examen/informacion/" + examenSeleccionado;
+        const examenUrl = API + "/api/examen/informacion/" + examenSeleccionado;
         fetch(examenUrl, requestOptions)
         .then(response => {
             if (response.ok) {

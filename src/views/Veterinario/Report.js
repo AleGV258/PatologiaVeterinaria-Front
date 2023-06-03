@@ -12,6 +12,7 @@ import '../../styles/GlobalStyle.css'
 */
 
 function Report() {
+    const API = process.env.REACT_APP_API_URL;
     const Token = useState(localStorage.getItem("token"));
     const [cargando, setCargando] = useState(false);
     const [realizado, setRealizado] = useState(true);
@@ -35,14 +36,15 @@ function Report() {
                     redirect: 'follow'
                 };
     
-                const reporteResponse = await fetch("https://api-arquitecturas-ti.vercel.app/api/reporte/", requestOptions);
+                var url = API + "/api/reporte/";
+                const reporteResponse = await fetch(url, requestOptions);
                 if (!reporteResponse.ok) {
                     throw new Error('La solicitud Fetch no se realizó correctamente');
                 }
                 const reporteResult = await reporteResponse.json();
 
                 const examenesPromises = reporteResult.examenes.map(examen => {
-                    const examenUrl = `https://api-arquitecturas-ti.vercel.app/api/examen/informacion/${examen._id}`;
+                    const examenUrl = `${API}/api/examen/informacion/${examen._id}`;
                     return fetch(examenUrl, requestOptions)
                         .then(response => {
                             if (!response.ok) {
@@ -54,7 +56,8 @@ function Report() {
                 const examenesData = await Promise.all(examenesPromises);
                 const dataMascotas = examenesData;
 
-                const reporteResponse2 = await fetch("https://api-arquitecturas-ti.vercel.app/api/reporte/", requestOptions);
+                url = API + "/api/reporte/";
+                const reporteResponse2 = await fetch(url, requestOptions);
                 if (!reporteResponse2.ok) {
                     throw new Error('La solicitud Fetch no se realizó correctamente');
                 }
@@ -179,7 +182,7 @@ function Report() {
             redirect: 'follow'
         };
 
-        const examenUrl = `https://api-arquitecturas-ti.vercel.app/api/reporte/enviarCorreo/${idReporte}`;
+        const examenUrl = `${API}/api/reporte/enviarCorreo/${idReporte}`;
         fetch(examenUrl, requestOptions)
         .then(response => {
             if (response.ok) {

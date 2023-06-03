@@ -12,6 +12,7 @@ import '../../styles/GlobalStyle.css'
 */
 
 function PetExam() {
+    const API = process.env.REACT_APP_API_URL;
     const Token = useState(localStorage.getItem("token"));
     const [mascotaExamenes, setMascotaExamenes] = useState([]);
     const [mascotaNombre, setMascotaNombre] = useState([]);
@@ -35,7 +36,7 @@ function PetExam() {
             redirect: 'follow'
         };
 
-        const mascotaUser = "https://api-arquitecturas-ti.vercel.app/api/mascota/id/" + mascotaSeleccionada;
+        const mascotaUser = API + "/api/mascota/id/" + mascotaSeleccionada;
         fetch(mascotaUser, requestOptions)
         .then(response => {
             if (response.ok) {
@@ -50,7 +51,7 @@ function PetExam() {
         })
         .catch(error => console.log('error', error));
 
-        const mascotaUrl = "https://api-arquitecturas-ti.vercel.app/api/examen/" + mascotaSeleccionada;
+        const mascotaUrl = API + "/api/examen/" + mascotaSeleccionada;
         fetch(mascotaUrl, requestOptions)
         .then(response => {
             if (response.ok) {

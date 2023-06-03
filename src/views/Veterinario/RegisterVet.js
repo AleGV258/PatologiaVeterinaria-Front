@@ -12,6 +12,7 @@ import '../../styles/GlobalStyle.css'
 */
 
 function RegisterVet() {
+    const API = process.env.REACT_APP_API_URL;
     const Token = useState(localStorage.getItem("token"));
     const IDActual = useState(localStorage.getItem("id"));
     const [cargando, setCargando] = useState(false);
@@ -44,7 +45,8 @@ function RegisterVet() {
         };
 
         if(contrasenaRepetir == contrasena){
-            fetch("https://api-arquitecturas-ti.vercel.app/api/users/", requestOptions)
+            const url = API + "/api/users/";
+            fetch(url, requestOptions)
                 .then(response => {
                     if (response.ok) {
                         setCargando(false);
@@ -86,7 +88,7 @@ function RegisterVet() {
         };
         
         if(confirmacion){
-            const urlUsuario = "https://api-arquitecturas-ti.vercel.app/api/users/" + usuarioSeleccionado[0];
+            const urlUsuario = API + "/api/users/" + usuarioSeleccionado[0];
             fetch(urlUsuario, requestOptions)
             .then(response => {
                 console.log(response)

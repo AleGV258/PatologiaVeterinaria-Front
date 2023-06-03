@@ -12,6 +12,7 @@ import '../styles/GlobalStyle.css'
 */
 
 function Register() {
+    const API = process.env.REACT_APP_API_URL;
     const [cargando, setCargando] = useState(false);
     const [usuario, setUsuario] = useState("");
     const [correo, setCorreo] = useState("");
@@ -40,7 +41,8 @@ function Register() {
         };
 
         if(contrasenaRepetir == contrasena){
-            fetch("https://api-arquitecturas-ti.vercel.app/api/users/", requestOptions)
+            const url = API + "/api/users/";
+            fetch(url, requestOptions)
                 .then(response => {
                     if (response.ok) {
                         setCargando(false);

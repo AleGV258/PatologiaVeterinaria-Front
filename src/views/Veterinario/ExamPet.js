@@ -12,6 +12,7 @@ import '../../styles/GlobalStyle.css'
 */
 
 function ExamPet() {
+    const API = process.env.REACT_APP_API_URL;
     const Token = useState(localStorage.getItem("token"));
     const [cargando, setCargando] = useState(false);
     const [examenesPendientes, setExamenesPendientes] = useState([]);
@@ -36,7 +37,8 @@ function ExamPet() {
             redirect: 'follow'
         };
     
-        fetch("https://api-arquitecturas-ti.vercel.app/api/examen/listado/Pendiente", requestOptions)
+        var url = API + "/api/examen/listado/Pendiente";
+        fetch(url, requestOptions)
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -57,7 +59,6 @@ function ExamPet() {
                 const filtradoMascotas = result.examenes.filter(examen => {
                     return examen.mascota._id == mascotaSeleccionada;
                 })
-
                 var pendientes = filtradoMascotas.map(resultado => {
                     setNombreMascota(resultado.mascota.nombre);
                     setIDMascota(resultado.mascota._id);
@@ -104,7 +105,8 @@ function ExamPet() {
         })
         .catch(error => console.log('error', error));
     
-        fetch("https://api-arquitecturas-ti.vercel.app/api/examen/listado/Completado", requestOptions)
+        url = API + "/api/examen/listado/Completado";
+        fetch(url, requestOptions)
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -187,7 +189,7 @@ function ExamPet() {
         };
         
         if(confirmacion){
-            const urlExamen = "https://api-arquitecturas-ti.vercel.app/api/examen/" + examenSeleccionado;
+            const urlExamen = API + "/api/examen/" + examenSeleccionado;
             fetch(urlExamen, requestOptions)
             .then(response => {
                 if (response.ok) {
@@ -218,7 +220,7 @@ function ExamPet() {
         };
         
         if(confirmacion){
-            const urlMascota = "https://api-arquitecturas-ti.vercel.app/api/mascota/" + mascotaSeleccionado;
+            const urlMascota = API + "/api/mascota/" + mascotaSeleccionado;
             fetch(urlMascota, requestOptions)
             .then(response => {
                 if (response.ok) {

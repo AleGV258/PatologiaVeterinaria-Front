@@ -13,6 +13,7 @@ import '../../../styles/GlobalStyle.css'
 */
 
 function UrianalisisView() {
+    const API = process.env.REACT_APP_API_URL;
     const Token = useState(localStorage.getItem("token"));
     var fechaCompleta = "";
     var fechaReporte = new Date();
@@ -93,13 +94,14 @@ function UrianalisisView() {
         
         const fetchData = async () => {
             try {
-                const response = await fetch("https://api-arquitecturas-ti.vercel.app/api/reporte/", requestOptions);
+                const url = API + "/api/reporte/";
+                const response = await fetch(url, requestOptions);
                 if (!response.ok) {
                     throw new Error('La solicitud Fetch no se realizó correctamente');
                 }
                 const result = await response.json();
             
-                const urlData = `https://api-arquitecturas-ti.vercel.app/api/examen/informacion/${examenSeleccionado}`;
+                const urlData = `${API}/api/examen/informacion/${examenSeleccionado}`;
                 const secondResponse = await fetch(urlData, requestOptions);
                 if (!secondResponse.ok) {
                     throw new Error('La solicitud Fetch no se realizó correctamente');

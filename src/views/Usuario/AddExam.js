@@ -12,6 +12,7 @@ import '../../styles/GlobalStyle.css'
 */
 
 function AddExam() {
+    const API = process.env.REACT_APP_API_URL;
     const Token = useState(localStorage.getItem("token"));
     const [cargando, setCargando] = useState(false);
     const [examenHematologia, setExamenHematologia] = useState("");
@@ -33,7 +34,8 @@ function AddExam() {
             redirect: 'follow'
         };
 
-        fetch("https://api-arquitecturas-ti.vercel.app/api/mascota/Usuario/", requestOptions)
+        const url = API + "/api/mascota/Usuario/";
+        fetch(url, requestOptions)
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -126,7 +128,8 @@ function AddExam() {
             redirect: 'follow'
         };
 
-        fetch("https://api-arquitecturas-ti.vercel.app/api/examen/", requestOptions)
+        const url = API + "/api/examen/";
+        fetch(url, requestOptions)
         .then(response => {
             if (response.ok) {
                 setCargando(false);

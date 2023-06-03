@@ -12,6 +12,7 @@ import '../styles/GlobalStyle.css'
 */
 
 function Login() {
+    const API = process.env.REACT_APP_API_URL;
     const [cargando, setCargando] = useState(false);
     const [correo, setCorreo] = useState("");
     const [contrasena, setContrasena] = useState("");
@@ -43,7 +44,8 @@ function Login() {
             redirect: 'follow'
         };
 
-        fetch("https://api-arquitecturas-ti.vercel.app/api/auth/login/", requestOptions)
+        const url = API + "/api/auth/login/";
+        fetch(url, requestOptions)
         .then(response => {
             if (response.ok) {
                 setAutentificacion(true);

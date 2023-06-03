@@ -12,6 +12,7 @@ import '../../styles/GlobalStyle.css'
 */
 
 function AddPet() {
+    const API = process.env.REACT_APP_API_URL;
     const IdUsuario = useState(localStorage.getItem("id"));
     const Token = useState(localStorage.getItem("token"));
     const [cargando, setCargando] = useState(false);
@@ -38,7 +39,8 @@ function AddPet() {
             redirect: 'follow'
         };
 
-        fetch("https://api-arquitecturas-ti.vercel.app/api/users/veterinarios", requestOptions)
+        const url = API + "/api/users/veterinarios";
+        fetch(url, requestOptions)
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -130,7 +132,7 @@ function AddPet() {
         };
         
         if(confirmacion){
-            const urlUsuario = "https://api-arquitecturas-ti.vercel.app/api/users/" + usuarioSeleccionado[0];
+            const urlUsuario = API + "/api/users/" + usuarioSeleccionado[0];
             fetch(urlUsuario, requestOptions)
             .then(response => {
                 console.log(response)
@@ -172,7 +174,8 @@ function AddPet() {
             redirect: 'follow'
         };
 
-        fetch("https://api-arquitecturas-ti.vercel.app/api/mascota/", requestOptions)
+        const url = API + "/api/mascota/";
+        fetch(url, requestOptions)
         .then(response => {
             console.log(response)
             if (response.ok) {

@@ -12,6 +12,7 @@ import '../../styles/GlobalStyle.css'
 */
 
 function HomeVet() {
+    const API = process.env.REACT_APP_API_URL;
     const Token = useState(localStorage.getItem("token"));
     const [usuario, setUsuario] = useState(localStorage.getItem("usuario"));
     const [busqueda, setBusqueda] = useState("");
@@ -30,7 +31,8 @@ function HomeVet() {
             redirect: 'follow'
         };
 
-        fetch("https://api-arquitecturas-ti.vercel.app/api/mascota/", requestOptions)
+        const url = API + "/api/mascota/";
+        fetch(url, requestOptions)
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -49,13 +51,39 @@ function HomeVet() {
                 setMascotasUsuarios(inexistente);
             }else{
                 var mascotasCards = result.mascotas.map(mascota => {
-                    return (
-                        <div className="opcion-mascota-veterinario" key={mascota._id} onClick={() => goMascotaExams(mascota._id)}>
-                            <div className="nombre-mascota-veterinario">{mascota.especie.split(' ')[0]}<br></br>{mascota.raza}</div>
-                            <img src='../imgs/Mascota.png' className="imagen-mascota-veterinario"></img>
-                            <label className="titulo-examen">{mascota.nombre.split(' ')[0]}</label>
-                        </div>
-                    )
+                    if(mascota.especie.split(' ')[0] == "Perro"){
+                        return (
+                            <div className="opcion-mascota-veterinario" key={mascota._id} onClick={() => goMascotaExams(mascota._id)}>
+                                <div className="nombre-mascota-veterinario">{mascota.especie.split(' ')[0]}<br></br>{mascota.raza}</div>
+                                <img src='../imgs/Perro.png' className="imagen-mascota-veterinario"></img>
+                                <label className="titulo-examen">{mascota.nombre.split(' ')[0]}</label>
+                            </div>
+                        )
+                    }else if(mascota.especie.split(' ')[0] == "Gato"){
+                        return (
+                            <div className="opcion-mascota-veterinario" key={mascota._id} onClick={() => goMascotaExams(mascota._id)}>
+                                <div className="nombre-mascota-veterinario">{mascota.especie.split(' ')[0]}<br></br>{mascota.raza}</div>
+                                <img src='../imgs/Gato.png' className="imagen-mascota-veterinario"></img>
+                                <label className="titulo-examen">{mascota.nombre.split(' ')[0]}</label>
+                            </div>
+                        )
+                    }else if(mascota.especie.split(' ')[0] == "Caballo"){
+                        return (
+                            <div className="opcion-mascota-veterinario" key={mascota._id} onClick={() => goMascotaExams(mascota._id)}>
+                                <div className="nombre-mascota-veterinario">{mascota.especie.split(' ')[0]}<br></br>{mascota.raza}</div>
+                                <img src='../imgs/Caballo.png' className="imagen-mascota-veterinario"></img>
+                                <label className="titulo-examen">{mascota.nombre.split(' ')[0]}</label>
+                            </div>
+                        )
+                    }else if(mascota.especie.split(' ')[0] == "Vaca"){
+                        return (
+                            <div className="opcion-mascota-veterinario" key={mascota._id} onClick={() => goMascotaExams(mascota._id)}>
+                                <div className="nombre-mascota-veterinario">{mascota.especie.split(' ')[0]}<br></br>{mascota.raza}</div>
+                                <img src='../imgs/Vaca.png' className="imagen-mascota-veterinario"></img>
+                                <label className="titulo-examen">{mascota.nombre.split(' ')[0]}</label>
+                            </div>
+                        )
+                    }
                 })
                 setMascotasUsuarios(mascotasCards);
             }
@@ -73,7 +101,8 @@ function HomeVet() {
             redirect: 'follow'
         };
 
-        fetch("https://api-arquitecturas-ti.vercel.app/api/mascota/", requestOptions)
+        const url = API + "/api/mascota/";
+        fetch(url, requestOptions)
         .then(response => {
             if (response.ok) {
                 return response.json();

@@ -12,8 +12,9 @@ import '../../../styles/GlobalStyle.css'
 */
 
 function Urianalisis() {
-    const [cargando, setCargando] = useState(false);
+    const API = process.env.REACT_APP_API_URL;
     const Token = useState(localStorage.getItem("token"));
+    const [cargando, setCargando] = useState(false);
     // Examen General
     const [caso, setCaso] = useState("");
     const [propietario, setPropietario] = useState("");
@@ -71,7 +72,7 @@ function Urianalisis() {
             redirect: 'follow'
         };
     
-        const urlData = `https://api-arquitecturas-ti.vercel.app/api/examen/informacion/${examenSeleccionado}`;    
+        const urlData = `${API}/api/examen/informacion/${examenSeleccionado}`;    
         fetch(urlData, requestOptions)
         .then(response => {
             if (response.ok) {
@@ -176,7 +177,7 @@ function Urianalisis() {
             redirect: 'follow'
         };
 
-        var url = "https://api-arquitecturas-ti.vercel.app/api/examen/" + examenSeleccionado;
+        var url = API + "/api/examen/" + examenSeleccionado;
         fetch(url, requestOptions)
         .then(response => {
             if (response.ok) {

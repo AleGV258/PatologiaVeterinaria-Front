@@ -12,6 +12,7 @@ import '../../styles/GlobalStyle.css'
 */
 
 function Exams() {
+    const API = process.env.REACT_APP_API_URL;
     const Token = useState(localStorage.getItem("token"));
     const [examenesPendientes, setExamenesPendientes] = useState([]);
     const [examenesCompletados, setExamenesCompletados] = useState([]);
@@ -33,7 +34,8 @@ function Exams() {
             redirect: 'follow'
         };
     
-        fetch("https://api-arquitecturas-ti.vercel.app/api/examen/listado/Pendiente", requestOptions)
+        var url = API + "/api/examen/listado/Pendiente";
+        fetch(url, requestOptions)
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -98,7 +100,8 @@ function Exams() {
         })
         .catch(error => console.log('error', error));
     
-        fetch("https://api-arquitecturas-ti.vercel.app/api/examen/listado/Completado", requestOptions)
+        url = API + "/api/examen/listado/Completado";
+        fetch(url, requestOptions)
         .then(response => {
             if (response.ok) {
                 return response.json();

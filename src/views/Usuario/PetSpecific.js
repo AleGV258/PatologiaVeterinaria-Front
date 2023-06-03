@@ -12,6 +12,7 @@ import '../../styles/GlobalStyle.css'
 */
 
 function PetSpecific() {
+    const API = process.env.REACT_APP_API_URL;
     const Token = useState(localStorage.getItem("token"));
     const [cargando, setCargando] = useState(false);
     const [mascotaUsuario, setMascotaUsuario] = useState([]);
@@ -36,7 +37,8 @@ function PetSpecific() {
             redirect: 'follow'
         };
 
-        const mascotaUser = "https://api-arquitecturas-ti.vercel.app/api/mascota/id/" + mascotaSeleccionada;
+
+        const mascotaUser = API + "/api/mascota/id/" + mascotaSeleccionada;
         fetch(mascotaUser, requestOptions)
         .then(response => {
             if (response.ok) {
@@ -46,12 +48,12 @@ function PetSpecific() {
             }
         })
         .then(result => {
-            // console.log("Resultado: " + JSON.stringify(result.mascota))
+            // console.log("Resultado: " + JSON.stringify(result))
             setMascota(result.mascota);
         })
         .catch(error => console.log('error', error));
 
-        const mascotaUrl= "https://api-arquitecturas-ti.vercel.app/api/examen/" + mascotaSeleccionada;
+        const mascotaUrl= API + "/api/examen/" + mascotaSeleccionada;
         fetch(mascotaUrl, requestOptions)
         .then(response => {
             if (response.ok) {
@@ -132,7 +134,7 @@ function PetSpecific() {
         };
         
         if(confirmacion){
-            const urlMascota = "https://api-arquitecturas-ti.vercel.app/api/mascota/" + mascotaSeleccionado;
+            const urlMascota = API + "/api/mascota/" + mascotaSeleccionado;
             fetch(urlMascota, requestOptions)
             .then(response => {
                 if (response.ok) {
@@ -201,7 +203,8 @@ function PetSpecific() {
 
                 <div>
                     <div>
-                        <img src="../imgs/Mascota.png" className="especifico-imagen"></img>
+                        {mascota.especie == "Perro (Canino)" ? <img src="../imgs/Perro.png" className="especifico-imagen"></img> : [mascota.especie == "Gato (Felino)" ? <img src="../imgs/Gato.png" className="especifico-imagen"></img> : [mascota.especie == "Caballo (Equino)" ? <img src="../imgs/Caballo.png" className="especifico-imagen"></img> : [mascota.especie == "Vaca (Bovino)" ? <img src="../imgs/Vaca.png" className="especifico-imagen"></img> : <img src="../imgs/Mascota.png" className="especifico-imagen"></img>]]]}
+
                         <label className="especifico-titulo">{mascota.nombre}</label>
                     </div>
                     <div className="separador"></div>

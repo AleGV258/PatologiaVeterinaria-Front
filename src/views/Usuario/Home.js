@@ -12,6 +12,7 @@ import '../../styles/GlobalStyle.css'
 */
 
 function Home() {
+    const API = process.env.REACT_APP_API_URL;
     const usuario = useState(localStorage.getItem("usuario"));
     const Token = useState(localStorage.getItem("token"));
     const [mascotasUsuario, setMascotasUsuarios] = useState([]);
@@ -29,7 +30,8 @@ function Home() {
             redirect: 'follow'
         };
 
-        fetch("https://api-arquitecturas-ti.vercel.app/api/mascota/Usuario/", requestOptions)
+        const url = API + "/api/mascota/Usuario/";
+        fetch(url, requestOptions)
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -48,15 +50,47 @@ function Home() {
                 setMascotasUsuarios(inexistente);
             }else{
                 var mascotasCards = result.mascotas.map(mascota => {
-                    return (
-                        <div className="mascota-card" key={mascota._id}>
-                            <img src='../imgs/Mascota.png' className='mascota-image'></img>
-                            <label className='mascota-titulo-examen'>{mascota.nombre}</label>
-                            <label className='mascota-titulo-dato'><b>Especie: </b>{mascota.especie}<br></br><b>Raza: </b>{mascota.raza}<br></br><b>Sexo: </b>{mascota.sexo}</label>
-                            <button onClick={() => petSpecificDetails(mascota._id)} className="mascota-button-info">+ Info</button>
-                            <button onClick={() => petExamDetails(mascota._id)} className="mascota-button-examen">Examenes</button>
-                        </div>
-                    )
+                    if(mascota.especie.split(' ')[0] == "Perro"){
+                        return (
+                            <div className="mascota-card" key={mascota._id}>
+                                <img src='../imgs/Perro.png' className='mascota-image'></img>
+                                <label className='mascota-titulo-examen'>{mascota.nombre}</label>
+                                <label className='mascota-titulo-dato'><b>Especie: </b>{mascota.especie}<br></br><b>Raza: </b>{mascota.raza}<br></br><b>Sexo: </b>{mascota.sexo}</label>
+                                <button onClick={() => petSpecificDetails(mascota._id)} className="mascota-button-info">+ Info</button>
+                                <button onClick={() => petExamDetails(mascota._id)} className="mascota-button-examen">Examenes</button>
+                            </div>
+                        )
+                    }else if(mascota.especie.split(' ')[0] == "Gato"){
+                        return (
+                            <div className="mascota-card" key={mascota._id}>
+                                <img src='../imgs/Gato.png' className='mascota-image'></img>
+                                <label className='mascota-titulo-examen'>{mascota.nombre}</label>
+                                <label className='mascota-titulo-dato'><b>Especie: </b>{mascota.especie}<br></br><b>Raza: </b>{mascota.raza}<br></br><b>Sexo: </b>{mascota.sexo}</label>
+                                <button onClick={() => petSpecificDetails(mascota._id)} className="mascota-button-info">+ Info</button>
+                                <button onClick={() => petExamDetails(mascota._id)} className="mascota-button-examen">Examenes</button>
+                            </div>
+                        )
+                    }else if(mascota.especie.split(' ')[0] == "Caballo"){
+                        return (
+                            <div className="mascota-card" key={mascota._id}>
+                                <img src='../imgs/Caballo.png' className='mascota-image'></img>
+                                <label className='mascota-titulo-examen'>{mascota.nombre}</label>
+                                <label className='mascota-titulo-dato'><b>Especie: </b>{mascota.especie}<br></br><b>Raza: </b>{mascota.raza}<br></br><b>Sexo: </b>{mascota.sexo}</label>
+                                <button onClick={() => petSpecificDetails(mascota._id)} className="mascota-button-info">+ Info</button>
+                                <button onClick={() => petExamDetails(mascota._id)} className="mascota-button-examen">Examenes</button>
+                            </div>
+                        )
+                    }else if(mascota.especie.split(' ')[0] == "Vaca"){
+                        return (
+                            <div className="mascota-card" key={mascota._id}>
+                                <img src='../imgs/Vaca.png' className='mascota-image'></img>
+                                <label className='mascota-titulo-examen'>{mascota.nombre}</label>
+                                <label className='mascota-titulo-dato'><b>Especie: </b>{mascota.especie}<br></br><b>Raza: </b>{mascota.raza}<br></br><b>Sexo: </b>{mascota.sexo}</label>
+                                <button onClick={() => petSpecificDetails(mascota._id)} className="mascota-button-info">+ Info</button>
+                                <button onClick={() => petExamDetails(mascota._id)} className="mascota-button-examen">Examenes</button>
+                            </div>
+                        )
+                    }
                 })
                 setMascotasUsuarios(mascotasCards);
             }
