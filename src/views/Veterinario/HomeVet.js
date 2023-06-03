@@ -113,24 +113,50 @@ function HomeVet() {
         .then(result => {
             // console.log("Resultado: " + JSON.stringify(result))
             const mascotaFiltrada = result.mascotas.filter(mascota => {
-                return (mascota.nombre.toUpperCase().includes(busqueda.toUpperCase()) || mascota.especie.toUpperCase().includes(busqueda.toUpperCase()) || mascota.raza.toUpperCase().includes(busqueda.toUpperCase()) || mascota.sexo.toUpperCase().includes(busqueda.toUpperCase()) || mascota._id.toUpperCase().includes(busqueda.toUpperCase()) || mascota.edad.toUpperCase().includes(busqueda.toUpperCase()))
+                return (mascota.nombre.toUpperCase().includes(busqueda.toUpperCase()) || mascota.especie.toUpperCase().includes(busqueda.toUpperCase()) || mascota.raza.toUpperCase().includes(busqueda.toUpperCase()) || mascota.sexo.toUpperCase().includes(busqueda.toUpperCase()) || mascota._id.toUpperCase().includes(busqueda.toUpperCase()))
             })
             if(mascotaFiltrada.length == 0){
                 var inexistente = [""].map(vacio => {
                     return (
-                        <label className="titulo-no-encontrado">¡Lo sentimos! No existen mascotas relacionadas con su búsqueda</label>
+                        <label key="0" className="titulo-no-encontrado">¡Lo sentimos! No existen mascotas relacionadas con su búsqueda</label>
                     )
                 })
                 setMascotasUsuarios(inexistente);
             }else{
                 var mascotasCards = mascotaFiltrada.map(mascota => {
-                    return (
-                        <div className="opcion-mascota-veterinario" key={mascota._id} onClick={() => goMascotaExams(mascota._id)}>
-                            <div className="nombre-mascota-veterinario">{mascota.especie.split(' ')[0]}<br></br>{mascota.raza}</div>
-                            <img src='../imgs/Mascota.png' className="imagen-mascota-veterinario"></img>
-                            <label className="titulo-examen">{mascota.nombre.split(' ')[0]}</label>
-                        </div>
-                    )
+                    if(mascota.especie.split(' ')[0] == "Perro"){
+                        return (
+                            <div className="opcion-mascota-veterinario" key={mascota._id} onClick={() => goMascotaExams(mascota._id)}>
+                                <div className="nombre-mascota-veterinario">{mascota.especie.split(' ')[0]}<br></br>{mascota.raza}</div>
+                                <img src='../imgs/Perro.png' className="imagen-mascota-veterinario"></img>
+                                <label className="titulo-examen">{mascota.nombre.split(' ')[0]}</label>
+                            </div>
+                        )
+                    }else if(mascota.especie.split(' ')[0] == "Gato"){
+                        return (
+                            <div className="opcion-mascota-veterinario" key={mascota._id} onClick={() => goMascotaExams(mascota._id)}>
+                                <div className="nombre-mascota-veterinario">{mascota.especie.split(' ')[0]}<br></br>{mascota.raza}</div>
+                                <img src='../imgs/Gato.png' className="imagen-mascota-veterinario"></img>
+                                <label className="titulo-examen">{mascota.nombre.split(' ')[0]}</label>
+                            </div>
+                        )
+                    }else if(mascota.especie.split(' ')[0] == "Caballo"){
+                        return (
+                            <div className="opcion-mascota-veterinario" key={mascota._id} onClick={() => goMascotaExams(mascota._id)}>
+                                <div className="nombre-mascota-veterinario">{mascota.especie.split(' ')[0]}<br></br>{mascota.raza}</div>
+                                <img src='../imgs/Caballo.png' className="imagen-mascota-veterinario"></img>
+                                <label className="titulo-examen">{mascota.nombre.split(' ')[0]}</label>
+                            </div>
+                        )
+                    }else if(mascota.especie.split(' ')[0] == "Vaca"){
+                        return (
+                            <div className="opcion-mascota-veterinario" key={mascota._id} onClick={() => goMascotaExams(mascota._id)}>
+                                <div className="nombre-mascota-veterinario">{mascota.especie.split(' ')[0]}<br></br>{mascota.raza}</div>
+                                <img src='../imgs/Vaca.png' className="imagen-mascota-veterinario"></img>
+                                <label className="titulo-examen">{mascota.nombre.split(' ')[0]}</label>
+                            </div>
+                        )
+                    }
                 })
                 setMascotasUsuarios(mascotasCards);
             }
