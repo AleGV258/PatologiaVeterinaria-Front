@@ -219,14 +219,14 @@ function HematologiaUser() {
     return (
         <div className="grid-home">
             <div className="grid-home-1" onClick={returnHome}>
-                <img src='../imgs/Regresar.png' className="regresar" onClick={returnHome}></img>
-                <label className="titulo-usuario">Examen de Parasitología</label>
+                <img src='./imgs/Regresar.png' className="regresar" onClick={returnHome}></img>
+                <label className="titulo-usuario">Examen de Hematología</label>
             </div>
             <div className="grid-home-2">
                 <div>
-                    <button onClick={returnHome} className="moreOption-button" title="Regresar Página Principal"><img src='../imgs/Home.png' className="moreOption-image"></img></button><br></br>
-                    <button onClick={addNewPet} className="moreOption-button" title="Agregar Nueva Mascota"><img src='../imgs/Agregar-Mascota.png' className="moreOption-image"></img></button><br></br>
-                    <button onClick={addNewExam} className="moreOption-button" title="Solicitar Nuevo Examen Clínico"><img src='../imgs/Solicitar-Examen.png' className="moreOption-image"></img></button>
+                    <button onClick={returnHome} className="moreOption-button" title="Regresar Página Principal"><img src='./imgs/Home.png' className="moreOption-image"></img></button><br></br>
+                    <button onClick={addNewPet} className="moreOption-button" title="Agregar Nueva Mascota"><img src='./imgs/Agregar-Mascota.png' className="moreOption-image"></img></button><br></br>
+                    <button onClick={addNewExam} className="moreOption-button" title="Solicitar Nuevo Examen Clínico"><img src='./imgs/Solicitar-Examen.png' className="moreOption-image"></img></button>
                 </div>
                 <button onClick={logoutUser} className="logout-button logout-button-veterinario">Cerrar <br className="break-point"></br>Sesión</button>
             </div>
@@ -241,18 +241,18 @@ function HematologiaUser() {
 
                         <div className="examen-encabezado-facultad">
                             <label className="examen-encabezado-titulo">FACULTAD DE CIENCIAS NATURALES<br></br>Laboratorio de Patología Veterinaria</label>
-                            <img src='../imgs/examenes/25UAQ.png' className="examen-encabezado-escudo"></img>
-                            <img src='../imgs/examenes/FCN.jpg' className="examen-encabezado-escudo"></img>
-                            <img src='../imgs/examenes/UAQ.jpg' className="examen-encabezado-escudo"></img>
-                            <img src='../imgs/examenes/Escudo.png' className="examen-encabezado-escudo"></img>
+                            <img src='./imgs/examenes/25UAQ.png' className="examen-encabezado-escudo"></img>
+                            <img src='./imgs/examenes/FCN.jpg' className="examen-encabezado-escudo"></img>
+                            <img src='./imgs/examenes/UAQ.jpg' className="examen-encabezado-escudo"></img>
+                            <img src='./imgs/examenes/Escudo.png' className="examen-encabezado-escudo"></img>
                         </div>
 
                         <div className="examen-encabezado-mascotas">
                             <div className="examen-encabezado-imagenes">
-                                {/* <img src='../imgs/examenes/Vaca.png' className="examen-encabezado-animal"></img> */}
-                                {/* <img src='../imgs/examenes/Gato.png' className="examen-encabezado-animal"></img> */}
-                                {/* <img src='../imgs/examenes/Caballo.png' className="examen-encabezado-animal"></img> */}
-                                <img src='../imgs/examenes/Perro.png' className="examen-encabezado-animal2"></img>
+                                {/* <img src='./imgs/examenes/Vaca.png' className="examen-encabezado-animal"></img> */}
+                                {/* <img src='./imgs/examenes/Gato.png' className="examen-encabezado-animal"></img> */}
+                                {/* <img src='./imgs/examenes/Caballo.png' className="examen-encabezado-animal"></img> */}
+                                <img src='./imgs/examenes/Perro.png' className="examen-encabezado-animal2"></img>
                             </div>
                             <div className="examen-encabezado-resultado">Resultados Hematología</div>
                         </div>
