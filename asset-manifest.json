@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/PatologiaVeterinaria-Front/static/css/main.ce25b496.css",
-    "main.js": "/PatologiaVeterinaria-Front/static/js/main.c06a239b.js",
+    "main.css": "/PatologiaVeterinaria-Front/static/css/main.61942daa.css",
+    "main.js": "/PatologiaVeterinaria-Front/static/js/main.f8171b5e.js",
     "static/js/703.913ffab1.chunk.js": "/PatologiaVeterinaria-Front/static/js/703.913ffab1.chunk.js",
     "static/js/97.5fb11973.chunk.js": "/PatologiaVeterinaria-Front/static/js/97.5fb11973.chunk.js",
     "static/js/787.9b0bccf4.chunk.js": "/PatologiaVeterinaria-Front/static/js/787.9b0bccf4.chunk.js",
     "index.html": "/PatologiaVeterinaria-Front/index.html",
-    "main.ce25b496.css.map": "/PatologiaVeterinaria-Front/static/css/main.ce25b496.css.map",
-    "main.c06a239b.js.map": "/PatologiaVeterinaria-Front/static/js/main.c06a239b.js.map",
+    "main.61942daa.css.map": "/PatologiaVeterinaria-Front/static/css/main.61942daa.css.map",
+    "main.f8171b5e.js.map": "/PatologiaVeterinaria-Front/static/js/main.f8171b5e.js.map",
     "703.913ffab1.chunk.js.map": "/PatologiaVeterinaria-Front/static/js/703.913ffab1.chunk.js.map",
     "97.5fb11973.chunk.js.map": "/PatologiaVeterinaria-Front/static/js/97.5fb11973.chunk.js.map",
     "787.9b0bccf4.chunk.js.map": "/PatologiaVeterinaria-Front/static/js/787.9b0bccf4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.ce25b496.css",
-    "static/js/main.c06a239b.js"
+    "static/css/main.61942daa.css",
+    "static/js/main.f8171b5e.js"
   ]
 }
